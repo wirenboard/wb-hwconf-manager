@@ -1,0 +1,16 @@
+{
+	"slots": [
+		{
+			"id": "wb5-mod1",
+			"type": "wb5-mod",
+			"name": "Internal slot 1",
+			"module": ""
+		},
+		{
+			"id": "wb5-mod2",
+			"type": "wb5-mod",
+			"name": "Internal slot 2",
+			"module": ""
+		}
+	]
+}	

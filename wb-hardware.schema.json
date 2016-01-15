@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Hardware Modules Configuration",
+  "description": "Lists additional hardare modules configuration",
+  "definitions": {
+    "slot": {
+      "type": "object",
+      "title": "Slot",
+      "headerTemplate": "{{self.name}}",
+      "id": "slot_item",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Slot ID",
+          "minLength": 1,
+          "options": {
+            "hidden": true
+          }
+        },
+        "type": {
+          "type": "string",
+          "title": "Slot type",
+          "minLength": 1,
+          "options": {
+            "hidden": true
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "minLength": 1,
+          "propertyOrder": 1
+        },
+        "module": {
+          "type": "string",
+          "title": "Module type",
+          "description": "Type of the module plugged to the slot",
+          "watch": {
+            "all_modules": "modules",
+            "type": "slot_item.type"
+          },
+          "enumSource": [
+            {
+              "source": [
+                {
+                  "title": "None",
+                  "value": ""
+                }
+              ],
+              "title": "{{item.title}}",
+              "value": "{{item.value}}"
+            },
+            {
+              "source": "all_modules",
+              "filter": "{{if watched.type in item.compatible_slots}}1{{endif}}",
+              "title": "{{item.description}}",
+              "value": "{{item.id}}"
+            }
+          ],
+          "propertyOrder": 2
+        }
+      },
+      "required": ["id", "name", "type"],
+      "defaultProperties": ["id", "name", "type", "module"]
+    }
+  },
+  "properties": {
+    "slots": {
+      "type": "array",
+      "title": "List of extension slots",
+      "description": "Lists available extension slots",
+      "options": {
+        "disable_array_add": true,
+        "disable_array_delete": true,
+        "disable_array_reorder": true
+      },
+      "items": { "$ref": "#/definitions/slot" },
+      "_format": "tabs",
+      "propertyOrder": 2
+    },
+    "modules": {
+      "type": "array",
+      "options": {
+        "hidden": true
+      }
+    }
+  },
+  "required": ["slots"],
+  "configFile": {
+    "path": "/etc/wb-hardware.conf",
+    "service": "wb-hwconf-manager",
+    "toJSON": ["wb-hwconf-helper", "confed-tojson"],
+    "fromJSON": ["wb-hwconf-helper", "confed-fromjson"]
+  }
+}

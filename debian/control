@@ -1,0 +1,11 @@
+Source: wb-hwconf-manager
+Section: misc
+Priority: extra
+Maintainer: Alexey Ignatov <lexszero@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+
+Package: wb-hwconf-manager
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, ucf, wb-utils (>= 1.53), wb-configs (>= 1.55), jq, tcc
+Description: Provides infrastructure for hardware re-configuration via Device Tree overlays

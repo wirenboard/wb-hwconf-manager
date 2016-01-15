@@ -1,0 +1,12 @@
+#include "wb5-mod-common.h"
+
+#define MOD_ALIAS	mod1
+#define MOD_RX		(AUART2_RX,		3,	8)
+#define MOD_TX		(AUART2_TX,		3,	9)
+#define MOD_RTS		(AUART2_RTS,	3,	11)
+#define MOD_SDA		(SSP2_SS2,		2,	21)
+#define MOD_SCL		(SSP1_SCK,		2,	12)
+#define MOD_MOSI	(SSP3_MOSI,		2,	25)
+#define MOD_MISO	(SSP3_MISO,		2,	26)
+#define MOD_SCK		(SSP3_SCK,		2,	24)
+#define MOD_CS		(SSP3_SS0,		2,	27)

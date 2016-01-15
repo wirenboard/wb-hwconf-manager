@@ -1,0 +1,18 @@
+#!/bin/bash
+. /etc/wb_env.sh
+
+CONFFILE=/etc/wb-hardware.conf
+
+case "$WB_VERSION" in
+	"52")
+		BOARD_CONF="wb52"
+	;;
+
+	*)
+		BOARD_CONF="default"
+	;;
+esac
+
+ucf --debconf-ok /usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF $CONFFILE
+
+#DEBHELPER#

@@ -1,0 +1,54 @@
+#!/bin/bash
+. /usr/share/wb-hwconf-manager/functions.sh || . ./functions.sh
+
+case "$1" in
+	"confed-tojson")
+		# Build json description of all modules in form
+		# {
+		# 	"id": "mod-foo",
+		# 	"description": "Foo Module",
+		# 	"compatible_slots": ["bar", "baz"]
+		# }
+		# and put it to "modules" array in the config (which is read from stdin)
+		perl -e '
+			while (<STDIN>) {
+				print;
+			}
+			local $/ = undef;
+			foreach $f (@ARGV) {
+				$f =~ /\/([^\/.]+)\.dtso$/ and $vals{id} = "\"$1\"";
+				open F, $f or die;
+				binmode F;
+				$file = <F>;
+				close F;
+				$file =~ /compatible-slots\s*=\s*(.*?);/s and
+					$vals{compatible_slots} = "[$1]";
+				$file =~ /description\s*=\s*(.*?);/s and
+					$vals{description} = $1;
+
+				print "{", join(",", map "\"$_\": $vals{$_}", keys %vals), "}\n";
+			};
+		' $MODULES/*.dtso | jq --slurp '.[0].modules = .[1:] | .[0]'
+		;;
+	"confed-fromjson")
+		# Remove "modules" array
+		jq 'del(.modules)'
+		;;
+	"bind")
+		module_bind $2 $3
+		;;
+	"unbind")
+		module_unbind $2
+		;;
+	*)
+		>2 cat <<EOF
+Usage: $0 <command>
+
+Commands:
+  confed-tojson          Prepare config passed to stdin for the web editor
+  confed-fromjson        Prepare edited config for saving
+  bind <slot> <module>   Bind module to slot
+  unbind <slot>          Unbinds any module from slot
+EOF
+		return 1
+esac

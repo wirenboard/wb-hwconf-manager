@@ -1,0 +1,11 @@
+#!/bin/sh
+CONFFILE=/etc/wb-hardware.conf
+
+if [ "$1" = "purge" ]; then
+    if [ -x /usr/bin/ucf ]; then
+        ucf  --purge $CONFFILE
+    fi
+fi
+
+
+#DEBHELPER#
