@@ -23,7 +23,7 @@ overlay_path() {
 dtbo_check_compatible() {
 	local dtbo_compat=`fdtget "$1" / compatible 2>/dev/null`
 	[[ -z "$dtbo_compat" || "$dtbo_compat" == "unknown" ]] && return 0
-	for compat in `r < /proc/device-tree/compatible  '\000' '\n'`; do
+	for compat in `tr < /proc/device-tree/compatible  '\000' '\n'`; do
 		[[ "$dtbo_compat" == "$compat" ]] && return 0
 	done
 	return 1
