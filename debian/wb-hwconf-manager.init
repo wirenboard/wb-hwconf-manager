@@ -35,9 +35,9 @@ do_start()
 		return 1
 	}
 
-	config_parse | while read slot mod; do
-		[[ -z "$slot" || -z "$mod" ]] && continue
-		module_bind "$slot" "$mod"
+	config_parse | while read SLOT MODULE; do
+		[[ -z "$SLOT" || -z "$MODULE" ]] && continue
+		module_bind "$SLOT" "$MODULE"
 	done
 
 	return 0
