@@ -1,0 +1,20 @@
+fragment@0 {
+	target = <MOD_I2C_ALIAS>;
+
+	__overlay__ {
+		MOD_DT_ALIAS(WBIO_NAME): gpio@MOD_I2C_ADDRESS {
+			compatible = "microchip,mcp23008";
+			gpio-controller;
+			#gpio-cells = <2>;
+			reg = <HEX_PREFIX(MOD_I2C_ADDRESS)>;
+
+			interrupt-parent = <MOD_GPIO_PORT(INT)>;
+			interrupts = <MOD_GPIO_PIN(INT) IRQ_TYPE_LEVEL_LOW>;
+			interrupt-controller;
+			#interrupt-cells=<2>;
+
+			linux,gpio-base = <MOD_GPIO_BASE>;
+		};
+	};
+};
+
