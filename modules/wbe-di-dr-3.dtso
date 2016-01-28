@@ -15,13 +15,13 @@
 	compatible = "contactless,imx28-wirenboard52";
 
 	fragment@0 {
-		target = <&MOD_DT_ALIAS(pins)>;
+		target = <&SLOT_DT_ALIAS(pins)>;
 
 		__overlay__ {
 			fsl,pinmux-ids = <
-				MOD_PINMUX_GPIO(SDA)
-				MOD_PINMUX_GPIO(SCL)
-				MOD_PINMUX_GPIO(CS)
+				SLOT_PINMUX_GPIO(SDA)
+				SLOT_PINMUX_GPIO(SCL)
+				SLOT_PINMUX_GPIO(CS)
 			>;
 			fsl,drive-strength = <MXS_DRIVE_8mA>;
 			fsl,voltage = <MXS_VOLTAGE_HIGH>;

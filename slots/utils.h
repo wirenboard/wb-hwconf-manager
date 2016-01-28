@@ -25,30 +25,30 @@
  * Supposed to be used to avoid DTS duplication for modules fitting more than
  * one slot.
  *
- * MOD_PINMUX(FOO, SOME_MUX) -> MX28_PAD_<pad name>__SOME_MUX
+ * SLOT_PINMUX(FOO, SOME_MUX) -> MX28_PAD_<pad name>__SOME_MUX
  *	use for fine-grained pinmux control, usually not needed
- * MOD_PINMUX_GPIO(FOO) -> MX28_PAD_<pad name>__GPIO_<port>_<pin>
+ * SLOT_PINMUX_GPIO(FOO) -> MX28_PAD_<pad name>__GPIO_<port>_<pin>
  *	use to configure pin as GPIO
- * MOD_GPIO(FOO) -> &gpio<port> <pin>
- *	use in periherial device nodes, e.g. gpios = <MOD_GPIO(FOO)>
- * MOD_DT_ALIAS(foo) -> mod<n>_foo
+ * SLOT_GPIO(FOO) -> &gpio<port> <pin>
+ *	use in periherial device nodes, e.g. gpios = <SLOT_GPIO(FOO)>
+ * SLOT_DT_ALIAS(foo) -> mod<n>_foo
  *	use to reference on per-slot peripherials (i2c, spi, uart)
  */
-#define MOD_PINMUX(x, func) __cat4(MX28_PAD_, __pin_attr(x, pad), __, func)
-#define MOD_PINMUX_GPIO(x) MOD_PINMUX(x, __cat4(GPIO_, __pin_attr(x, gpio_port), _, __pin_attr(x, gpio_pin)))
-#define MOD_GPIO_PORT(x) __pin_attr(x, gpio_port)
-#define MOD_GPIO_PIN(x) __pin_attr(x, gpio_pin)
-#define MOD_GPIO(x) __cat(&gpio, MOD_GPIO_PORT(x)) MOD_GPIO_PIN(x) 0
-#define MOD_DT_ALIAS(x) __cat3(MOD_ALIAS, _, x)
+#define SLOT_PINMUX(x, func) __cat4(MX28_PAD_, __pin_attr(x, pad), __, func)
+#define SLOT_PINMUX_GPIO(x) SLOT_PINMUX(x, __cat4(GPIO_, __pin_attr(x, gpio_port), _, __pin_attr(x, gpio_pin)))
+#define SLOT_GPIO_PORT(x) __pin_attr(x, gpio_port)
+#define SLOT_GPIO_PIN(x) __pin_attr(x, gpio_pin)
+#define SLOT_GPIO(x) __cat(&gpio, SLOT_GPIO_PORT(x)) SLOT_GPIO_PIN(x) 0
+#define SLOT_DT_ALIAS(x) __cat3(SLOT_ALIAS, _, x)
 
-#ifndef MOD_ALL_PINS
-#define MOD_ALL_PINS
+#ifndef SLOT_ALL_PINS
+#define SLOT_ALL_PINS
 #endif
 
 #ifdef FROM_SHELL
-#define MOD_FOR_PIN(x) local GPIO_##x=$[MOD_GPIO_PORT(x) * 32 + MOD_GPIO_PIN(x)];
-MOD_ALL_PINS
-#undef MOD_FOR_PIN
+#define SLOT_FOR_PIN(x) local GPIO_##x=$[SLOT_GPIO_PORT(x) * 32 + SLOT_GPIO_PIN(x)];
+SLOT_ALL_PINS
+#undef SLOT_FOR_PIN
 #endif
 
 #endif /* UTILS_H */

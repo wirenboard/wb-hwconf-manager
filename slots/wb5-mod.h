@@ -1,16 +1,16 @@
 /* Definitions common for all WB5 internal extension slots */
 
 /* All known pins for module */
-#define MOD_ALL_PINS \
-	MOD_FOR_PIN(RX) \
-	MOD_FOR_PIN(TX) \
-	MOD_FOR_PIN(RTS) \
-	MOD_FOR_PIN(SDA) \
-	MOD_FOR_PIN(SCL) \
-	MOD_FOR_PIN(MOSI) \
-	MOD_FOR_PIN(MISO) \
-	MOD_FOR_PIN(SCK) \
-	MOD_FOR_PIN(CS)
+#define SLOT_ALL_PINS \
+	SLOT_FOR_PIN(RX) \
+	SLOT_FOR_PIN(TX) \
+	SLOT_FOR_PIN(RTS) \
+	SLOT_FOR_PIN(SDA) \
+	SLOT_FOR_PIN(SCL) \
+	SLOT_FOR_PIN(MOSI) \
+	SLOT_FOR_PIN(MISO) \
+	SLOT_FOR_PIN(SCK) \
+	SLOT_FOR_PIN(CS)
 
 #include "imx28-pinfunc.h"
 #include "utils.h"

@@ -1,5 +1,5 @@
-#define MOD_ALIAS extio4
-#define MOD_I2C_ADDRESS 23
-#define MOD_GPIO_BASE 184
+#define SLOT_ALIAS extio4
+#define SLOT_I2C_ADDRESS 23
+#define SLOT_GPIO_BASE 184
 
 #include "wb5-extio.h"
