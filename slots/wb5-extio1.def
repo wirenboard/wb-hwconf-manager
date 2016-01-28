@@ -1,0 +1,5 @@
+#define MOD_ALIAS extio1
+#define MOD_I2C_ADDRESS 20
+#define MOD_GPIO_BASE 160
+
+#include "wb5-extio.h"
