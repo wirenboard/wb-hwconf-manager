@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "1-Wire interface module";
+	description = "WBE-DI-DR-3: digital inputs extension module";
 	compatible-slots = "wb5-mod";
 	compatible = "contactless,imx28-wirenboard52";
 
@@ -21,22 +21,11 @@
 			fsl,pinmux-ids = <
 				MOD_PINMUX_GPIO(SDA)
 				MOD_PINMUX_GPIO(SCL)
+				MOD_PINMUX_GPIO(CS)
 			>;
 			fsl,drive-strength = <MXS_DRIVE_8mA>;
 			fsl,voltage = <MXS_VOLTAGE_HIGH>;
 			fsl,pull-up = <MXS_PULL_DISABLE>;
-		};
-	};
-
-	fragment@1 {
-		target-path = "/";
-
-		__overlay__ {
-			MOD_DT_ALIAS(onewire): MOD_DT_ALIAS(onewire)@0 {
-				compatible = "w1-gpio";
-				gpios = <MOD_GPIO(SDA)>;
-				pu-gpios = <MOD_GPIO(SCL)>;
-			};
 		};
 	};
 };

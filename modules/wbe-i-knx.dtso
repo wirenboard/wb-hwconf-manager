@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "KIMaip KNX interface module";
+	description = "WBE-I-KNX: KIMaip KNX interface module";
 	compatible-slots = "wb5-mod";
 	compatible = "contactless,imx28-wirenboard52";
 
