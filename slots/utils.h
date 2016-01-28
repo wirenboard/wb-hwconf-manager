@@ -1,4 +1,8 @@
-#include "imx28-pinfunc.h"
+#ifndef UTILS_H
+#define UTILS_H
+
+/* For somewhat reason, tcc assumes that linux equals 1 */
+#undef linux
 
 /* Abusing the preprocessor violently */
 #define __cat_internal(a, ...) a ## __VA_ARGS__
@@ -6,6 +10,9 @@
 #define __cat3(a, b, ...) __cat(a, __cat(b, __VA_ARGS__))
 #define __cat4(a, b, c, ...) __cat(a, __cat3(b, c, __VA_ARGS__))
 #define __pass(...) __VA_ARGS__
+
+/* Append '0x' prefix to hex numbers */
+#define HEX_PREFIX(x) __cat(0x, x)
 
 /* Pattern-matching accessors for pins declarations */
 #define __pad(a, b, c) a
@@ -29,5 +36,19 @@
  */
 #define MOD_PINMUX(x, func) __cat4(MX28_PAD_, __pin_attr(x, pad), __, func)
 #define MOD_PINMUX_GPIO(x) MOD_PINMUX(x, __cat4(GPIO_, __pin_attr(x, gpio_port), _, __pin_attr(x, gpio_pin)))
-#define MOD_GPIO(x) __cat(&gpio, __pin_attr(x, gpio_port)) __pin_attr(x, gpio_pin) 0
+#define MOD_GPIO_PORT(x) __pin_attr(x, gpio_port)
+#define MOD_GPIO_PIN(x) __pin_attr(x, gpio_pin)
+#define MOD_GPIO(x) __cat(&gpio, MOD_GPIO_PORT(x)) MOD_GPIO_PIN(x) 0
 #define MOD_DT_ALIAS(x) __cat3(MOD_ALIAS, _, x)
+
+#ifndef MOD_ALL_PINS
+#define MOD_ALL_PINS
+#endif
+
+#ifdef FROM_SHELL
+#define MOD_FOR_PIN(x) local GPIO_##x=$[MOD_GPIO_PORT(x) * 32 + MOD_GPIO_PIN(x)];
+MOD_ALL_PINS
+#undef MOD_FOR_PIN
+#endif
+
+#endif /* UTILS_H */
