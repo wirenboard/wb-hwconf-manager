@@ -18,7 +18,7 @@
 #define __pad(a, b, c) a
 #define __gpio_port(a, b, c) b
 #define __gpio_pin(a, b, c) c
-#define __pin_attr(x, attr) __pass(__##attr __cat3(MOD, _, x))
+#define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
 /* Helper macros that substitutes actual pins values depending on MOD value
  * e.g. if MOD == MOD1 it will expand to pins regarding to MOD1 connector
@@ -37,9 +37,12 @@
 #define SLOT_PINMUX(x, func) __cat4(MX28_PAD_, __pin_attr(x, pad), __, func)
 #define SLOT_PINMUX_GPIO(x) SLOT_PINMUX(x, __cat4(GPIO_, __pin_attr(x, gpio_port), _, __pin_attr(x, gpio_pin)))
 #define SLOT_GPIO_PORT(x) __pin_attr(x, gpio_port)
+#define SLOT_GPIO_PORT_ALIAS(x) __cat(&gpio, __pin_attr(x, gpio_port))
 #define SLOT_GPIO_PIN(x) __pin_attr(x, gpio_pin)
-#define SLOT_GPIO(x) __cat(&gpio, SLOT_GPIO_PORT(x)) SLOT_GPIO_PIN(x) 0
+#define SLOT_GPIO(x) SLOT_GPIO_PORT_ALIAS(x) SLOT_GPIO_PIN(x) 0
 #define SLOT_DT_ALIAS(x) __cat3(SLOT_ALIAS, _, x)
+
+#define CELLS(t, n) t ##-cells = <n>;
 
 #ifndef SLOT_ALL_PINS
 #define SLOT_ALL_PINS

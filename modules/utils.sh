@@ -36,7 +36,7 @@ wb_gpio_del() {
 
 wb_max_slot_num() {
 	jq '
-		[ .slots[].id | select(test("wb5-extio[0-9]+$")) ] |
+		[ .slots[].id | select(test("'$1'[0-9]+$")) ] |
 		map(match("[0-9]+$") | .string | tonumber) |
 		max
 	' "$CONFIG"

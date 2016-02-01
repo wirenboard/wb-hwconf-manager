@@ -197,10 +197,14 @@ slot_get_vars() {
 slot_preprocess() {
 	local slot=`slot_get_filename` || return 1
 
-	cat "$slot" - | tcc \
+	cat "$slot" - |
+	sed -r 's/#(\w+-cells)/__\1/' |
+	tcc \
 		-x assembler-with-cpp \
+		-Ulinux \
 		-nostdinc \
-		-I "$SLOTS" -I "$MODULES" "$@" -E -
+		-I "$SLOTS" -I "$MODULES" "$@" -E - |
+	sed -r '/^\s*(# |$)/d; s/__(\w+-cells)/#\1/;'
 }
 
 dtbo_build() {

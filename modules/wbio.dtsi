@@ -2,16 +2,19 @@ fragment@0 {
 	target = <SLOT_I2C_ALIAS>;
 
 	__overlay__ {
+		__address-cells = <1>;
+		__size-cells = <0>;
+
 		SLOT_DT_ALIAS(WBIO_NAME): gpio@SLOT_I2C_ADDRESS {
 			compatible = "microchip,mcp23008";
 			gpio-controller;
-			#gpio-cells = <2>;
+			__gpio-cells = <2>;
 			reg = <HEX_PREFIX(SLOT_I2C_ADDRESS)>;
 
-			interrupt-parent = <SLOT_GPIO_PORT(INT)>;
+			interrupt-parent = <SLOT_GPIO_PORT_ALIAS(INT)>;
 			interrupts = <SLOT_GPIO_PIN(INT) IRQ_TYPE_LEVEL_LOW>;
 			interrupt-controller;
-			#interrupt-cells=<2>;
+			__interrupt-cells=<2>;
 
 			linux,gpio-base = <SLOT_GPIO_BASE>;
 		};
