@@ -1,13 +1,11 @@
 source "$DATADIR/modules/utils.sh"
 
-case "$SLOT_TYPE" in
-	*-exti)
-		GPIO_PREFIX="EXTI"
-		GPIO_DIR="input"
+case "$MODULE" in
+	*-di-*)
+		GPIO_DIR=input
 		;;
-	*-exto)
-		GPIO_PREFIX="EXTO"
-		GPIO_DIR="output"
+	*-do-*|*-dio-*)
+		GPIO_DIR=output
 		;;
 esac
 
@@ -17,7 +15,7 @@ hook_module_add() {
 	local items=()
 	for ((i = 0; i < WBIO_COUNT; i++)); do
 		items+=( \
-			"${GPIO_PREFIX}${SLOT_NUM}_${WBIO_GPIO_PREFIX}$[i+1]" \
+			"EXT${SLOT_NUM}_${WBIO_GPIO_PREFIX}$[i+1]" \
 			$[GPIO_BASE+i] \
 			"$GPIO_DIR" \
 		)
@@ -26,13 +24,11 @@ hook_module_add() {
 
 	# If we are just used last available slot, add extra one for daisy-chaining
 	[[ `wb_max_slot_num "$SLOT_TYPE"` == "$SLOT_NUM" &&
-		"$SLOT_NUM" -lt 4 ]] &&
+		"$SLOT_NUM" -lt 8 ]] &&
 		config_slot_add \
 			"${SLOT_TYPE}$[SLOT_NUM+1]" \
 			"${SLOT_TYPE}" \
-			"External $GPIO_DIR module $[SLOT_NUM+1]"
-
-	[[ -z "$NO_RESTART_SERVICE" ]] && service wb-homa-gpio restart
+			"External I/O module $[SLOT_NUM+1]"
 }
 
 hook_module_del() {
@@ -44,6 +40,4 @@ hook_module_del() {
 	[[ `wb_max_slot_num "$SLOT_TYPE"` == $[SLOT_NUM+1] &&
 		-z `config_slot_module "${SLOT_TYPE}$[SLOT_NUM+1]"` ]] &&
 		config_slot_del "${SLOT_TYPE}$[SLOT_NUM+1]"
-
-	[[ -z "$NO_RESTART_SERVICE" ]] && service wb-homa-gpio restart
 }

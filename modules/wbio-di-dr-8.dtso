@@ -11,9 +11,10 @@
 
 / {
 	description = "WBIO-DI-DR-8: Digital inputs (dry contact) I/O module";
-	compatible-slots = "wb5-exti";
+	compatible-slots = "wb5-extio";
 	compatible = "contactless,imx28-wirenboard52";
 	
 	#define WBIO_NAME wbio_di_dr_8
+	#define WBIO_INPUT
 	#include "wbio.dtsi"
 };

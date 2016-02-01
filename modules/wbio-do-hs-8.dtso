@@ -11,9 +11,10 @@
 
 / {
 	description = "WBIO-DO-HS-8: High side switch I/O module";
-	compatible-slots = "wb5-exto";
+	compatible-slots = "wb5-extio";
 	compatible = "contactless,imx28-wirenboard52";
 	
 	#define WBIO_NAME wbio_do_hs_8
+	#define WBIO_OUTPUT
 	#include "wbio.dtsi"
 };

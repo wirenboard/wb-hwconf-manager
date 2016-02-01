@@ -1,5 +1,0 @@
-#define SLOT_ALIAS exti3
-#define SLOT_I2C_ADDRESS 25
-#define SLOT_GPIO_BASE 176
-
-#include "wb5-extio.h"

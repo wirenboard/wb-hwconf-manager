@@ -13,15 +13,9 @@
 			"module": ""
 		},
 		{
-			"id": "wb5-exti1",
-			"type": "wb5-exti",
-			"name": "External input module 1",
-			"module": ""
-		},
-		{
-			"id": "wb5-exto1",
-			"type": "wb5-exto",
-			"name": "External output module 1",
+			"id": "wb5-extio1",
+			"type": "wb5-extio",
+			"name": "External I/O module 1",
 			"module": ""
 		}
 	]
