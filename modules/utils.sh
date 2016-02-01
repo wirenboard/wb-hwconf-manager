@@ -31,13 +31,13 @@ wb_gpio_add() {
 wb_gpio_del() {
 	local JSON=$CONFIG_GPIO
 	json_array_delete ".channels" \
-		". as \$chan | ([$(join ', ' "$@")] | any(. == \$chan.gpio))"
+		". as \$chan | ([$(join ', ' "$@")] | map(. == \$chan.gpio) | any)"
 }
 
 wb_max_slot_num() {
 	jq '
-		[ .slots[].id | select(test("'$1'[0-9]+$")) ] |
-		map(match("[0-9]+$") | .string | tonumber) |
+		[ .slots[].id | select(startswith("'$1'")) ] |
+		map(ltrimstr("'$1'") | tonumber) |
 		max
 	' "$CONFIG"
 }
