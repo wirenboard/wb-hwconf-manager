@@ -39,7 +39,7 @@ log() {
 	if [[ -n "$SYSLOG" ]]; then
 		logger -p user.info -t "wb-hwconf-manager" "$*"
 	else
-		log_failure_msg "$*"
+		log_action_msg "$*"
 	fi
 }
 
@@ -74,8 +74,8 @@ json_edit() {
 	jq "$@" > "$tmp"
 	cat "$tmp" > "$JSON"
 	rm "$tmp"
-	debug "json_edit\n"
-	>&2 cat "$JSON"
+	#debug "json_edit\n"
+	#>&2 cat "$JSON"
 }
 
 # Find item in array.
@@ -214,7 +214,8 @@ dtbo_build() {
 		echo '/dts-v1/ /plugin/;'
 		cat "$mod"
 	} |
-	slot_preprocess #| dtc -I dts -O dtb -@ -
+	slot_preprocess |
+	dtc -I dts -O dtb -@ -
 }
 
 dtbo_check_compatible() {
