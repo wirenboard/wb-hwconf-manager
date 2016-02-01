@@ -29,13 +29,16 @@ SCRIPTNAME=/etc/init.d/$NAME
 do_start()
 {
 	echo
+	
+	log_action_msg "Applying config changes"
+	wb-hwconf-helper config-apply
 
 	grep "$CONFIGFS" /proc/mounts 2>&1 >/dev/null || {
 		log_warning_msg "$CONFIGFS not mounted, skipping modules initialization"
 		return 1
 	}
 
-	config_parse | while read SLOT MODULE; do
+	cat "$CONFIG_STATE" | while read SLOT MODULE; do
 		[[ -z "$SLOT" || -z "$MODULE" ]] && continue
 		module_bind "$SLOT" "$MODULE"
 	done
