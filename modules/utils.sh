@@ -1,4 +1,4 @@
-eval `slot_get_vars $SLOT`
+eval "`slot_get_vars $SLOT`"
 local SLOT_TYPE=${SLOT%%[0-9]}
 local SLOT_NUM=${SLOT#$SLOT_TYPE}
 

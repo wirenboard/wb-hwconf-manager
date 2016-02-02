@@ -49,7 +49,7 @@
 #endif
 
 #ifdef FROM_SHELL
-#define SLOT_FOR_PIN(x) local GPIO_##x=$[SLOT_GPIO_PORT(x) * 32 + SLOT_GPIO_PIN(x)];
+#define SLOT_FOR_PIN(x) local GPIO_##x=$((SLOT_GPIO_PORT(x) * 32 + SLOT_GPIO_PIN(x)));
 SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
 #endif
