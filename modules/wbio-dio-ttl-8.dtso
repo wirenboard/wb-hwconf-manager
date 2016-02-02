@@ -1,0 +1,20 @@
+/*
+ * Copyright 2015 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBIO-DIO-TTL-8: TTL GPIO I/O module";
+	compatible-slots = "wb5-extio";
+	compatible = "contactless,imx28-wirenboard52";
+	
+	#define WBIO_NAME wbio_dio_ttl_8
+	#define WBIO_OUTPUT
+	#include "wbio.dtsi"
+};
