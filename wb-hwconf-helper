@@ -97,11 +97,11 @@ case "$1" in
 		cat "$tmp"
 		rm "$tmp"
 		;;
-	"bind")
-		module_bind $2 $3
+	"init")
+		module_init $2 $3
 		;;
-	"unbind")
-		module_unbind $2
+	"deinit")
+		module_deinit $2
 		;;
 	"config-apply")
 		config_apply_changes
@@ -113,8 +113,8 @@ Usage: $0 <command>
 Commands:
   confed-tojson          Prepare config passed to stdin for the web editor
   confed-fromjson        Prepare edited config for saving
-  bind <slot> <module>   Bind module to slot
-  unbind <slot>          Unbinds any module from slot
+  init <slot> <module>   Initialize module plugged to the slot
+  deinit <slot>          Deinitialize any module plugged to the slot
   config-apply           Run modules add/remove hooks when config is changed
 EOF
 		;;

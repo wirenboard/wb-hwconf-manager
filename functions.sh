@@ -254,7 +254,7 @@ overlay_path() {
 	echo "$OVERLAYS/$1:$2"
 }
 
-module_bind() {
+module_init() {
 	local SLOT=$1
 	local MODULE=$2
 
@@ -312,7 +312,7 @@ module_bind() {
 	module_run_hook init
 }
 
-module_unbind() {
+module_deinit() {
 	local SLOT=$1
 
 	log_action_msg "Unbinding module from slot $SLOT"

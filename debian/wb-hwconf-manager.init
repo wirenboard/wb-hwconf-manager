@@ -40,7 +40,7 @@ do_start()
 
 	cat "$CONFIG_STATE" | while read SLOT MODULE; do
 		[[ -z "$SLOT" || -z "$MODULE" ]] && continue
-		module_bind "$SLOT" "$MODULE"
+		module_init "$SLOT" "$MODULE"
 	done
 
 	return 0
