@@ -3,7 +3,10 @@ CONFIG="/etc/wb-hardware.conf"
 DATADIR="/usr/share/wb-hwconf-manager"
 CONFIG_STATE="/var/lib/wirenboard/hardware.state"
 
+# Set this to any non-empty value to get some debug messages
 DEBUG=""
+
+# Set this to any non-empty value to redirect all non-debug output to syslog
 SYSLOG=""
 
 VERBOSE="yes"
@@ -112,16 +115,28 @@ json_array_update() {
 
 ################################################################################
 # Config handling functions
+#
+# It's expected that $CONFIG variable contains file name of the config.
 ################################################################################
 
+# Return list of slots with associated module for each slot, if any.
+# Each line of the output has form "slot module", module can be empty.
 config_parse() {
 	jq -r '.slots[] | @text "\(.id) \(.module)"' "$CONFIG"
 }
 
+# Return module that is associated with given slot.
+# Args:
+# - slot id
 config_slot_module() {
 	jq -r ".slots[] | select(.id == \"$1\") | .module" "$CONFIG"
 }
 
+# Add new slot to the config
+# Args:
+# - slot id (e.g. wb5-mod1)
+# - slot type (e.g. wb5-mod)
+# - slot description (arbitrary string)
 config_slot_add() {
 	local SLOT=$1
 	local JSON=$CONFIG
@@ -138,6 +153,9 @@ config_slot_add() {
 		"{id: \"$1\", type: \"$2\", name: \"$3\", module: \"\"}"
 }
 
+# Delete given slot from the config
+# Args:
+# - slot id
 config_slot_del() {
 	local SLOT=$1
 	local JSON=$CONFIG
@@ -157,6 +175,16 @@ config_slot_del() {
 	json_array_delete ".slots" ".id == \"$SLOT\""
 }
 
+################################################################################
+# Slot/module manipulation functions
+#
+# By convention, global variables $SLOT and $MODULE are used to specify current
+# slot and module, but some functions supports overriding them with arguments
+################################################################################
+
+# Get full path of the slot definition file
+# Args:
+# - slot id
 slot_get_filename() {
 	local slot=${1:-$SLOT}
 	[[ -z "$slot" ]] && {
@@ -173,6 +201,9 @@ slot_get_filename() {
 	echo "$slot"
 }
 
+# Get full path of the module definition file
+# Args:
+# - module id
 module_get_filename() {
 	local mod=${1:-$MODULE}
 	[[ -z "$mod" ]] && {
@@ -190,10 +221,15 @@ module_get_filename() {
 	echo "$mod"
 }
 
+# Get slot-specific shell variables definitions. Output supposed to be eval'd
+# Example: eval "`slot_get_vars $SLOT`" - will set some local variables.
+# Args:
+# - slot id (optional, $SLOT env will be used if not specified)
 slot_get_vars() {
 	SLOT=${SLOT:-$1} slot_preprocess -DFROM_SHELL <<<"" | sed 's/#.*//; /^$/d'
 }
 
+# Preprocess stdin, applying per slot-specific definitions with C preprocessor.
 slot_preprocess() {
 	local slot=`slot_get_filename` || return 1
 
@@ -207,6 +243,8 @@ slot_preprocess() {
 	sed -r '/^\s*(# |$)/d; s/__(\w+-cells)/#\1/;'
 }
 
+# Preprocess module DTSO with slot definition to get DTBO suitable for feeding
+# it to the kernel
 dtbo_build() {
 	local mod=`module_get_filename` || return 1
 
@@ -218,6 +256,9 @@ dtbo_build() {
 	dtc -I dts -O dtb -@ -
 }
 
+# Check if DTBO is compatible with the device.
+# Args:
+# - dtbo file
 dtbo_check_compatible() {
 	local dtbo_compat=`fdtget "$1" / compatible 2>/dev/null`
 	[[ -z "$dtbo_compat" || "$dtbo_compat" == "unknown" ]] && return 0
@@ -227,6 +268,20 @@ dtbo_check_compatible() {
 	return 1
 }
 
+# Run module hook, if it is defined.
+# Possible hooks:
+#	init
+#		After DTBO loading (e.g. to initialize hardware on boot)
+#	deinit
+#		Before DTBO unloading (FIXME: unloading is not implemented)
+#	add
+#		After module was linked with some slot, runs only once
+#		when config is changed. Can be used to reconfigure some other
+#		services which is using the module.
+#	del
+#		After module was unlinked from its slot. See above.
+# Args:
+# - hook name (init/deinit/add/remove)
 module_run_hook() {
 	local func=hook_module_${1}
 	local file="$MODULES/${MODULE}.sh"
@@ -246,14 +301,24 @@ module_run_hook() {
 		return 0
 	}
 
+	debug "Running $1 hook"
 	$func
 	unset $func
 }
 
+# Get configfs path for given slot/module
+# Args (optional):
+# - slot
+# - module
 overlay_path() {
-	echo "$OVERLAYS/$1:$2"
+	echo "$OVERLAYS/${SLOT:-$1}:${MODULE:-2}"
 }
 
+# Initialize module plugged to the slot.
+# This builds DTBO, loads it into the kernel, and runs module hook 'init'
+# Args:
+# - slot
+# - module
 module_init() {
 	local SLOT=$1
 	local MODULE=$2
@@ -292,6 +357,7 @@ module_init() {
 		return 1
 	}
 
+	debug "Loading DTBO"
 	local overlay=`overlay_path $SLOT $MODULE`
 	mkdir "$overlay" &&
 	cat "$dtbo" > "$overlay/dtbo"
@@ -312,6 +378,10 @@ module_init() {
 	module_run_hook init
 }
 
+# Deinitialize any module plugged to given slot.
+# This runs module hook 'deinit' and unloads DTBO.
+# Args:
+# - slot
 module_deinit() {
 	local SLOT=$1
 
@@ -319,9 +389,15 @@ module_deinit() {
 	local t=`echo "$OVERLAYS/$SLOT:"*`
 	[[ -e "$t" ]] || {
 		log_end_msg "Slot $SLOT is not in use"
+		return 0
 	}
 
-	module_run_hook deinit
+	local MODULE="${t##$OVERLAYS/$SLOT:}"
+	debug "Slot $SLOT is used by module $MODULE"
+
+	module_run_hook deinit || return $?
+
+	debug "Unloading DTBO"
 	rmdir "$t"
 }
 

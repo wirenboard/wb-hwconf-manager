@@ -34,6 +34,9 @@ wb_gpio_del() {
 		". as \$chan | ([$(join ', ' "$@")] | map(. == \$chan.gpio) | any)"
 }
 
+# Get maximum number of slot with given prefix that is present in config
+# Args:
+# - slot id prefix
 wb_max_slot_num() {
 	jq '
 		[ .slots[].id | select(startswith("'$1'")) ] |
