@@ -72,10 +72,10 @@ json_edit() {
 	local tmp=`mktemp`
 	sed 's#//.*##' "$JSON" |	# there are // comments, strip them out
 	jq "$@" > "$tmp"
-	cat "$tmp" > "$JSON"
+	local ret=$?
+	[[ "$ret" == 0 ]] && cat "$tmp" > "$JSON"
 	rm "$tmp"
-	#debug "json_edit\n"
-	#>&2 cat "$JSON"
+	return $ret
 }
 
 # Find item in array.
