@@ -1,0 +1,12 @@
+tmpdir=./tmp
+CONFIG=$tmpdir/wb-hardware.conf
+DATADIR=.
+CONFIG_STATE=$tmpdir/wb-hardware.state
+CONFIG_GPIO=$tmpdir/wb-homa-gpio.conf
+DEBUG="yes"
+
+mkdir -p $tmpdir
+[[ -e "$CONFIG" ]] || cp $DATADIR/wb-hardware.conf.wb52 $CONFIG
+
+2>/dev/null . ./init-functions
+>&2 echo "Using debug env"
