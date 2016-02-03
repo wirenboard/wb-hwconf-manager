@@ -1,6 +1,16 @@
 #!/bin/bash
 2>/dev/null . /usr/share/wb-hwconf-manager/functions.sh || . ./functions.sh
 
+HOOKS_AFTER_CONFIG_CHANGE=()
+
+hook_once_after_config_change() {
+	local h
+	for h in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
+		[[ "$h" == "$1" ]] && return 0
+	done
+	HOOKS_AFTER_CONFIG_CHANGE+=("$1")
+}
+
 config_apply_changes() {
 	local old_state=`mktemp`
 	local state=`mktemp`
@@ -16,40 +26,24 @@ config_apply_changes() {
 		)"
 		[[ -z "$delta" ]] && break
 
-		local m_add=()
-		local m_del=()
+		local ACTION SLOT MODULE
 		while read ACTION SLOT MODULE; do
-			[[ -n "$SLOT" ]] || {
-				log "Bad config diff"
-				continue
-			}
-			case "$ACTION" in
-				+)
-					m_add+=("$SLOT $MODULE")
-					;;
-				-)
-					m_del+=("$SLOT $MODULE")
-					;;
-			esac
-		done <<< "$delta"
-
-		for pair in "${m_del[@]}"; do
-			read SLOT MODULE <<<"$pair"
+			[[ "$ACTION" == "-" ]] || continue
 			[[ -n "$MODULE" ]] && {
 				log "Deleting $SLOT:$MODULE"
-				module_run_hook del || break 2
+				module_run_hook del || continue
 			}
 			sed -ri "/^$SLOT(\s+$MODULE|\s*)$/d" "$state"
-		done
+		done <<< "$delta"
 
-		for pair in "${m_add[@]}"; do
-			read SLOT MODULE <<<"$pair"
+		while read ACTION SLOT MODULE; do
+			[[ "$ACTION" == "+" ]] || continue
 			[[ -n "$MODULE" ]] && {
 				log "Adding $SLOT:$MODULE"
-				module_run_hook add || break 2
+				module_run_hook add || continue
 			}
 			echo "$SLOT $MODULE" >> "$state"
-		done
+		done <<< "$delta"
 
 		sort "$state" > "$old_state"
 	done
@@ -57,6 +51,12 @@ config_apply_changes() {
 	rm "$old_state"
 	sort "$state" > "$CONFIG_STATE"
 	rm "$state"
+
+	local hook
+	for hook in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
+		log "Running hook $hook"
+		$hook
+	done
 }
 
 case "$1" in
