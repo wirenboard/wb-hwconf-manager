@@ -11,3 +11,5 @@ hook_module_del() {
 	wb_gpio_del $GPIO_SCL
 	wb_gpio_del $GPIO_CS
 }
+
+hook_once_after_config_change "service wb-homa-gpio restart"

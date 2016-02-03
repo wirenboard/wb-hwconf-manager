@@ -52,3 +52,5 @@ wbio_update_slots() {
 	fi
 }
 hook_once_after_config_change "wbio_update_slots $SLOT_TYPE"
+
+hook_once_after_config_change "service wb-homa-gpio restart"
