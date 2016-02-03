@@ -302,7 +302,11 @@ module_run_hook() {
 	}
 
 	debug "Running $1 hook"
-	$func
+	if [[ -n "$SYSLOG" ]]; then
+		2>&1 $func | logger -p user.info -t "wb-hwconf-manager"
+	else
+		$func
+	fi
 	local ret=$?
 	unset $func
 	return $ret

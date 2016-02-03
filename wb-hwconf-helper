@@ -55,7 +55,11 @@ config_apply_changes() {
 	local hook
 	for hook in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
 		log "Running hook $hook"
-		$hook
+		if [[ "$SYSLOG" ]]; then
+			2>&1 $hook | logger -p user.info -t "wb-hwconf-manager"
+		else
+			$hook
+		fi
 	done
 }
 
