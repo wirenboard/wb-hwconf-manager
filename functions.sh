@@ -20,6 +20,9 @@ SLOTS="$DATADIR/slots"
 CONFIGFS="/sys/kernel/config"
 OVERLAYS="$CONFIGFS/device-tree/overlays"
 
+# List of hooks that is to be run when config changes is done
+HOOKS_AFTER_CONFIG_CHANGE=()
+
 debug() { :; }
 if [[ -n "$DEBUG" ]]; then
 	unset debug
@@ -310,6 +313,18 @@ module_run_hook() {
 	local ret=$?
 	unset $func
 	return $ret
+}
+
+# Add hook to the list of hooks that is runned after config change.
+# Each distinct hook is added only once even if added multiple times.
+# Args:
+# - bash command that should be run
+hook_once_after_config_change() {
+	local h
+	for h in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
+		[[ "$h" == "$1" ]] && return 0
+	done
+	HOOKS_AFTER_CONFIG_CHANGE+=("$1")
 }
 
 # Get configfs path for given slot/module

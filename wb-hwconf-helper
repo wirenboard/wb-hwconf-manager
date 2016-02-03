@@ -1,16 +1,6 @@
 #!/bin/bash
 2>/dev/null . /usr/share/wb-hwconf-manager/functions.sh || . ./functions.sh
 
-HOOKS_AFTER_CONFIG_CHANGE=()
-
-hook_once_after_config_change() {
-	local h
-	for h in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
-		[[ "$h" == "$1" ]] && return 0
-	done
-	HOOKS_AFTER_CONFIG_CHANGE+=("$1")
-}
-
 config_apply_changes() {
 	local old_state=`mktemp`
 	local state=`mktemp`
