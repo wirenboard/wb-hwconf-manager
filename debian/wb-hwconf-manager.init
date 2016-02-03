@@ -25,13 +25,12 @@ SCRIPTNAME=/etc/init.d/$NAME
 #
 # Function that starts the daemon/service
 #
-
 do_start()
 {
 	echo
 	
 	log_action_msg "Applying config changes"
-	wb-hwconf-helper config-apply
+	NO_RESTART_SERVICE="yes" wb-hwconf-helper config-apply
 
 	grep "$CONFIGFS" /proc/mounts 2>&1 >/dev/null || {
 		log_warning_msg "$CONFIGFS not mounted, skipping modules initialization"
