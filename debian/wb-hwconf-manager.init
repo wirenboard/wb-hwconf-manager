@@ -51,6 +51,8 @@ do_start()
 #
 do_stop()
 {
+	echo
+
 	log_warning_msg "Unfortunately, overlays unloading is broken"
 	log_warning_msg "If you have removed or replaced modules, please reboot"
 	return 0;

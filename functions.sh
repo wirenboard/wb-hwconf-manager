@@ -303,7 +303,9 @@ module_run_hook() {
 
 	debug "Running $1 hook"
 	$func
+	local ret=$?
 	unset $func
+	return $ret
 }
 
 # Get configfs path for given slot/module
