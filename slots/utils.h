@@ -20,8 +20,8 @@
 #define __gpio_pin(a, b, c) c
 #define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
-/* Helper macros that substitutes actual pins values depending on MOD value
- * e.g. if MOD == MOD1 it will expand to pins regarding to MOD1 connector
+/* Helper macros that substitutes actual pins values depending on used slot
+ * e.g. if SLOT == wb5-mod1 it will expand to pins regarding to MOD1 connector
  * Supposed to be used to avoid DTS duplication for modules fitting more than
  * one slot.
  *
@@ -29,6 +29,12 @@
  *	use for fine-grained pinmux control, usually not needed
  * SLOT_PINMUX_GPIO(FOO) -> MX28_PAD_<pad name>__GPIO_<port>_<pin>
  *	use to configure pin as GPIO
+ * SLOT_GPIO_PORT(FOO) -> <GPIO port number>
+ *	use to get GPIO port number
+ * SLOT_GPIO_PORT_ALIAS(FOO) -> &gpio<GPIO port number>
+ *	use to get GPIO port DT alias (e.g. &gpio3)
+ * SLOT_GPIO_PIN(FOO) -> <GPIO pin number>
+ *	use to get GPIO pin number
  * SLOT_GPIO(FOO) -> &gpio<port> <pin>
  *	use in periherial device nodes, e.g. gpios = <SLOT_GPIO(FOO)>
  * SLOT_DT_ALIAS(foo) -> mod<n>_foo
@@ -41,8 +47,6 @@
 #define SLOT_GPIO_PIN(x) __pin_attr(x, gpio_pin)
 #define SLOT_GPIO(x) SLOT_GPIO_PORT_ALIAS(x) SLOT_GPIO_PIN(x) 0
 #define SLOT_DT_ALIAS(x) __cat3(SLOT_ALIAS, _, x)
-
-#define CELLS(t, n) t ##-cells = <n>;
 
 #ifndef SLOT_ALL_PINS
 #define SLOT_ALL_PINS
