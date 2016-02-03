@@ -44,3 +44,10 @@ wb_max_slot_num() {
 		max
 	' "$CONFIG"
 }
+
+# Restarts given service if $NO_RESTART_SERVICE is not set.
+# Args:
+# - service name (from /etc/init.d/)
+restart_service() {
+	[[ -z "$NO_RESTART_SERVICE" ]] && service "$1" restart
+}
