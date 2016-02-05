@@ -346,11 +346,16 @@ module_init() {
 
 	local t=`echo "$OVERLAYS/$SLOT:"*`
 	[[ -d "$t" ]] && {
+		local m="${t#$OVERLAYS/$SLOT:}"
 		local st="$(cat "$t/status")"
 		case "$st" in
 			"applied")
-				die "Slot $SLOT is used by ${t#$OVERLAYS/$SLOT:} module"
-				return 1
+				[[ "$m" != "$MODULE" ]] && {
+					die "Slot $SLOT is used by $m module"
+					return 1
+				}
+				log_action_msg "Module $SLOT:$MODULE already initialized"
+				return 0
 				;;
 			*)
 				log_warning_msg "Overlay ${t#$OVERLAYS/} have status '$st', try to remove"
@@ -364,7 +369,7 @@ module_init() {
 		return 1
 	}
 
-	log_action_msg "Binding module $MODULE to slot $SLOT"
+	log_action_msg "Initializing $SLOT:$MODULE"
 
 	local dtbo=`mktemp`
 	dtbo_build > "$dtbo" || {
@@ -406,7 +411,6 @@ module_init() {
 module_deinit() {
 	local SLOT=$1
 
-	log_action_msg "Unbinding module from slot $SLOT"
 	local t=`echo "$OVERLAYS/$SLOT:"*`
 	[[ -e "$t" ]] || {
 		log_end_msg "Slot $SLOT is not in use"
@@ -414,7 +418,8 @@ module_deinit() {
 	}
 
 	local MODULE="${t##$OVERLAYS/$SLOT:}"
-	debug "Slot $SLOT is used by module $MODULE"
+
+	log_action_msg "Deinitializing $SLOT:$MODULE"
 
 	module_run_hook deinit || return $?
 
