@@ -3,12 +3,16 @@
   "type": "object",
   "title": "Hardware Modules Configuration",
   "description": "Lists additional hardare modules configuration",
+  "limited": true,
   "definitions": {
     "slot": {
       "type": "object",
       "title": "Slot",
       "headerTemplate": "{{self.name}}",
       "id": "slot_item",
+      "options": {
+        "disable_collapse": true
+      },
       "properties": {
         "id": {
           "type": "string",
@@ -71,6 +75,7 @@
       "title": "List of extension slots",
       "description": "Lists available extension slots",
       "options": {
+        "disable_collapse": true,
         "disable_array_add": true,
         "disable_array_delete": true,
         "disable_array_reorder": true
@@ -89,6 +94,7 @@
   "required": ["slots"],
   "configFile": {
     "path": "/etc/wb-hardware.conf",
+    "needReload": true,
     "service": "wb-hwconf-manager",
     "toJSON": ["wb-hwconf-helper", "confed-tojson"],
     "fromJSON": ["wb-hwconf-helper", "confed-fromjson"]
