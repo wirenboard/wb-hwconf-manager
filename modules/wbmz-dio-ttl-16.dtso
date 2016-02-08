@@ -1,0 +1,55 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBMZ-DIO-TTL-16: TTL GPIO mezonine extension module";
+	compatible-slots = "wb5-mod";
+	compatible = "contactless,imx28-wirenboard52";
+
+	fragment@__COUNTER__ {
+		target = <&SLOT_DT_ALIAS(pins)>;
+
+		__overlay__ {
+			fsl,pinmux-ids = <
+				SLOT_PINMUX_I2C
+				SLOT_PINMUX_GPIO(CS)
+			>;
+			fsl,drive-strength = <MXS_DRIVE_8mA>;
+			fsl,voltage = <MXS_VOLTAGE_HIGH>;
+			fsl,pull-up = <MXS_PULL_DISABLE>;
+		};
+	};
+
+	#include "wbe-i2c.dtsi"
+
+	fragment@__COUNTER__ {
+		target = <&SLOT_DT_ALIAS(i2c)>;
+
+		__overlay__ {
+			__address-cells = <1>;
+			__size-cells = <0>;
+
+			SLOT_DT_ALIAS(wbmz_dio_ttl_16): gpio@20 {
+				compatible = "microchip,mcp23017";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x20>;
+
+				interrupt-parent = <SLOT_GPIO_PORT_ALIAS(CS)>;
+				interrupts = <SLOT_GPIO_PIN(CS) IRQ_TYPE_LEVEL_LOW>;
+				interrupt-controller;
+				#interrupt-cells=<2>;
+				microchip,irq-mirror;
+				linux,gpio-base = <224>;
+			};
+		};
+	};
+};
