@@ -12,5 +12,10 @@
 	SLOT_FOR_PIN(SCK) \
 	SLOT_FOR_PIN(CS)
 
+#define SLOT_PINMUX_I2C \
+	SLOT_PINMUX_GPIO(SDA) \
+	SLOT_PINMUX_GPIO(SCL)
+
 #include "imx28-pinfunc.h"
+#include "irq.h"
 #include "utils.h"

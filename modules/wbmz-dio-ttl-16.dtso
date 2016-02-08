@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "WBE-I-KNX: KIMaip KNX interface module";
+	description = "WBMZ-DIO-TTL-16: TTL GPIO mezonine extension module";
 	compatible-slots = "wb5-mod";
 	compatible = "contactless,imx28-wirenboard52";
 
@@ -29,4 +29,27 @@
 	};
 
 	#include "wbe-i2c.dtsi"
+
+	fragment@__COUNTER__ {
+		target = <&SLOT_DT_ALIAS(i2c)>;
+
+		__overlay__ {
+			__address-cells = <1>;
+			__size-cells = <0>;
+
+			SLOT_DT_ALIAS(wbmz_dio_ttl_16): gpio@20 {
+				compatible = "microchip,mcp23017";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x20>;
+
+				interrupt-parent = <SLOT_GPIO_PORT_ALIAS(CS)>;
+				interrupts = <SLOT_GPIO_PIN(CS) IRQ_TYPE_LEVEL_LOW>;
+				interrupt-controller;
+				#interrupt-cells=<2>;
+				microchip,irq-mirror;
+				linux,gpio-base = <224>;
+			};
+		};
+	};
 };

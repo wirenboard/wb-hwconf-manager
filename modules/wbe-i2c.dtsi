@@ -1,0 +1,22 @@
+fragment@__COUNTER__ {
+	target-path = "/";
+
+	__overlay__ {
+		__address-cells = <1>;
+		__size-cells = <0>;
+
+		SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+			compatible = "i2c-gpio";
+			gpios = <SLOT_GPIO(SDA)
+					 SLOT_GPIO(SCL)
+					>;
+			i2c-gpio,delay-us = <20>;		/* ~100 kHz */
+
+			pinctrl-names = "default";
+			pinctrl-0 = <&SLOT_DT_ALIAS(pins)>;
+
+			status = "okay";
+		};
+	};
+};
+
