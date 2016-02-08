@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.2.1) stable; urgency=medium
+
+  * better handling wb-gpio reloading
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 08 Feb 2016 17:16:05 +0300
+
 wb-hwconf-manager (1.2) stable; urgency=medium
 
   * WBIO addressing fixes

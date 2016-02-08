@@ -53,4 +53,8 @@ wbio_update_slots() {
 }
 hook_once_after_config_change "wbio_update_slots $SLOT_TYPE"
 
-hook_once_after_config_change "restart_service wb-homa-gpio"
+if [[ -z "$NO_RESTART_SERVICE" ]]; then
+	hook_once_after_config_change "service wb-homa-gpio stop"
+	hook_once_after_config_change "mqtt-delete-retained /devices/wb-gpio/#"
+	hook_once_after_config_change "service wb-homa-gpio start"
+fi	
