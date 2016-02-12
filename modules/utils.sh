@@ -48,6 +48,19 @@ wb_max_slot_num() {
 # Restarts given service if $NO_RESTART_SERVICE is not set.
 # Args:
 # - service name (from /etc/init.d/)
-restart_service() {
+service_restart() {
 	[[ -z "$NO_RESTART_SERVICE" ]] && service "$1" restart
+}
+
+# Restarts given service if $NO_RESTART_SERVICE is not set,
+# and also deletes retained MQTT messages with supplied topic pattern.
+# Args
+# - service name (from /etc/init.d/)
+# - MQTT topic to delete
+service_restart_delete_retained() {
+	[[ -z "$NO_RESTART_SERVICE" ]] && {
+		service "$1" stop
+		mqtt-delete-retained "$2"
+		service "$1" start
+	}
 }
