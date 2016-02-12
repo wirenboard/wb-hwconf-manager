@@ -31,6 +31,7 @@ config_apply_changes() {
 			[[ -n "$MODULE" ]] && {
 				log "Adding $SLOT:$MODULE"
 				module_run_hook add || continue
+				module_init "$SLOT" "$MODULE"
 			}
 			echo "$SLOT $MODULE" >> "$state"
 		done <<< "$delta"
