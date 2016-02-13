@@ -191,6 +191,14 @@ config_slot_del() {
 	json_array_delete ".slots" ".id == \"$SLOT\""
 }
 
+config_module_option() {
+	jq -r ".slots[] | select(.id == \"$SLOT\") | .options$1" "$CONFIG"
+}
+
+config_module_options_hash() {
+	config_module_option "" | md5sum | cut -f1 -d' '
+}
+
 ################################################################################
 # Slot/module manipulation functions
 #

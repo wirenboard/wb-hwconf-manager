@@ -4,19 +4,22 @@
 			"id": "wb5-mod1",
 			"type": "wb5-mod",
 			"name": "Internal slot 1",
-			"module": ""
+			"module": "",
+			"options": {}
 		},
 		{
 			"id": "wb5-mod2",
 			"type": "wb5-mod",
 			"name": "Internal slot 2",
-			"module": ""
+			"module": "",
+			"options": {}
 		},
 		{
 			"id": "wb5-extio1",
 			"type": "wb5-extio",
 			"name": "External I/O module 1",
-			"module": ""
+			"module": "",
+			"options": {}
 		}
 	]
 }	
