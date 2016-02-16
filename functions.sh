@@ -238,12 +238,15 @@ slot_preprocess() {
 
 	cat "$slot" - |
 	sed -r 's/#(\w+-cells)/__\1/' |
-	tcc \
-		-x assembler-with-cpp \
+	tcc -x assembler-with-cpp \
 		-Ulinux \
 		-nostdinc \
 		-I "$SLOTS" -I "$MODULES" "$@" -E - |
-	sed -r '/^\s*(# |$)/d; s/__(\w+-cells)/#\1/;'
+	perl -ne '
+		next if m/^\s*(# |$)/;
+		s/__COUNTER__/$n++/ge;
+		s/__(\w+-cells)/#$1/g;
+		print;'
 }
 
 # Preprocess module DTSO with slot definition to get DTBO suitable for feeding
