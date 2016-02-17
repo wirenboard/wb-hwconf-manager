@@ -8,6 +8,7 @@ DEBUG=""
 
 # Set this to any non-empty value to redirect all non-debug output to syslog
 SYSLOG=""
+SYSLOG_TAG="wb-hwconf-manager"
 
 VERBOSE="yes"
 2>/dev/null . /lib/lsb/init-functions
@@ -34,7 +35,7 @@ fi
 die() {
 	debug "ERROR: $*"
 	if [[ -n "$SYSLOG" ]]; then
-		logger -p user.err -t "wb-hwconf-manager" "$*"
+		logger -p user.err -t "$SYSLOG_TAG" "$*"
 	else
 		log_failure_msg "$*"
 	fi
@@ -43,10 +44,22 @@ die() {
 
 log() {
 	if [[ -n "$SYSLOG" ]]; then
-		logger -p user.info -t "wb-hwconf-manager" "$*"
+		logger -p user.info -t "$SYSLOG_TAG" "$*"
 	else
 		log_action_msg "$*"
 	fi
+}
+
+# Use this to safely capture all unwanted data on stdout/stderr and
+# redirect to syslog if needed.
+# TODO?: ability to put stdout and stderr to different places
+# (or just stop with NIH and look for some mainstream and time-proven utils lib)
+catch_output() {
+	if [[ -n "$SYSLOG" ]]; then
+		2>&1 "$@" | logger -p user.info -t "$SYSLOG_TAG"
+	else 
+		"$@"
+	fi	
 }
 
 # Join array to string
@@ -308,11 +321,7 @@ module_run_hook() {
 	}
 
 	debug "Running $1 hook"
-	if [[ -n "$SYSLOG" ]]; then
-		2>&1 $func | logger -p user.info -t "wb-hwconf-manager"
-	else
-		$func
-	fi
+	$func
 	local ret=$?
 	unset $func
 	return $ret

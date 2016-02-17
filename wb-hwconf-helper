@@ -46,11 +46,7 @@ config_apply_changes() {
 	local hook
 	for hook in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
 		log "Running hook $hook"
-		if [[ "$SYSLOG" ]]; then
-			2>&1 $hook | logger -p user.info -t "wb-hwconf-manager"
-		else
-			$hook
-		fi
+		$hook
 	done
 }
 
@@ -84,11 +80,14 @@ case "$1" in
 		' $MODULES/*.dtso | jq --slurp '.[0].modules = .[1:] | .[0]'
 		;;
 	"confed-fromjson")
-		SYSLOG="yes"
 		tmp=`mktemp`
 		# Remove "modules" array
 		jq 'del(.modules)' > "$tmp"
-		config_apply_changes "$tmp"
+		
+		# stdout+stderr must be JSON, so redirect logging to syslog
+		SYSLOG="yes"
+		catch_output config_apply_changes "$tmp"
+		
 		cat "$tmp"
 		rm "$tmp"
 		;;
