@@ -1,3 +1,15 @@
+wb-hwconf-manager (1.3.4) stable; urgency=medium
+
+  * workaround to make TTL16 module work
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 18 Feb 2016 13:37:36 +0300
+
+wb-hwconf-manager (1.3.3) stable; urgency=medium
+
+  * 1316679 ( https://github.com/contactless/wb-hwconf-manager/commit/1316679ce1ce7b672d73769e348b68ad59cdabb9 ): Fix stdout/stderr redirection of status messages by Alexey Ignatov
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 18 Feb 2016 01:15:07 +0300
+
 wb-hwconf-manager (1.3.2) stable; urgency=medium
 
   * 110645b ( https://github.com/contactless/wb-hwconf-manager/commit/110645b70b9a9164e1b6ce4803338d8060422992 ): Fix DTSO preprocessing bug.

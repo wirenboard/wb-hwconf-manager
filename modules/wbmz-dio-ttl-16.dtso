@@ -28,28 +28,43 @@
 		};
 	};
 
-	#include "wbe-i2c.dtsi"
 
 	fragment@__COUNTER__ {
-		target = <&SLOT_DT_ALIAS(i2c)>;
+	    target-path = "/";
 
-		__overlay__ {
+	    __overlay__ {
 			__address-cells = <1>;
 			__size-cells = <0>;
 
-			SLOT_DT_ALIAS(wbmz_dio_ttl_16): gpio@20 {
-				compatible = "microchip,mcp23017";
-				gpio-controller;
-				#gpio-cells = <2>;
-				reg = <0x20>;
+			SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+			    compatible = "i2c-gpio";
+			    gpios = <SLOT_GPIO(SDA)
+				     SLOT_GPIO(SCL)
+				    >;
+			    i2c-gpio,delay-us = <20>;		/* ~100 kHz */
 
-				interrupt-parent = <SLOT_GPIO_PORT_ALIAS(CS)>;
-				interrupts = <SLOT_GPIO_PIN(CS) IRQ_TYPE_LEVEL_LOW>;
-				interrupt-controller;
-				#interrupt-cells=<2>;
-				microchip,irq-mirror;
-				linux,gpio-base = <224>;
+			    pinctrl-names = "default";
+			    pinctrl-0 = <&SLOT_DT_ALIAS(pins)>;
+
+			    status = "okay";
+
+				__address-cells = <1>;
+				__size-cells = <0>;
+
+				SLOT_DT_ALIAS(wbmz_dio_ttl_16): gpio@20 {
+					compatible = "microchip,mcp23017";
+					gpio-controller;
+					__gpio-cells = <2>;
+					reg = <0x20>;
+
+					interrupt-parent = <SLOT_GPIO_PORT_ALIAS(CS)>;
+					interrupts = <SLOT_GPIO_PIN(CS) IRQ_TYPE_LEVEL_LOW>;
+					interrupt-controller;
+					__interrupt-cells=<2>;
+					microchip,irq-mirror;
+					linux,gpio-base = <224>;
+				};
 			};
-		};
+	    };
 	};
 };
