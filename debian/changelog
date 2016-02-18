@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.3.5) stable; urgency=medium
+
+  * fix wrong gpio order for TTL16
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 18 Feb 2016 13:53:12 +0300
+
 wb-hwconf-manager (1.3.4) stable; urgency=medium
 
   * workaround to make TTL16 module work

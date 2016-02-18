@@ -5,13 +5,22 @@ local GPIO_COUNT=16
 
 hook_module_add() {
 	local items=()
-	for ((i = 0; i < GPIO_COUNT; i++)); do
+	for ((i = 0; i < 8; i++)); do
 		items+=( \
 			"MZ${SLOT_NUM}_TTL$[i+1]" \
+			$[GPIO_BASE+i+8] \
+			"input" \
+		)
+	done
+
+	for ((i = 0; i < 8; i++)); do
+		items+=( \
+			"MZ${SLOT_NUM}_TTL$[i+9]" \
 			$[GPIO_BASE+i] \
 			"input" \
 		)
 	done
+
 	wb_gpio_add "${items[@]}"
 }
 
