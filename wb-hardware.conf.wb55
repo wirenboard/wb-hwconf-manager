@@ -1,0 +1,22 @@
+{
+	"slots": [
+		{
+			"id": "wb55-mod1",
+			"type": "wb5-mod",
+			"name": "Internal slot 1",
+			"module": ""
+		},
+		{
+			"id": "wb55-mod2",
+			"type": "wb5-mod",
+			"name": "Internal slot 2",
+			"module": ""
+		},
+		{
+			"id": "wb5-extio1",
+			"type": "wb5-extio",
+			"name": "External I/O module 1",
+			"module": ""
+		}
+	]
+}	
