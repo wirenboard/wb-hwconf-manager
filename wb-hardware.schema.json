@@ -15,6 +15,97 @@
       }
     },
 
+    "module_conf_wbe-ai-cvr-2_thermistor": {
+      "title": "3-wire thermistor",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": ["thermistor"],
+          "default": "thermistor",
+          "options": {
+            "hidden": true
+          },
+          "propertyOrder": 1
+        }
+      },
+      "required": ["mode"]
+    },
+
+    "module_conf_wbe-ai-cvr-2_separate": {
+      "title": "Separate channels",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "enum": ["separate"],
+          "default": "separate",
+          "options": {
+            "hidden": true
+          },
+          "propertyOrder": 1
+        },
+        "channels": {
+          "type": "array",
+          "title": "Channels",
+          "minItems": 2,
+          "maxItems": 2,
+          "_format": "tabs",
+          "items": {
+            "type": "object",
+            "title": "Channel options",
+            "headerTemplate": "Channel {{i1}}",
+            "options": {
+              "disable_collapse": true
+            },
+            "properties": {
+              "mode": {
+                "type": "string",
+                "title": "Mode",
+                "minLength": 1,
+                "enumSource": [{
+                  "source": [
+                    { "value": "voltage", "title": "Voltage, 0-3.3 V" },
+                    { "value": "current", "title": "Current, 0-70 mA" },
+                    { "value": "resistance", "title": "Resistance, 0.1-10 kOhm" }
+                  ],
+                  "value": "{{item.value}}",
+                  "title": "{{item.title}}"
+                }],
+                "default": "voltage"
+              }
+            },
+            "required": ["mode"]
+          },
+          "options": {
+            "disable_collapse": true,
+            "disable_array_add": true,
+            "disable_array_delete": true,
+            "disable_array_reorder": true
+          },
+          "propertyOrder": 2
+        }
+      },
+      "required": ["mode", "channels"]
+    },
+
+    "module_conf_wbe-ai-cvr-2": {
+      "type": "object",
+      "title": "WBE-AI-CVR-2 operation mode",
+      "options": {
+        "remove_empty_properties": true,
+        "disable_collapse" : true,
+        "hidden": false,
+        "keep_oneof_values": false
+      },
+      "oneOf": [
+        { "$ref": "#/definitions/module_conf_wbe-ai-cvr-2_separate" },
+        { "$ref": "#/definitions/module_conf_wbe-ai-cvr-2_thermistor" }
+      ]
+    },
+
     "slot": {
       "type": "object",
       "title": "Slot",
