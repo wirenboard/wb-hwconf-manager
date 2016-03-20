@@ -13,7 +13,7 @@ fragment@__COUNTER__ {
 			i2c-gpio,delay-us = <20>;		/* ~100 kHz */
 
 			pinctrl-names = "default";
-			pinctrl-0 = <&SLOT_DT_ALIAS(pins)>;
+			pinctrl-0 = <SLOT_I2C_PINCTRL SLOT_CS_GPIO_PINCTRL>;
 
 			status = "okay";
 		};
