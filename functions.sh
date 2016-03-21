@@ -138,7 +138,12 @@ json_array_update() {
 # Return list of slots with associated module for each slot, if any.
 # Each line of the output has form "slot module", module can be empty.
 config_parse() {
-	jq -r '.slots[] | @text "\(.id) \(.module)"' "$CONFIG"
+	local SLOT MODULE OPTIONS
+	jq -r '.slots[] | @text "\(.id) \(if (.module | length) > 0 then .module + " " + (.options | @text) else "" end)"' "$CONFIG" |
+	while read SLOT MODULE OPTIONS; do
+		[[ -n "$MODULE" ]] && SLOT+=" $MODULE $(md5sum <<< "$OPTIONS" | cut -f1 -d' ')"
+		echo "$SLOT"
+	done
 }
 
 # Return module that is associated with given slot.
