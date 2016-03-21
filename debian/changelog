@@ -1,3 +1,11 @@
+wb-hwconf-manager (1.4.1) stable; urgency=medium
+
+  * make pinmux configs really work
+  * add definition for microsd and can-iso modules
+  * proper interrupt mode for I/O extension modules
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 21 Mar 2016 03:05:19 +0300
+
 wb-hwconf-manager (1.4) stable; urgency=medium
 
   * adds WB5.5 support
