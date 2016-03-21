@@ -10,21 +10,29 @@
  */
 
 / {
-	description = "WBE-DI-DR-3: digital inputs extension module";
+	description = "WBE-MICROSD: microSD module";
 	compatible-slots = "wb5-mod";
 	compatible = "contactless,imx28-wirenboard52";
 
 	fragment@0 {
-		target-path = "/";
+		target = <SLOT_UART_ALIAS>;
 
 		__overlay__ {
-			SLOT_DT_ALIAS(pimux_dummy): SLOT_DT_ALIAS(pimux_dummy)@0 {
-				compatible = "regulator-fixed";
-				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pimux_dummy));
+			status = "disabled";
+		};
+	};
 
-				pinctrl-names = "default";
-				pinctrl-0 = <SLOT_I2C_PINCTRL SLOT_CS_GPIO_PINCTRL>;
-			};
+
+	fragment@1 {
+		target = <SLOT_MMC_ALIAS>;
+
+		__overlay__ {
+			compatible = "fsl,imx28-mmc";
+			pinctrl-names = "default";
+			pinctrl-0 = <SLOT_MMC_PINCTRL>;
+			bus-width = <4>;
+			status = "okay";
+			broken-cd;
 		};
 	};
 };

@@ -14,26 +14,14 @@
 	compatible-slots = "wb5-mod";
 	compatible = "contactless,imx28-wirenboard52";
 
-	fragment@0 {
-		target = <&SLOT_DT_ALIAS(pins)>;
-
-		__overlay__ {
-			fsl,pinmux-ids = <
-				SLOT_PINMUX_GPIO(SDA)
-				SLOT_PINMUX_GPIO(SCL)
-			>;
-			fsl,drive-strength = <MXS_DRIVE_8mA>;
-			fsl,voltage = <MXS_VOLTAGE_HIGH>;
-			fsl,pull-up = <MXS_PULL_DISABLE>;
-		};
-	};
-
 	fragment@1 {
 		target-path = "/";
 
 		__overlay__ {
 			SLOT_DT_ALIAS(onewire): SLOT_DT_ALIAS(onewire)@0 {
 				compatible = "w1-gpio";
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_I2C_PINCTRL SLOT_CS_GPIO_PINCTRL>;
 				gpios = <SLOT_GPIO(SDA)>;
 				pu-gpios = <SLOT_GPIO(SCL)>;
 			};

@@ -9,5 +9,15 @@
 #define SLOT_SCK		(SSP3_SCK,		2,	24)
 #define SLOT_CS		(SSP3_SS0,		2,	27)
 
-#include "wb5-mod.h"
+#define SLOT_I2C_PINCTRL &mod1_i2c_pins_gpio
+#define SLOT_CS_GPIO_PINCTRL &mod1_cs_pins_gpio
 
+#define SLOT_SSP_ALIAS  &ssp3
+#define SLOT_SPI_PINCTRL &spi3_pins_b
+
+#define SLOT_UART_ALIAS  &auart2
+
+#define SLOT_MMC_ALIAS  SLOT_SSP_ALIAS
+#define SLOT_MMC_PINCTRL &mmc3_4bit_pins_mod1 &mmc3_sck_mod1_cfg
+
+#include "wb5-mod.h"

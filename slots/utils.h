@@ -58,4 +58,7 @@ SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
 #endif
 
+#define QUOTE(str) #str
+#define EXPAND_AND_QUOTE(str) QUOTE(str)
+
 #endif /* UTILS_H */
