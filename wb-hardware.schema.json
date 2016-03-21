@@ -6,7 +6,7 @@
   "limited": true,
   "strictProps": false,
   "definitions": {
-    "module_conf_none": {
+    "module_none": {
       "title": " ",
       "options": {
         "hidden": true,
@@ -86,7 +86,7 @@
           },
           "links": [{
             "rel": "describedBy",
-            "href": "#/definitions/module_conf_{{if all_modules.[module_type] == \"\"}}none{{else}}{{module_type}}{{endif}}"
+            "href": "#/definitions/module_{{if all_modules.[module_type] == \"\"}}none{{else}}{{module_type}}{{endif}}"
           }],
           "propertyOrder": 3
         }
