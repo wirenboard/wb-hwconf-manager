@@ -52,13 +52,15 @@
 #define SLOT_ALL_PINS
 #endif
 
+#define QUOTE(str) #str
+#define EXPAND_AND_QUOTE(str) QUOTE(str)
+
 #ifdef FROM_SHELL
 #define SLOT_FOR_PIN(x) local GPIO_##x=$((SLOT_GPIO_PORT(x) * 32 + SLOT_GPIO_PIN(x)));
 SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
+local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
-#define QUOTE(str) #str
-#define EXPAND_AND_QUOTE(str) QUOTE(str)
 
 #endif /* UTILS_H */
