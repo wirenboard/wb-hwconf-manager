@@ -11,6 +11,7 @@
 
 #define SLOT_I2C_PINCTRL &mod1_i2c_pins_gpio
 #define SLOT_CS_GPIO_PINCTRL &mod1_cs_pins_gpio
+#define SLOT_UART_GPIO_PINCTRL &mod1_uart_pins_gpio
 
 #define SLOT_SSP_ALIAS  &ssp2
 #define SLOT_SPI_PINCTRL &spi2_pins_a_nocs &mod1_cs_pins_spi
