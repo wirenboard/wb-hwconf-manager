@@ -57,6 +57,12 @@ slot_i2c_bus_sysfs() {
 	echo "/sys/bus/i2c/devices/i2c-${num}"
 }
 
+slot_i2c_dev_sysfs() {
+	local bus=$(slot_i2c_bus_num)
+	[[ -z "$bus" ]] && return 1
+	printf "/sys/bus/i2c/devices/%d-%0.4x" ${bus} 0x${1}
+}
+
 # Restarts given service if $NO_RESTART_SERVICE is not set.
 # Args:
 # - service name (from /etc/init.d/)
