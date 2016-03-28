@@ -12,7 +12,8 @@ install:
 	install -d -m 0755 $(datadir)/modules
 	cp -r slots $(datadir)/
 	cp wb-hardware.conf.* $(datadir)/
-	cp modules/*.{dtso,sh} ${datadir}/modules
+	cp modules/*.dtso ${datadir}/modules
+	cp modules/*.sh ${datadir}/modules
 	install -d -m 0755 $(DESTDIR)/usr/share/wb-mqtt-confed/schemas
 	cat wb-hardware.schema.json modules/*.schema.json | \
 		jq --slurp '.[0].definitions = .[0].definitions + (.[1:] | add) | .[0]' \
