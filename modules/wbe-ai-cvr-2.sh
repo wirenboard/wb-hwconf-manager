@@ -6,17 +6,17 @@ local I2C_ADDR=48
 hook_module_add() {
 	local JSON=$CONFIG_ADC
 	local items=()
-	local chan mul
+	local chan mul max_voltage
 	for chan in 0 1; do
 		case "$(config_module_option ".channels[$chan].mode")" in
 			voltage)
-				mul=1.5		# FIXME: empiric magic number
+				mul=1
 				;;
 			voltage_x10)
-				mul=15
+				mul=10
 				;;
 			current)
-				mul=0.02
+				mul=0.02004
 				;;
 		esac
 		items+=( "{
@@ -24,9 +24,9 @@ hook_module_add() {
 			averaging_window: 1,
 			match_iio: \"mod${SLOT_NUM}_i2c\",
 			channel_number: $chan,
-			multiplier: $mul,
+			voltage_multiplier: $mul,
 			decimal_places: 3,
-			max_voltage: 7
+			max_voltage: 3.3
 		}" )
 		shift 3
 	done
