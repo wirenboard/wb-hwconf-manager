@@ -13,6 +13,7 @@ install:
 	cp -r slots $(datadir)/
 	cp wb-hardware.conf.* $(datadir)/
 	cp modules/*.dtso ${datadir}/modules
+	cp modules/*.dtsi ${datadir}/modules
 	cp modules/*.sh ${datadir}/modules
 	install -d -m 0755 $(DESTDIR)/usr/share/wb-mqtt-confed/schemas
 	cat wb-hardware.schema.json modules/*.schema.json | \
