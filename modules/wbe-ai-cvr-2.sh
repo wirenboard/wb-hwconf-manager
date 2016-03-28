@@ -10,10 +10,10 @@ hook_module_add() {
 	for chan in 0 1; do
 		case "$(config_module_option ".channels[$chan].mode")" in
 			voltage)
-				mul=1.0
+				mul=1.5		# FIXME: empiric magic number
 				;;
 			voltage_x10)
-				mul=10
+				mul=15
 				;;
 			current)
 				mul=0.02
