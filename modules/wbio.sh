@@ -21,13 +21,13 @@ hook_module_add() {
 		)
 	done
 	wb_gpio_add "${items[@]}"
-	hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio '/devices/wb-gpio/#'"
+	hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio /devices/wb-gpio/#"
 }
 
 hook_module_del() {
 	# Remove all the added gpios
 	wb_gpio_del $(seq $GPIO_BASE $[GPIO_BASE+WBIO_COUNT-1])
-	hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio '/devices/wb-gpio/#'"
+	hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio /devices/wb-gpio/#"
 }
 
 # Delete empty slots at the end of chain so that only one is left
