@@ -1,6 +1,7 @@
 wb-hwconf-manager (1.5) stable; urgency=medium
 
   * Adds support for WBE-AI-AVR-2 and module parameters
+  * Adds support for WBE-AO-10V-2
 
  -- Evgeny Boger <boger@contactless.ru>  Mon, 28 Mar 2016 13:25:33 +0300
 
