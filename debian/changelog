@@ -1,3 +1,15 @@
+wb-hwconf-manager (1.5) stable; urgency=medium
+
+  * Adds support for WBE-AI-AVR-2 and module parameters
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 28 Mar 2016 13:25:33 +0300
+
+wb-hwconf-manager (1.4.2) stable; urgency=medium
+
+  * add wb-homa-adc dependency for WBE-AI-CVR-2 module
+
+ -- Alexey Ignatov <lexszero@gmail.com>  Mon, 28 Mar 2016 00:06:13 +0000
+
 wb-hwconf-manager (1.4.1) stable; urgency=medium
 
   * make pinmux configs really work

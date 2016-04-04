@@ -37,7 +37,7 @@ do_start()
 		return 1
 	}
 
-	cat "$CONFIG_STATE" | while read SLOT MODULE; do
+	cat "$CONFIG_STATE" | while read SLOT MODULE OPTIONS_HASH; do
 		[[ -z "$SLOT" || -z "$MODULE" ]] && continue
 		module_init "$SLOT" "$MODULE"
 	done

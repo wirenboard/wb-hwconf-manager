@@ -45,6 +45,24 @@ wb_max_slot_num() {
 	' "$CONFIG"
 }
 
+slot_i2c_bus_num() {
+	local bus_name=$(sed -rn "s/.*(mod[0-9]+)$/\1_i2c@0/p" <<< "$SLOT")
+	[[ -z "$bus_name" ]] && return 1
+	grep -l "^${bus_name}$" /sys/bus/i2c/devices/i2c-*/name |  grep -Po '(?<=i2c-)(\d+)'
+}
+
+slot_i2c_bus_sysfs() {
+	local num=$(slot_i2c_bus_num)
+	[[ -z "$num" ]] && return 1
+	echo "/sys/bus/i2c/devices/i2c-${num}"
+}
+
+slot_i2c_dev_sysfs() {
+	local bus=$(slot_i2c_bus_num)
+	[[ -z "$bus" ]] && return 1
+	printf "/sys/bus/i2c/devices/%d-%0.4x" ${bus} 0x${1}
+}
+
 # Restarts given service if $NO_RESTART_SERVICE is not set.
 # Args:
 # - service name (from /etc/init.d/)

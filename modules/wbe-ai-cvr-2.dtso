@@ -1,0 +1,37 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE-AI-CVR-2: analog inputs extension module";
+	compatible-slots = "wb5-mod";
+	compatible = "contactless,imx28-wirenboard52";
+
+	fragment@__COUNTER__ {
+		target-path = "/";
+		__overlay__ {
+			SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+				__address-cells = <1>;
+				__size-cells = <0>;
+
+				compatible = "i2c-gpio";
+				gpios = <SLOT_GPIO(SDA)
+					SLOT_GPIO(SCL)
+					>;
+				i2c-gpio,delay-us = <20>;		/* ~100 kHz */
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_I2C_PINCTRL SLOT_CS_GPIO_PINCTRL>;
+
+				status = "okay";
+			};
+		};
+	};
+};

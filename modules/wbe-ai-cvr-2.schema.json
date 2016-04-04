@@ -1,0 +1,59 @@
+{
+  "module_wbe-ai-cvr-2": {
+    "title": "WBE-AI-CVR-2 module configuration",
+    "type": "object",
+    "properties": {
+      "mode": {
+        "type": "string",
+        "title": "Mode",
+        "enum": ["separate"],
+        "default": "separate",
+        "options": {
+          "hidden": true
+        },
+        "propertyOrder": 1
+      },
+      "channels": {
+        "type": "array",
+        "title": "Channels",
+        "minItems": 2,
+        "maxItems": 2,
+        "_format": "tabs",
+        "items": {
+          "type": "object",
+          "title": "Channel options",
+          "headerTemplate": "Channel {{i1}}",
+          "options": {
+            "disable_collapse": true
+          },
+          "properties": {
+            "mode": {
+              "type": "string",
+              "title": "Mode",
+              "minLength": 1,
+              "enumSource": [{
+                "source": [
+                  { "value": "voltage", "title": "Voltage, 0-3.3 V" },
+                  { "value": "voltage_x10", "title": "Voltage x10, 0-33.3 V" },
+                  { "value": "current", "title": "Current, 0-70 mA" }
+                ],
+                "value": "{{item.value}}",
+                "title": "{{item.title}}"
+              }],
+              "default": "voltage"
+            }
+          },
+          "required": ["mode"]
+        },
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 2
+      }
+    },
+    "required": ["mode", "channels"]
+  }
+}
