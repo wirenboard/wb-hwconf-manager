@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.6) stable; urgency=medium
+
+  * add Single SPDT relay output extension module 
+
+ -- Evgeny Boger <boger@contactless.ru>  Wed, 20 Apr 2016 17:58:15 +0300
+
 wb-hwconf-manager (1.5.3) stable; urgency=medium
 
   * fix netmon config
