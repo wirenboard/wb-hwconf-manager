@@ -1,12 +1,60 @@
 #!/bin/bash
 2>/dev/null . /usr/share/wb-hwconf-manager/functions.sh || . ./functions.sh
 
+# This function reorders WBIO modules to make continuous sequence of plugged devices
+# in the begginning of list, moving all empty slots to the end.
+# Should be called before doing anything else with config
+config_wbio_pack() {
+	local JSON=${CONFIG}
+	local slot_type
+	local slot_name_prefix="External I/O module "
+	for slot_type in "wb5-extio"; do
+		json_edit '
+		def empty_slots(start; count): [range(start; start+count)] | map({
+				id: ("'"$slot_type"'"+tostring),
+				type: "'"$slot_type"'",
+				name: ("'"$slot_name_prefix"'"+tostring),
+				module: "",
+				options: {}
+			});
+
+		.slots |= (reduce .[] as $item (
+			{n:1, nn:0, v:[]};
+			.n as $n |
+			if ($item.id|startswith("'"$slot_type"'")) then (
+				if ($item.module == "") then (
+					.nn += 1
+				) else (
+					.n += 1 |
+					.v += [$item |
+						.id="'"$slot_type"'"+($n|tostring) |
+						.name="'"$slot_name_prefix"'"+($n|tostring)
+						]
+				) end
+			) else (
+				if (.nn != 0) then (
+					.v += (empty_slots(.n; .nn)) + [$item] |
+					.nn = 0
+				) else (
+					.v +=[$item]
+				) end
+			) end) |
+			if (.nn != 0) then (
+				.v + empty_slots(.n; .nn)
+			) else (
+				.v
+			) end)
+		'
+	done
+}
+
 config_apply_changes() {
 	local old_state=`mktemp`
 	local state=`mktemp`
 	cp "$CONFIG_STATE" "$old_state" 2>/dev/null
 
 	local CONFIG=${1:-${CONFIG}}
+	config_wbio_pack
 	while :; do
 		cp "$old_state" "$state"
 

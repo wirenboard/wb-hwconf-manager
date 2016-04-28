@@ -29,28 +29,3 @@ hook_module_del() {
 	wb_gpio_del $(seq $GPIO_BASE $[GPIO_BASE+WBIO_COUNT-1])
 	hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio /devices/wb-gpio/#"
 }
-
-# Delete empty slots at the end of chain so that only one is left
-wbio_update_slots() {
-	local SLOT_TYPE=${SLOT_TYPE:-$1}
-	local last_slot=$(wb_max_slot_num "$SLOT_TYPE")
-	local last_used_slot=$(
-		config_parse |
-		sed -r "/^${SLOT_TYPE}.+ \\S+$/h; \$!d; x; s/${SLOT_TYPE}([0-9]+).*/\\1/"
-	)
-
-	if [[ "$last_slot" -le "$last_used_slot" &&
-		  "$last_slot" -lt 8 ]]; then
-		config_slot_add \
-			"${SLOT_TYPE}$[last_slot+1]" \
-			"${SLOT_TYPE}" \
-			"External I/O module $[last_slot+1]"
-	elif [[ "$[last_used_slot+2]" -le "$last_slot" ]]; then
-		log "Cleaning up unused $SLOT_TYPE slots"
-		local i
-		for ((i = last_used_slot+2; i <= last_slot; i++)); do
-			config_slot_del "${SLOT_TYPE}${i}"
-		done
-	fi
-}
-hook_once_after_config_change "wbio_update_slots $SLOT_TYPE"
