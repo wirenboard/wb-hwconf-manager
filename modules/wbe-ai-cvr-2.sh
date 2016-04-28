@@ -8,7 +8,8 @@ hook_module_add() {
 	local items=()
 	local chan mul max_voltage
 	for chan in 0 1; do
-		case "$(config_module_option ".channels[$chan].mode")" in
+		local gain="$(config_module_option ".channels[$chan].gain // 1")"
+		case "$(config_module_option ".channels[$chan].mode // \"voltage\"")" in
 			voltage)
 				mul=1
 				;;
@@ -24,7 +25,7 @@ hook_module_add() {
 			averaging_window: 1,
 			match_iio: \"mod${SLOT_NUM}_i2c\",
 			channel_number: $chan,
-			voltage_multiplier: $mul,
+			voltage_multiplier: (${mul}*${gain}),
 			decimal_places: 3,
 			max_voltage: 3.3
 		}" )
@@ -49,6 +50,14 @@ hook_module_init() {
 		return 1
 	}
 	echo "ads1015 0x${I2C_ADDR}" > $bus/new_device
+
+	local dev=$(slot_i2c_dev_sysfs $I2C_ADDR)
+	wait_for_path "$dev"
+
+	local chan
+	for chan in 0 1; do
+		config_module_option ".channels[$chan].gain // 1" > $(echo "$dev/iio:device"*"/in_voltage${chan}_scale")
+	done
 }
 
 hook_module_deinit() {
