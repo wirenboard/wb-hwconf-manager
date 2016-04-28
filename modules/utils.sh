@@ -4,6 +4,21 @@ local SLOT_NUM=${SLOT#$SLOT_TYPE}
 
 CONFIG_GPIO=${CONFIG_GPIO:-/etc/wb-homa-gpio.conf}
 
+# Waits until given path become available, with timeout
+# Args:
+# - path
+# - timeout (seconds). if not given - 5 sec.
+wait_for_path() {
+	local i
+	local path=$1
+	local timeout=${2:-5}
+	for ((i=0; i<timeout*2; i++)); do
+		[[ -e "$path" ]] && return 0
+		sleep 0.5
+	done
+	return 1
+}
+
 # Add GPIO to the wb-homa-gpio driver config
 # Args:
 # - gpio name (for mqtt)
