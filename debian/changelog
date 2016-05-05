@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.7) stable; urgency=medium
+
+  * Adds microsd module in 1-bit mode
+  * Change WBIO slots logic, prepopulate wb52/55 with all 8 WBIO slots
+
+ -- Evgeny Boger <boger@contactless.ru>  Wed, 04 May 2016 20:31:01 +0300
+
 wb-hwconf-manager (1.6) stable; urgency=medium
 
   * add Single SPDT relay output extension module 
