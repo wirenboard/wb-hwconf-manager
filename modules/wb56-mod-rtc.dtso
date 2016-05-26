@@ -1,0 +1,92 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "RTC option for WB5.6 (w/o GSM modem)";
+	compatible-slots = "wb55-gsm";
+	compatible = "contactless,imx28-wirenboard55";
+
+
+    fragment@0 {
+        /* Turn off AUART0 so we can use RTS and TX pins as GPIOs */
+
+        target = <&auart0>;
+
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+
+    fragment@1 {
+        /* Turn on GPIO17 to enable GSM 4V power rail used by RTC module */
+        target-path = "/";
+
+        __overlay__ {
+            SLOT_DT_ALIAS(rtc_vbus): SLOT_DT_ALIAS(rtc_vbus)@0 {
+                compatible = "regulator-fixed";
+                regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(rtc_vbus));
+
+                gpio = <&gpio0 17 0>;
+                enable-active-high;
+                regulator-always-on;
+                regulator-boot-on;
+            };
+        };
+    };
+
+
+    fragment@2 {
+        /* Disable builtin RTC */
+        target = <&mxs_rtc>;
+
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@3 {
+        target-path = "/";
+
+        __overlay__ {
+            __address-cells = <1>;
+            __size-cells = <0>;
+
+            SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+                compatible = "i2c-gpio";
+                gpios = <&gpio3 0 0
+                         &gpio3 2 0
+                        >;
+                i2c-gpio,delay-us = <20>;       /* ~100 kHz */
+                /*i2c-gpio,scl-output-only;*/
+
+                pinctrl-names = "default";
+                pinctrl-0 = <&gsm_uart_pins_gpio>;
+                status = "okay";
+
+                __address-cells = <1>;
+                __size-cells = <0>;
+
+
+                rtc@6f {
+                        vbus-supply = <&SLOT_DT_ALIAS(rtc_vbus)>;
+                        compatible = "dallas,mcp7940x";
+                        reg = <0x6f>;
+                };
+
+
+            };
+        };
+    };
+
+
+
+};

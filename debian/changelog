@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.8) stable; urgency=medium
+
+  * adds RTC module
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 23 May 2016 15:02:30 +0300
+
 wb-hwconf-manager (1.7) stable; urgency=medium
 
   * Adds microsd module in 1-bit mode
