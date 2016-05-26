@@ -69,6 +69,13 @@
 			"name": "External I/O module 8",
 			"module": "",
 			"options": {}
-		}
+		},
+	    {
+	      "id": "wb5-eth",
+	      "name": "2nd Ethernet Slot",
+	      "type": "wb5-eth",
+	      "module": "",
+	      "options": {}
+	    }
 	]
-}	
+}

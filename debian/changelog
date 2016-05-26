@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.9) stable; urgency=medium
+
+  * adds second ethernet module (WBMZ-ETH)
+
+ -- Evgeny Boger <boger@contactless.ru>  Fri, 27 May 2016 14:15:52 +0300
+
 wb-hwconf-manager (1.8) stable; urgency=medium
 
   * adds RTC module
