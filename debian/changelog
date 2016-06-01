@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.10) stable; urgency=medium
+
+  * Slot "compatible" array property, implementing sets of capabilities
+  * Fix required homeui version
+
+ -- Alexey Ignatov <lexszero@gmail.com>  Wed, 01 Jun 2016 14:53:48 +0000
+
 wb-hwconf-manager (1.9) stable; urgency=medium
 
   * adds second ethernet module (WBMZ-ETH)

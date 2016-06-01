@@ -17,6 +17,28 @@ case "$WB_VERSION" in
 	;;
 esac
 
-ucf --debconf-ok /usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF $CONFFILE
+CONFFILE_DIST="/usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF"
+
+# If current config is valid, merge it with new one preserving user changes.
+jq -e '.slots' < $CONFFILE >/dev/null && {
+	tmp=$(mktemp)
+	cat $CONFFILE_DIST $CONFFILE | jq --slurp '
+	.[0].slots as $new |
+	.[1].slots as $old |
+	.[1] | .slots = ($new | map(
+		. as $new_item |
+		($old | map(select(.id == $new_item.id))) as $old_item |
+		if ($old_item | length > 0) then (
+			$old_item[0] | .compatible = $new_item.compatible |
+			del(.type)
+		) else (
+			$new_item
+		) end
+	))' > "$tmp"
+	cat "$tmp" > $CONFFILE
+	rm "$tmp"
+}
+
+ucf --debconf-ok $CONFFILE_DIST $CONFFILE
 
 #DEBHELPER#
