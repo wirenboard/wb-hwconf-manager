@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.9.1) stable; urgency=medium
+
+  * add GSM replacement slot to default config
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 20 Jun 2016 18:30:51 +0300
+
 wb-hwconf-manager (1.9) stable; urgency=medium
 
   * adds second ethernet module (WBMZ-ETH)
