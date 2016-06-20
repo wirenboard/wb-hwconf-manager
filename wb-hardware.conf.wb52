@@ -2,70 +2,70 @@
 	"slots": [
 		{
 			"id": "wb5-mod1",
-			"type": "wb5-mod",
+			"compatible": ["wb5-mod", "wb5-mod_mmc-1bit", "wb5-mod_mmc-4bit"],
 			"name": "Internal slot 1",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-mod2",
-			"type": "wb5-mod",
+			"compatible": ["wb5-mod", "wb5-mod_can"],
 			"name": "Internal slot 2",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio1",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 1",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio2",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 2",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio3",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 3",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio4",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 4",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio5",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 5",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio6",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 6",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio7",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 7",
 			"module": "",
 			"options": {}
 		},
 		{
 			"id": "wb5-extio8",
-			"type": "wb5-extio",
+			"compatible": ["wb5-extio"],
 			"name": "External I/O module 8",
 			"module": "",
 			"options": {}

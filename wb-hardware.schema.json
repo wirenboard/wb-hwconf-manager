@@ -38,9 +38,9 @@
           "minLength": 1,
           "propertyOrder": 1
         },
-        "type": {
-          "type": "string",
-          "title": "Slot type",
+        "compatible": {
+          "type": "array",
+          "title": "Slot capabilities",
           "minLength": 1,
           "options": {
             "hidden": true
@@ -52,7 +52,7 @@
           "type": "string",
           "watch": {
             "all_modules": "modules",
-            "slot_type": "slot_item.type"
+            "slot_compatible": "slot_item.compatible"
           },
           "enumSource": [
             {
@@ -67,7 +67,7 @@
             },
             {
               "source": "all_modules",
-              "filter": "{{if watched.slot_type in item.compatible_slots}}1{{endif}}",
+              "filter": "{{if watched.slot_compatible intersect item.compatible_slots}}1{{endif}}",
               "title": "{{item.description}}",
               "value": "{{item.id}}"
             }
@@ -91,8 +91,8 @@
           "propertyOrder": 3
         }
       },
-      "required": ["id", "name", "type", "module"],
-      "defaultProperties": ["id", "name", "type", "module", "options"]
+      "required": ["id", "name", "compatible", "module"],
+      "defaultProperties": ["id", "name", "compatible", "module", "options"]
     },
 
     "module": {
