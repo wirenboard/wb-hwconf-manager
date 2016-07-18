@@ -10,11 +10,11 @@
  */
 
 / {
-	description = "WBIO-DO-RxA-8: 8 Channel Relay I/O module";
+	description = "WBIO-DO-SSR-8: Small Signal SSR I/O Module";
 	compatible-slots = "wb5-extio";
 	compatible = "contactless,imx28-wirenboard52";
-	
-	#define WBIO_NAME wbio_do_r3a_8
+
+	#define WBIO_NAME wbio_do_ssr_8
 	#define WBIO_OUTPUT
 	#include "wbio.dtsi"
 };

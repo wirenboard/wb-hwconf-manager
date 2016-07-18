@@ -1,3 +1,11 @@
+wb-hwconf-manager (1.11) stable; urgency=medium
+
+  * adds support for new extension modules:
+  * WBE-DO-SSR-2: Dual Small Signal SSR Module
+  * WBIO-DO-SSR-8 Small Signal SSR I/O Module
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 18 Jul 2016 20:27:01 +0300
+
 wb-hwconf-manager (1.10) stable; urgency=medium
 
   * Slot "compatible" array property, implementing sets of capabilities
