@@ -1,7 +1,7 @@
 source "$DATADIR/modules/utils.sh"
 local CONFIG_DAC=${CONFIG_DAC:-/etc/wb-mqtt-dac.conf}
 
-hook_module_add() {
+hook_module_init() {
     local IIO_BUS_NUM=`ls -d /sys/devices/platform/${SLOT_ALIAS}_i2c@0/*/*/iio:device* | grep -Po '(?<=iio:device)(\d+)'`
 
     local JSON=$CONFIG_DAC
