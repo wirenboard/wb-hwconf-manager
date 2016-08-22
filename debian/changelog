@@ -1,7 +1,9 @@
 wb-hwconf-manager (1.12) stable; urgency=medium
 
-  * adds support for WBIO-DI-DR-16 module. GPIO numbers > 256 are used
-   so kernel update is required
+  * adds support for WBIO-DI-DR-16, WBIO-DO-R1G-16 and WBIO-DI-HVD-8/16 modules.
+  GPIO numbers > 256 are used so kernel update is required
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 18 Jul 2016 20:27:01 +0300
 
 wb-hwconf-manager (1.11) stable; urgency=medium
 

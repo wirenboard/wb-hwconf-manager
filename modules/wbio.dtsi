@@ -25,7 +25,7 @@ fragment@0 {
 			interrupt-controller;
 			__interrupt-cells=<2>;
 
-			linux,gpio-base = <SLOT_GPIO_BASE>;
+			linux,gpio-base = <SLOT_GPIO_BASE_8>;
 		};
 	};
 };
