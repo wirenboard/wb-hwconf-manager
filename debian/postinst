@@ -4,6 +4,10 @@
 CONFFILE=/etc/wb-hardware.conf
 
 case "$WB_VERSION" in
+    "58")
+        BOARD_CONF="wb58"
+    ;;
+
     "55")
         BOARD_CONF="wb55"
     ;;

@@ -1,0 +1,25 @@
+#define SLOT_ALIAS	mod2
+#define SLOT_RX		(AUART3_RX,		3,	12)
+#define SLOT_TX		(AUART3_TX,		3,	13)
+#define SLOT_RTS		(AUART3_RTS,	3,	15)
+#define SLOT_SDA		(GPMI_RDY2,		0,	22)
+#define SLOT_SCL		(GPMI_RDY3,		0,	23)
+#define SLOT_MOSI	(SSP2_MOSI,		2,	17)
+#define SLOT_MISO	(SSP2_MISO,		2,	18)
+#define SLOT_SCK		(SSP2_SCK,		2,	16)
+#define SLOT_CS		(SSP2_SS1,		2,	20)
+
+#define SLOT_I2C_PINCTRL &mod2_i2c_pins_gpio
+#define SLOT_CS_GPIO_PINCTRL &mod2_cs_pins_gpio
+#define SLOT_UART_GPIO_PINCTRL &mod2_uart_pins_gpio
+
+#define SLOT_SSP_ALIAS  &ssp2
+#define SLOT_SPI_PINCTRL &spi2_pins_a_nocs &mod2_cs_pins_spi
+#define SLOT_SPI_REG 1
+
+#define SLOT_UART_ALIAS  &auart3
+
+#define SLOT_CAN_PINCTRL &can0_pins_a &mod2_uart_pins_gpio
+#define SLOT_CAN_ALIAS &can0
+
+#include "wb5-mod.h"

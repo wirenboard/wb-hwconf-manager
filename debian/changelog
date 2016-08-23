@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.14~alpha1) stable; urgency=medium
+
+  * adds support for WB5.8
+
+ -- Evgeny Boger <boger@contactless.ru>  Tue, 23 Aug 2016 21:38:09 +0300
+
 wb-hwconf-manager (1.13) stable; urgency=medium
 
   * adds support for WBIO-DI-DR-14 (2U 14 channel discrete input module)
