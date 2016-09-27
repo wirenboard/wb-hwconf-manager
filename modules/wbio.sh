@@ -9,7 +9,6 @@ esac
 
 if [ -z ${WBIO_CHANNEL_GPIO_OFFSETS+x} ]; then
 	local WBIO_CHANNEL_GPIO_OFFSETS=()
-	log "WBIO_COUNT: ${WBIO_COUNT}"
 	for ((i = 0; i < WBIO_COUNT; i++)); do
 		WBIO_CHANNEL_GPIO_OFFSETS[i]=i;
 	done
