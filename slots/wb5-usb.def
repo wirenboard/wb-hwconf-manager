@@ -1,0 +1,5 @@
+#define SLOT_ALIAS  usb
+
+#include "imx28-pinfunc.h"
+#include "irq.h"
+#include "utils.h"
