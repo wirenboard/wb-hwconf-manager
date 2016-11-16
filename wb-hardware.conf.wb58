@@ -2,7 +2,7 @@
     "slots": [
         {
             "id": "wb58-mod1",
-            "compatible": ["wb5-mod", "wb5-mod_mmc-1bit"],
+            "compatible": ["wb5-mod", "wb5-mod_mmc-1bit", "wb5-mod-pwm"],
             "name": "Internal slot 1",
             "module": "",
             "options": {}
