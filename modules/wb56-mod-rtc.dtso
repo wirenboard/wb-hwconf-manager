@@ -43,17 +43,7 @@
         };
     };
 
-
     fragment@2 {
-        /* Disable builtin RTC */
-        target = <&mxs_rtc>;
-
-        __overlay__ {
-            status = "disabled";
-        };
-    };
-
-    fragment@3 {
         target-path = "/";
 
         __overlay__ {
@@ -86,7 +76,4 @@
             };
         };
     };
-
-
-
 };

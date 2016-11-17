@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.15) stable; urgency=medium
+
+  * change mod RTC behaviour: SoC RTC is not present in the system
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 17 Nov 2016 15:03:30 +0300
+
 wb-hwconf-manager (1.14) stable; urgency=medium
 
   * adds support for WB5.8
