@@ -275,17 +275,26 @@ slot_preprocess() {
 		print;'
 }
 
+# Feeds input through dtc compiler to produce dtb
+dts_compile() {
+	cat - | dtc -I dts -O dtb -@ -
+}
+
+# Adds valid dts header to stdin
+dts_add_header() {
+	echo '/dts-v1/ /plugin/;'
+	cat -
+}
+
 # Preprocess module DTSO with slot definition to get DTBO suitable for feeding
 # it to the kernel
 dtbo_build() {
 	local mod=`module_get_filename` || return 1
 
-	{
-		echo '/dts-v1/ /plugin/;'
-		cat "$mod"
-	} |
+	cat "$mod" |
+	dts_add_header |
 	slot_preprocess |
-	dtc -I dts -O dtb -@ -
+	dts_compile
 }
 
 # Check if DTBO is compatible with the device.
@@ -427,6 +436,107 @@ module_init() {
 	rm "$dtbo"
 
 	module_run_hook init
+}
+
+
+# Formatы overy name from DTS basename and hash of its contents
+# Args:
+# - path to DTS file
+dts_get_overlay_name() {
+	local dts_fname=$1
+	# overlay name is constructed from basename and hash
+	local dts_hash=$(md5sum ${dts_fname} | cut -d ' ' -f 1)
+
+	echo "${dts_fname}-${dts_hash}"
+}
+
+# Loads DTS overlay without preprocessing
+# This builds DTBO and loads it into the kernel
+# This subroutine is mainly used for debug purposes
+# Args:
+# - path to DTS file
+dts_load() {
+	local dts_fname=$1
+	[[ ! -f ${dts_fname} ]] && {
+		die "DTS file not found"
+		return 1
+	}
+
+
+	local overlay_name=`dts_get_overlay_name ${dts_fname}`
+
+	local overlay_path="$OVERLAYS/${overlay_name}"
+	[[ -d "${overlay_path}" ]] && {
+		local st="$(cat "${overlay_path}/status")"
+		case "$st" in
+			"applied")
+				log_action_msg "DTS file is already applied"
+				return 0
+				;;
+			*)
+				log_warning_msg "Overlay ${overlay_path#$OVERLAYS/} have status '$st', trying to remove"
+				rmdir "${overlay_path}"
+				;;
+		esac
+	}
+
+	log_action_msg "Loading ${dts_fname}"
+
+	local dtbo=`mktemp`
+
+	cat "${dts_fname}" |
+	dts_add_header |
+	dts_compile > "$dtbo" || {
+		rm "$dtbo"
+		die "Device Tree overlay building failed"
+		return 1
+	}
+	dtbo_check_compatible "$dtbo" || {
+		rm "$dtbo"
+		die "Device Tree overlay is incompatible with this device"
+		return 1
+	}
+
+	debug "Loading DTBO"
+	mkdir "${overlay_path}" &&
+	cat "$dtbo" > "${overlay_path}/dtbo"
+
+	local i
+	for ((i=0; i<5; i++)); do
+		log_action_cont_msg
+		[[ $(cat "${overlay_path}/status") == "applied" ]] && break
+		sleep 1
+	done
+	[[ $i == 3 ]] && {
+		rm "$dtbo"
+		die "Device Tree overlay loading failed"
+		return 1
+	}
+	rm "$dtbo"
+}
+
+# Unloads previously loaded DTS overlay
+# Args:
+# - path to DTS file
+dts_unload() {
+	local dts_fname=$1
+	[[ ! -f ${dts_fname} ]] && {
+		die "DTS file not found"
+		return 1
+	}
+
+	log_action_msg "Unloading ${dts_fname}"
+
+	local overlay_name=`dts_get_overlay_name ${dts_fname}`
+
+	local overlay_path="$OVERLAYS/${overlay_name}"
+	[[ ! -d "${overlay_path}" ]] && {
+		die "DTS is not loaded"
+		return 1
+	}
+
+	debug "Unloading DTS"
+	rmdir ${overlay_path}
 }
 
 # Deinitialize any module plugged to given slot.

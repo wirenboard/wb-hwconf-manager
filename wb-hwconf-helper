@@ -97,6 +97,22 @@ config_apply_changes() {
 	done
 }
 
+print_usage_and_exit() {
+	>&2 cat <<EOF
+Usage: $0 <command>
+
+Commands:
+  confed-tojson          Prepare config passed to stdin for the web editor
+  confed-fromjson        Prepare edited config for saving
+  init <slot> <module>   Initialize module plugged to the slot
+  deinit <slot>          Deinitialize any module plugged to the slot
+  config-apply           Run modules add/remove hooks when config is changed
+  load-overlay <fname>   Compile and load standalone DTS overlay
+  unload-overlay <fname> Unload standalone DTS
+EOF
+	exit 1
+}
+
 case "$1" in
 	"confed-tojson")
 		# Build json description of all modules in form
@@ -155,16 +171,21 @@ case "$1" in
 	"config-apply")
 		config_apply_changes
 		;;
-	*)
-		>&2 cat <<EOF
-Usage: $0 <command>
+	"load-overlay")
+		if [ "$#" -ne 2 ]; then
+			print_usage_and_exit
+		fi
 
-Commands:
-  confed-tojson          Prepare config passed to stdin for the web editor
-  confed-fromjson        Prepare edited config for saving
-  init <slot> <module>   Initialize module plugged to the slot
-  deinit <slot>          Deinitialize any module plugged to the slot
-  config-apply           Run modules add/remove hooks when config is changed
-EOF
+		dts_load $2
+		;;
+	"unload-overlay")
+		if [ "$#" -ne 2 ]; then
+			print_usage_and_exit
+		fi
+
+		dts_unload $2
+		;;
+	*)
+		print_usage_and_exit
 		;;
 esac

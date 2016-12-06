@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.16) stable; urgency=medium
+
+  * adds helper methods to load and unload standalone DTS overlays
+
+ -- Evgeny Boger <boger@contactless.ru>  Tue, 06 Dec 2016 22:35:49 +0300
+
 wb-hwconf-manager (1.15) stable; urgency=medium
 
   * change mod RTC behaviour: SoC RTC is not present in the system
