@@ -40,7 +40,7 @@
  * SLOT_DT_ALIAS(foo) -> mod<n>_foo
  *	use to reference on per-slot peripherials (i2c, spi, uart)
  */
-#define SLOT_PINMUX(x, func) __cat4(MX28_PAD_, __pin_attr(x, pad), __, func)
+#define SLOT_PINMUX(x, func) __cat4(__cat(SOC_TYPE, _PAD_), __pin_attr(x, pad), __, func)
 #define SLOT_PINMUX_GPIO(x) SLOT_PINMUX(x, __cat4(GPIO_, __pin_attr(x, gpio_port), _, __pin_attr(x, gpio_pin)))
 #define SLOT_GPIO_PORT(x) __pin_attr(x, gpio_port)
 #define SLOT_GPIO_PORT_ALIAS(x) __cat(&gpio, __pin_attr(x, gpio_port))

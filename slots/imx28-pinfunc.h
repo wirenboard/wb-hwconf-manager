@@ -16,6 +16,8 @@
 
 #include "mxs-pinfunc.h"
 
+#define SOC_TYPE MX28
+
 #define MX28_PAD_GPMI_D00__GPMI_D0			0x0000
 #define MX28_PAD_GPMI_D01__GPMI_D1			0x0010
 #define MX28_PAD_GPMI_D02__GPMI_D2			0x0020
