@@ -1,0 +1,11 @@
+#define SLOT_ALIAS	mod2
+#define SLOT_TX		(LCD_DATA16,	3,	21)
+#define SLOT_RX		(LCD_DATA17,	3,	22)
+#define SLOT_RTS	(GPIO1_IO09,	1,	9)
+
+#define SLOT_GPIO_PINCTRL &pinctrl_mod2_gpio
+
+#define SLOT_UART_ALIAS  &uart7
+
+#include "imx6ul-pinfunc.h"
+#include "wb-shield-v2.h"

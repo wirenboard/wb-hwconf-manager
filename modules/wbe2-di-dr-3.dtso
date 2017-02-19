@@ -1,0 +1,30 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2-DI-DR3: digital inputs extension module";
+	compatible-slots = "wb-shield-v2";
+	compatible = "contactless,imx6ul-wirenboard60";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(pimux_dummy): SLOT_DT_ALIAS(pimux_dummy)@0 {
+				compatible = "regulator-fixed";
+				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pimux_dummy));
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_GPIO_PINCTRL>;
+			};
+		};
+	};
+};
