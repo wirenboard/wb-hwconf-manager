@@ -3,7 +3,6 @@
 #define SLOT_I2C_ALIAS	&i2c0
 
 #include "imx28-pinfunc.h"
-#include "irq.h"
 #include "utils.h"
 
 #ifdef FROM_SHELL

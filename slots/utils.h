@@ -67,5 +67,6 @@ SLOT_ALL_PINS
 local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
+#include "irq.h"
 
 #endif /* UTILS_H */
