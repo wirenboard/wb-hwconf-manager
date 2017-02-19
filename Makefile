@@ -21,4 +21,7 @@ install:
 		> $(DESTDIR)/usr/share/wb-mqtt-confed/schemas/wb-hardware.schema.json
 	install -D -m 0644 wb-hwconf-manager.wbconfigs $(DESTDIR)/etc/wb-configs.d/02wb-hwconf-manager
 
+test:
+	./test.sh
+
 .PHONY: install all
