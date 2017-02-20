@@ -14,10 +14,15 @@
 /* Append '0x' prefix to hex numbers */
 #define HEX_PREFIX(x) __cat(0x, x)
 
+#define __arg1(a, ...) a
+#define __arg2(a, b, ...) b
+#define __arg3(a, b, c, ...) c
+#define __arg4(a, b, c, d, ...) d
+
 /* Pattern-matching accessors for pins declarations */
-#define __pad(a, b, c) a
-#define __gpio_port(a, b, c) b
-#define __gpio_pin(a, b, c) c
+#define __pad __arg1
+#define __gpio_port __arg2
+#define __gpio_pin __arg3
 #define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
 /* Helper macros that substitutes actual pins values depending on used slot
