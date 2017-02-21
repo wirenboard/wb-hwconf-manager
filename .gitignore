@@ -2,5 +2,6 @@ debian/wb-hwconf-manager/
 debian/files
 debian/*.debhelper*
 debian/*.substvars
+test/tmp
 *.sublime-project
 *.sublime-workspace

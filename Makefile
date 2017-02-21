@@ -2,6 +2,7 @@ DESTDIR = /
 prefix = usr
 
 datadir = $(DESTDIR)/$(prefix)/share/wb-hwconf-manager
+test_tmpdir = ./test/tmp
 
 all:
 	@echo "Nothing to do"
@@ -22,7 +23,13 @@ install: install_data
 		> $(DESTDIR)/usr/share/wb-mqtt-confed/schemas/wb-hardware.schema.json
 	install -D -m 0644 wb-hwconf-manager.wbconfigs $(DESTDIR)/etc/wb-configs.d/02wb-hwconf-manager
 
-test:
-	./test.sh
+test_clean:
+	rm -rf $(test_tmpdir)
 
-.PHONY: install install_data all test
+test: test_clean
+	make datadir=$(test_tmpdir) install_data
+	cd test && ./test.sh
+
+clean: test_clean
+
+.PHONY: install install_data all test test_clean clean

@@ -13,7 +13,7 @@ SYSLOG_TAG="wb-hwconf-manager"
 VERBOSE="yes"
 2>/dev/null . /lib/lsb/init-functions
 
-2>/dev/null . ./debug-env
+2>/dev/null . ./wb-hwconf-manager.env
 
 MODULES="$DATADIR/modules"
 SLOTS="$DATADIR/slots"

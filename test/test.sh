@@ -1,5 +1,8 @@
 #!/bin/bash
-. ./functions.sh
+
+basedir=$(readlink -f "$PWD/..")
+tmpdir="${basedir}/test/tmp"
+. ${tmpdir}/functions.sh
 
 ########################################################
 # Minimalistic test framework :]
@@ -13,11 +16,12 @@ tests_failed=()
 
 test_run() {
 	echo -n "* $@: "
-	"$@" &&
-		echo -e "${c_ok}OK${c_normal}" || {
-			echo -e "${c_err}FAIL${c_normal}"
-			tests_failed+=("$*")
-		}
+	if "$@"; then
+		echo -e "${c_ok}OK${c_normal}"
+	else
+		echo -e "${c_err}FAIL${c_normal}"
+		tests_failed+=("$*")
+	fi
 }
 
 test_summary() {
@@ -102,10 +106,9 @@ test_dtbo_build() {
 
 
 for_each_slot test_run test_slot_gpio
-for_each_file "./wb-hardware.conf.wb*" get_slot_module_pairs |
-sort -u |
+pairs=$( for_each_file "$DATADIR/wb-hardware.conf.wb*" get_slot_module_pairs | sort -u )
 while read SLOT MODULE; do
 	test_run test_dtbo_build "$SLOT" "$MODULE"
-done
+done <<<"$pairs"
 
 test_summary
