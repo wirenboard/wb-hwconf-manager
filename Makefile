@@ -6,15 +6,16 @@ datadir = $(DESTDIR)/$(prefix)/share/wb-hwconf-manager
 all:
 	@echo "Nothing to do"
 
-install:
-	install -D -m 0755 wb-hwconf-helper $(DESTDIR)/$(prefix)/bin/wb-hwconf-helper
+install_data:
 	install -D -m 0644 functions.sh $(datadir)/functions.sh
+	cp -rv ./slots $(datadir)/slots
 	install -d -m 0755 $(datadir)/modules
-	cp -r slots $(datadir)/
+	cp modules/*.dtso modules/*.dtsi modules/*.sh $(datadir)/modules
 	cp wb-hardware.conf.* $(datadir)/
-	cp modules/*.dtso ${datadir}/modules
-	cp modules/*.dtsi ${datadir}/modules
-	cp modules/*.sh ${datadir}/modules
+
+
+install: install_data
+	install -D -m 0755 wb-hwconf-helper $(DESTDIR)/$(prefix)/bin/wb-hwconf-helper
 	install -d -m 0755 $(DESTDIR)/usr/share/wb-mqtt-confed/schemas
 	cat wb-hardware.schema.json modules/*.schema.json | \
 		jq --slurp '.[0].definitions = .[0].definitions + (.[1:] | add) | .[0]' \
@@ -24,4 +25,4 @@ install:
 test:
 	./test.sh
 
-.PHONY: install all
+.PHONY: install install_data all test
