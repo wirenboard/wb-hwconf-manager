@@ -1,0 +1,18 @@
+/* All known pins for module */
+#define SLOT_ALL_PINS \
+    SLOT_FOR_PIN(DATA) \
+    SLOT_FOR_PIN(PULLUP)
+
+#include "imx28-pinfunc.h"
+#include "irq.h"
+#include "utils.h"
+
+
+#define SLOT_ALIAS	w1
+
+#define SLOT_DATA       (SSP1_CMD,      2,  13)
+#define SLOT_PULLUP     (SSP1_DATA3,      2,  15)
+
+#define SLOT_GPIO_PINCTRL &w1_pins_gpio
+
+

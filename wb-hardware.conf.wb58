@@ -83,5 +83,13 @@
             "compatible": ["wb55-gsm"],
             "module": "",
             "options": {}
-        }   ]
+        },
+        {
+            "id": "wb58-w1",
+            "name": "W1 Terminal Block",
+            "compatible": ["wb-wx-v1"],
+            "module": "",
+            "options": {}
+        }
+    ]
 }

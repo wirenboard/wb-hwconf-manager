@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.17) stable; urgency=medium
+
+  * Allow to configure W1 terminal as digital input
+
+ -- Evgeny Boger <boger@contactless.ru>  Tue, 21 Mar 2017 22:12:43 +0300
+
 wb-hwconf-manager (1.16) stable; urgency=medium
 
   * adds helper methods to load and unload standalone DTS overlays
