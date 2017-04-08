@@ -12,7 +12,6 @@
 / {
 	description = "WBIO-DIO-TTL-8: TTL GPIO I/O module";
 	compatible-slots = "wb5-extio";
-	compatible = "contactless,imx28-wirenboard52";
 	
 	#define WBIO_NAME wbio_dio_ttl_8
 	#define WBIO_OUTPUT

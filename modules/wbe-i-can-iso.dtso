@@ -12,7 +12,6 @@
 / {
 	description = "WBE-I-CAN-ISO: Isolated CAN interface module";
 	compatible-slots = "wb5-mod_can";
-	compatible = "contactless,imx28-wirenboard52";
 
 	fragment@0 {
 		target = <SLOT_UART_ALIAS>;
