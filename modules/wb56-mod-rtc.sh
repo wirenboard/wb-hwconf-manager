@@ -9,9 +9,15 @@ hook_module_init() {
 
     # set time from RTC if only it looks reasanoble (e.g. > 2013-01-01)
     HW_RTC_EPOCH=`cat /sys/class/rtc/rtc1/since_epoch`
-    if (( ${HW_RTC_EPOCH} > 1356998400 )); then
-	   hwclock -f /dev/rtc1 -s
-    fi;
+    local RC=$?
+    if [[ $RC == 0 ]]; then
+        if (( ${HW_RTC_EPOCH} > 1356998400 )); then
+    	   hwclock -f /dev/rtc1 -s
+        fi;
+    else
+        # error reading time from RTC, initialize it with system time
+        hwclock -f /dev/rtc1 -w
+    fi
 
     set_hwclock_rtc_dev 1
 }
