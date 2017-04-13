@@ -2,6 +2,7 @@ WBIO_COUNT=8
 WBIO_CHANNEL_COUNT=4
 
 source "$DATADIR/modules/utils.sh"
+GPIO_BASE=${GPIO_BASE_8}
 
 case "$MODULE" in
     *-di-*)
