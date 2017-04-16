@@ -1,6 +1,6 @@
 #define SLOT_ALIAS	mod3
-#define SLOT_TX		(CSI_DATA00,	4,	21)
-#define SLOT_RX		(CSI_DATA01,	4,	22)
+#define SLOT_TX		(LCD_DATA16,	3,	21)
+#define SLOT_RX		(LCD_DATA17,	3,	22)
 #define SLOT_RTS	(LCD_DATA06,	3,	11)
 #define SLOT_MOSI	(CSI_DATA06,	4,	27)
 #define SLOT_MISO	(CSI_DATA07,	4,	28)
@@ -10,7 +10,7 @@
 #define SLOT_UART_GPIO_PINCTRL &pinctrl_mod3_uart_gpio
 #define SLOT_SPI_GPIO_PINCTRL &pinctrl_mod3_spi_gpio
 
-#define SLOT_UART_ALIAS	&uart5
+#define SLOT_UART_ALIAS	&uart7
 #define SLOT_SPI_ALIAS	&ecspi1
 
 #include "imx6ul-pinfunc.h"
