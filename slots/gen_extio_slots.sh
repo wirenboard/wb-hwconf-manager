@@ -9,8 +9,6 @@ for board_inc in *-extio.h; do
 		slot=$[i+1]
 		cat > "${board_type}-extio${slot}.def" <<EOF
 #define EXTIO_SLOT_NUM ${slot}
-
-#include "wb-extio-v1.h"
 #include "${board_inc}"
 EOF
 	done
