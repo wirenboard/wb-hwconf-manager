@@ -12,6 +12,9 @@
 
 #define SOC_TYPE MX6UL
 
+// GPIO ports in DT counts from 1, and in sysfs GPIO interface from 0
+#define GPIO_PORT_PIN_TO_NUM(port, pin) $(((port-1) * 32 + pin))
+
 /*
  * The pin function ID is a tuple of
  * <mux_reg conf_reg input_reg mux_mode input_val>
