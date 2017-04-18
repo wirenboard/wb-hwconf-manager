@@ -76,6 +76,13 @@
             "name": "External I/O module 8",
             "module": "",
             "options": {}
+        },
+        {
+            "id": "wb6-can",
+            "compatible": ["wb6-can"],
+            "name": "CAN interface",
+            "module": "",
+            "options": {}
         }
     ]
 }
