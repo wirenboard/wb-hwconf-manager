@@ -97,3 +97,39 @@ service_restart_delete_retained() {
 		service "$1" start
 	}
 }
+
+SYSFS_GPIO="/sys/class/gpio"
+
+# Exports GPIO to sysfs
+# Args
+# - GPIO number
+sysfs_gpio_export() {
+	[[ -e "${SYSFS_GPIO}/gpio$1" ]] && return 0
+	echo "$1" > "${SYSFS_GPIO}/export"
+}
+
+# Unexports GPIO from sysfs
+# Args
+# - GPIO number
+sysfs_gpio_unexport() {
+	[[ -e "${SYSFS_GPIO}/gpio$1" ]] || return 0
+	echo "$1" > "${SYSFS_GPIO}/unexport"
+}
+
+# Set GPIO direction
+# Args
+# - GPIO number
+# - Direction, "in" or "out"
+sysfs_gpio_direction() {
+	[[ "$1" == "in" || "$1" == "out" ]] || return 1
+	echo "${1}" > "${SYSFS_GPIO}/gpio${1}/direction"
+}
+
+# Set GPIO state
+# Args
+# - GPIO number
+# - Value (0/1)
+sysfs_gpio_set() {
+	sysfs_gpio_direction "$1" "out"
+	echo "$2" > "${SYSFS_GPIO}/gpio${1}/value"
+}
