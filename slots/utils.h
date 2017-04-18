@@ -58,8 +58,12 @@
 
 #ifdef FROM_SHELL
 
+#ifndef GPIO_PORT_PIN_TO_NUM
+#define GPIO_PORT_PIN_TO_NUM(port, pin) $((port * 32 + pin))
+#endif
+
 #ifdef SLOT_ALL_PINS
-#define SLOT_FOR_PIN(x) local GPIO_##x=$((SLOT_GPIO_PORT(x) * 32 + SLOT_GPIO_PIN(x)));
+#define SLOT_FOR_PIN(x) local GPIO_##x=GPIO_PORT_PIN_TO_NUM(SLOT_GPIO_PORT(x), SLOT_GPIO_PIN(x));
 SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
 #endif
