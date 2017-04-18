@@ -1,0 +1,33 @@
+/*
+ * Copyright 2017 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "RS485 interface on RS485-2 terminals for WB6";
+	compatible-slots = "wb6-can";
+
+	fragment@0 {
+		target = <SLOT_UART_ALIAS>;
+
+		__overlay__ {
+			pinctrl-0 = <SLOT_UART_RS485_PINCTRL>;
+			uart-has-rtscts;
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <SLOT_CAN_ALIAS>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+};

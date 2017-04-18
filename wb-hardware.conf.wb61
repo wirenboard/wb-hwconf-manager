@@ -80,8 +80,8 @@
         {
             "id": "wb6-can",
             "compatible": ["wb6-can"],
-            "name": "CAN interface",
-            "module": "",
+            "name": "RS485-2/CAN interface mode",
+            "module": "wb6-can-rs485",
             "options": {}
         }
     ]
