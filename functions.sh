@@ -548,7 +548,7 @@ module_deinit() {
 
 	local t=`echo "$OVERLAYS/$SLOT:"*`
 	[[ -e "$t" ]] || {
-		log_end_msg "Slot $SLOT is not in use"
+		log_warning_msg "Slot $SLOT is not in use"
 		return 0
 	}
 
