@@ -14,4 +14,4 @@
 #define SLOT_SPI_ALIAS	&ecspi1
 
 #include "imx6ul-pinfunc.h"
-#include "wb-shield-v3.h"
+#include "wbe3.h"

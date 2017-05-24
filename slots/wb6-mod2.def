@@ -8,4 +8,4 @@
 #define SLOT_UART_ALIAS  &uart5
 
 #include "imx6ul-pinfunc.h"
-#include "wb-shield-v2.h"
+#include "wbe2.h"

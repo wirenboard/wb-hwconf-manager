@@ -2,21 +2,21 @@
     "slots": [
         {
             "id": "wb6-mod1",
-            "compatible": ["wb-shield-v2"],
+            "compatible": ["wbe2"],
             "name": "Internal slot 1",
             "module": "",
             "options": {}
         },
         {
             "id": "wb6-mod2",
-            "compatible": ["wb-shield-v2"],
+            "compatible": ["wbe2"],
             "name": "Internal slot 2",
             "module": "",
             "options": {}
         },
         {
             "id": "wb6-mod3",
-            "compatible": ["wb-shield-v3"],
+            "compatible": ["wbe3"],
             "name": "Internal slot 3",
             "module": "",
             "options": {}
