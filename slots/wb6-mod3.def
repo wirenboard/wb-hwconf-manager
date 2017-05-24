@@ -10,6 +10,12 @@
 #define SLOT_UART_GPIO_PINCTRL &pinctrl_mod3_uart_gpio
 #define SLOT_SPI_GPIO_PINCTRL &pinctrl_mod3_spi_gpio
 
+#define SLOT_TXRX_GPIO_PINCTRL &pinctrl_mod3_txrx_gpio
+#define SLOT_TXRX_UART_PINCTRL &pinctrl_uart7_txrx
+
+#define SLOT_DE_GPIO_PINCTRL &pinctrl_mod3_de_gpio
+#define SLOT_DE_UART_PINCTRL &pinctrl_uart7_ctsb
+
 #define SLOT_UART_ALIAS	&uart7
 #define SLOT_SPI_ALIAS	&ecspi1
 

@@ -22,7 +22,9 @@
 				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pimux_dummy));
 
 				pinctrl-names = "default";
-				pinctrl-0 = <SLOT_GPIO_PINCTRL>;
+				pinctrl-0 = <SLOT_TXRX_GPIO_PINCTRL
+							 SLOT_DE_GPIO_PINCTRL
+							>;
 			};
 		};
 	};
