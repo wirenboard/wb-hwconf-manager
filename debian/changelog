@@ -10,6 +10,18 @@ wb-hwconf-manager (1.17) stable; urgency=medium
 
  -- Alexey Ignatov <lexszero@gmail.com>  Tue, 31 Jan 2017 01:51:06 +0000
 
+wb-hwconf-manager (1.16.2) stable; urgency=medium
+
+  * Fixes handling of WBIO-DI-R10R-4 
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 13 Apr 2017 12:41:25 +0300
+
+wb-hwconf-manager (1.16.1) stable; urgency=medium
+
+  * mod-rtc: set RTC time on init if the chip fails to return valid time
+
+ -- Evgeny Boger <boger@contactless.ru>  Fri, 13 Jan 2017 13:40:29 +0300
+
 wb-hwconf-manager (1.16) stable; urgency=medium
 
   * adds helper methods to load and unload standalone DTS overlays
