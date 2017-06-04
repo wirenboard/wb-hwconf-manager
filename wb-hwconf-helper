@@ -70,6 +70,7 @@ config_apply_changes() {
 			[[ -n "$MODULE" ]] && {
 				log "Deleting $SLOT:$MODULE"
 				module_run_hook del || continue
+				module_deinit "$SLOT"
 			}
 			sed -ri "/^$SLOT.*$/d" "$state"
 		done <<< "$delta"

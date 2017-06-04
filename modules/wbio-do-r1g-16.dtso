@@ -12,7 +12,6 @@
 / {
 	description = "WBIO-DO-R1G-16: 16 Channel Relay I/O module";
 	compatible-slots = "wb5-extio";
-	compatible = "contactless,imx28-wirenboard52";
 	
 	#define WBIO_NAME wbio_do_r1g_16
 	#define WBIO_OUTPUT

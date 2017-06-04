@@ -17,5 +17,4 @@
 	SLOT_PINMUX_GPIO(SCL)
 
 #include "imx28-pinfunc.h"
-#include "irq.h"
 #include "utils.h"

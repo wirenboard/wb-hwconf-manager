@@ -1,3 +1,15 @@
+wb-hwconf-manager (1.18) stable; urgency=medium
+
+  * adds support for WBE2-I-KNX
+
+ -- Evgeny Boger <boger@contactless.ru>  Wed, 24 May 2017 12:20:34 +0300
+
+wb-hwconf-manager (1.17) stable; urgency=medium
+
+  * dependency alternative for 4.9 kernel
+
+ -- Alexey Ignatov <lexszero@gmail.com>  Tue, 31 Jan 2017 01:51:06 +0000
+
 wb-hwconf-manager (1.16.2) stable; urgency=medium
 
   * Fixes handling of WBIO-DI-R10R-4 

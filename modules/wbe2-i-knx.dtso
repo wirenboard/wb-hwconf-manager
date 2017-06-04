@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Contactless Devices, LLC.
+ * Copyright 2017 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -10,10 +10,16 @@
  */
 
 / {
-	description = "WBIO-DO-R3A-4: 4 Channel Relay I/O module";
-	compatible-slots = "wb5-extio";
-	
-	#define WBIO_NAME wbio_do_r3a_4
-	#define WBIO_OUTPUT
-	#include "wbio.dtsi"
+	description = "WBE2-I-KNX: KNX/EIB TP-UART";
+	compatible-slots = "wbe2";
+
+	fragment@0 {
+		target = <SLOT_UART_ALIAS>;
+
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <SLOT_TXRX_UART_PINCTRL>;
+			status = "okay";
+		};
+	};
 };

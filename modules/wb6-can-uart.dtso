@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Contactless Devices, LLC.
+ * Copyright 2017 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -10,14 +10,16 @@
  */
 
 / {
-	description = "WBE-I-CAN-ISO: Isolated CAN interface module";
-	compatible-slots = "wb5-mod_can";
+	description = "UART-CAN interface on RS485-2 terminals for WB6";
+	compatible-slots = "wb6-can";
 
 	fragment@0 {
 		target = <SLOT_UART_ALIAS>;
 
 		__overlay__ {
-			status = "disabled";
+			pinctrl-0 = <SLOT_UART_CAN_PINCTRL>;
+			uart-has-rtscts = <0>;
+			status = "okay";
 		};
 	};
 
@@ -25,10 +27,7 @@
 		target = <SLOT_CAN_ALIAS>;
 
 		__overlay__ {
-				pinctrl-names = "default";
-				pinctrl-0 = <SLOT_CAN_PINCTRL>;
-				status = "okay";
+			status = "disabled";
 		};
-
 	};
 };

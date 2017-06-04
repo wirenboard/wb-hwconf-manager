@@ -14,10 +14,15 @@
 /* Append '0x' prefix to hex numbers */
 #define HEX_PREFIX(x) __cat(0x, x)
 
+#define __arg1(a, ...) a
+#define __arg2(a, b, ...) b
+#define __arg3(a, b, c, ...) c
+#define __arg4(a, b, c, d, ...) d
+
 /* Pattern-matching accessors for pins declarations */
-#define __pad(a, b, c) a
-#define __gpio_port(a, b, c) b
-#define __gpio_pin(a, b, c) c
+#define __pad __arg1
+#define __gpio_port __arg2
+#define __gpio_pin __arg3
 #define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
 /* Helper macros that substitutes actual pins values depending on used slot
@@ -40,7 +45,7 @@
  * SLOT_DT_ALIAS(foo) -> mod<n>_foo
  *	use to reference on per-slot peripherials (i2c, spi, uart)
  */
-#define SLOT_PINMUX(x, func) __cat4(MX28_PAD_, __pin_attr(x, pad), __, func)
+#define SLOT_PINMUX(x, func) __cat4(__cat(SOC_TYPE, _PAD_), __pin_attr(x, pad), __, func)
 #define SLOT_PINMUX_GPIO(x) SLOT_PINMUX(x, __cat4(GPIO_, __pin_attr(x, gpio_port), _, __pin_attr(x, gpio_pin)))
 #define SLOT_GPIO_PORT(x) __pin_attr(x, gpio_port)
 #define SLOT_GPIO_PORT_ALIAS(x) __cat(&gpio, __pin_attr(x, gpio_port))
@@ -53,8 +58,12 @@
 
 #ifdef FROM_SHELL
 
+#ifndef GPIO_PORT_PIN_TO_NUM
+#define GPIO_PORT_PIN_TO_NUM(port, pin) $((port * 32 + pin))
+#endif
+
 #ifdef SLOT_ALL_PINS
-#define SLOT_FOR_PIN(x) local GPIO_##x=$((SLOT_GPIO_PORT(x) * 32 + SLOT_GPIO_PIN(x)));
+#define SLOT_FOR_PIN(x) local GPIO_##x=GPIO_PORT_PIN_TO_NUM(SLOT_GPIO_PORT(x), SLOT_GPIO_PIN(x));
 SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
 #endif
@@ -62,5 +71,6 @@ SLOT_ALL_PINS
 local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
+#include "irq.h"
 
 #endif /* UTILS_H */

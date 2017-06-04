@@ -10,19 +10,21 @@
  */
 
 / {
-	description = "WBE-I-W1: 1-Wire interface module";
-	compatible-slots = "wb5-mod";
+	description = "WBE2-DI-DR3: digital inputs extension module";
+	compatible-slots = "wbe2";
 
-	fragment@1 {
+	fragment@0 {
 		target-path = "/";
 
 		__overlay__ {
-			SLOT_DT_ALIAS(onewire): SLOT_DT_ALIAS(onewire)@0 {
-				compatible = "w1-gpio";
+			SLOT_DT_ALIAS(pimux_dummy): SLOT_DT_ALIAS(pimux_dummy)@0 {
+				compatible = "regulator-fixed";
+				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pimux_dummy));
+
 				pinctrl-names = "default";
-				pinctrl-0 = <SLOT_I2C_PINCTRL SLOT_CS_GPIO_PINCTRL>;
-				gpios = <SLOT_GPIO(SDA)>;
-				pu-gpios = <SLOT_GPIO(SCL)>;
+				pinctrl-0 = <SLOT_TXRX_GPIO_PINCTRL
+							 SLOT_DE_GPIO_PINCTRL
+							>;
 			};
 		};
 	};
