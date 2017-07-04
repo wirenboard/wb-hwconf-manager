@@ -1,10 +1,10 @@
 #define SLOT_ALIAS  can
 
-#define SLOT_CAN_OFF	(UART2_RTS_B,	1,	23)
+#define SLOT_CAN_EN	(UART2_RTS_B,	1,	23)
 #define SLOT_RS485_RTS	(LCD_HSYNC,		3,	2)
 
 #define SLOT_ALL_PINS \
-	SLOT_FOR_PIN(CAN_OFF) \
+	SLOT_FOR_PIN(CAN_EN) \
 	SLOT_FOR_PIN(RS485_RTS)
 
 #define SLOT_UART_ALIAS &uart4
