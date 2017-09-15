@@ -1,0 +1,106 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBMZ-DISPLAY";
+	compatible-slots = "wb5-mod";
+
+	fragment@__COUNTER__ {
+		target = <SLOT_UART_ALIAS>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@__COUNTER__ {
+		target-path = "/";
+
+		__overlay__ {
+			__address-cells = <1>;
+			__size-cells = <0>;
+
+			SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+				compatible = "i2c-gpio";
+				gpios = <SLOT_GPIO(SDA)
+						 SLOT_GPIO(SCL)
+						>;
+				i2c-gpio,delay-us = <20>;		/* ~100 kHz */
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_I2C_PINCTRL SLOT_UART_GPIO_PINCTRL>;
+
+				status = "okay";
+
+				__address-cells = <1>;
+				__size-cells = <0>;
+
+
+				SLOT_DT_ALIAS(i2c_mcp): gpio@20 {
+					compatible = "microchip,mcp23008";
+					gpio-controller;
+					__gpio-cells = <2>;
+					reg = <0x20>;
+
+					microchip,irq-open-drain;
+
+					interrupt-parent = <SLOT_GPIO_PORT_ALIAS(RTS)>;
+					interrupts = <SLOT_GPIO_PIN(RTS) IRQ_TYPE_LEVEL_LOW>;
+					interrupt-controller;
+					__interrupt-cells=<2>;
+
+					linux,gpio-base = <600>;
+				};
+
+
+			};
+		};
+	};
+
+
+	fragment@__COUNTER__ {
+		target = <&mod2spi>;
+
+		__overlay__ {
+/*			compatible = "fsl,imx28-spi";
+			pinctrl-names = "default";
+			pinctrl-0 = <SLOT_SPI_PINCTRL>;
+*/
+
+			status = "okay";
+
+			__address-cells = <1>;
+			__size-cells = <0>;
+
+			ranges;
+
+			display@0{
+				compatible = "ilitek,ili9341";
+				reg = <0>;
+				status = "okay";
+
+				spi-max-frequency = <320000>;
+				rotate = <270>;
+				bgr;
+				fps = <30>;
+				buswidth = <9>;
+
+				debug = <1>;
+			};
+
+
+
+		};
+	};
+
+
+
+};
