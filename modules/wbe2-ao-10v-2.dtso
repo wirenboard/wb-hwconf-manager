@@ -1,0 +1,44 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2-AO-10V-2: Dual channel analog voltage output (0-10V) module";
+	compatible-slots = "wbe2";
+
+
+    fragment@0 {
+        target-path = "/";
+
+        __overlay__ {
+            SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+                compatible = "i2c-gpio";
+                gpios = <SLOT_GPIO(TX)
+                         SLOT_GPIO(RX)
+                        >;
+                i2c-gpio,delay-us = <20>;       /* ~100 kHz */
+
+                pinctrl-names = "default";
+                pinctrl-0 = <&pinctrl_mod1_txrx_gpio &pinctrl_mod1_de_gpio>;
+
+                status = "okay";
+
+                __address-cells = <1>;
+                __size-cells = <0>;
+
+                mcp4728: mcp4728@60 {
+                    compatible = "mcp4728";
+                    reg = <0x60>;
+                };
+            };
+        };
+    };
+
+};
