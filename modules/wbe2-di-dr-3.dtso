@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "WBE2-DI-DR3: digital inputs extension module";
+	description = "WBE2-DI-DR-3: digital inputs extension module";
 	compatible-slots = "wbe2";
 
 	fragment@0 {
