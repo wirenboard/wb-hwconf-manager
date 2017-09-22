@@ -43,3 +43,9 @@ hook_module_del() {
     wb_gpio_del $(seq $GPIO_BASE $[GPIO_BASE+WBIO_COUNT-1])
     hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio /devices/wb-gpio/#"
 }
+
+hook_module_deinit() {
+    for ((i = 0; i < WBIO_COUNT; i++)); do
+        echo $[GPIO_BASE+i] > /sys/class/gpio/unexport 2>/dev/null || true
+    done
+}

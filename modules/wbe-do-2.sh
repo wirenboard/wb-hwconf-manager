@@ -11,3 +11,8 @@ hook_module_del() {
     wb_gpio_del ${!DO2_GPIO_K2}
     hook_once_after_config_change "service_restart_delete_retained wb-homa-gpio /devices/wb-gpio/#"
 }
+
+hook_module_deinit() {
+    echo ${!DO2_GPIO_K1} > /sys/class/gpio/unexport 2>/dev/null || true
+    echo ${!DO2_GPIO_K2} > /sys/class/gpio/unexport 2>/dev/null || true
+}
