@@ -18,6 +18,7 @@ hook_module_add() {
 			"MZ${SLOT_NUM}_TTL$[i+9]" \
 			$[GPIO_BASE+i] \
 			"input" \
+			"active-high" \
 		)
 	done
 

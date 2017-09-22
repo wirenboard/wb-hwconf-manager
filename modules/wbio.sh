@@ -23,6 +23,7 @@ hook_module_add() {
 			"EXT${SLOT_NUM}_${WBIO_GPIO_PREFIX}$[i+1]" \
 			$[GPIO_BASE+WBIO_CHANNEL_GPIO_OFFSETS[i]] \
 			"$GPIO_DIR" \
+			"active-high" \
 		)
 	done
 	wb_gpio_add "${items[@]}"

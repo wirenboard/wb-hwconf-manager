@@ -24,17 +24,23 @@ wait_for_path() {
 # - gpio name (for mqtt)
 # - gpio number (as in /sys/class/gpio)
 # - direction - "input" or "output"
-# These 3 args can be repeated multiple times to add many gpios at once
+# - polarity - "active-high" or "active-low" (inverted)
+# These 4 args can be repeated multiple times to add many gpios at once
 wb_gpio_add() {
 	local JSON=$CONFIG_GPIO
 	local items=()
 	while [[ $# -ge 3 ]]; do
-		[[ -n "$1" && -n "$2" && -n "$3" ]] || {
+		[[ -n "$1" && -n "$2" && -n "$3" && -n "$4" ]] || {
 			die "Bad arguments"
 			return 1
 		}
-		items+=( "{name: \"$1\", gpio: $2, direction: \"$3\"}" )
-		shift 3
+		local inverted="false"
+		[[ "$4" == "active-low" ]] && {
+			inverted="true"
+		}
+		wb_gpio_del $2
+		items+=( "{name: \"$1\", gpio: $2, direction: \"$3\", inverted: $inverted}" )
+		shift 4
 	done
 
 	json_array_append ".channels" "${items[@]}"

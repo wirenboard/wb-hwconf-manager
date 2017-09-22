@@ -22,12 +22,14 @@ hook_module_add() {
             "EXT${SLOT_NUM}_DIR$[i+1]" \
             $[GPIO_BASE+i*2] \
             "$GPIO_DIR" \
+            "active-high" \
         )
 
         items+=( \
             "EXT${SLOT_NUM}_ON$[i+1]" \
             $[GPIO_BASE+i*2+1] \
             "$GPIO_DIR" \
+            "active-high" \
         )
 
 
