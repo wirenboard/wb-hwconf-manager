@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.19) stable; urgency=medium
+
+  * Adds WB6 extension modules
+
+ -- Evgeny Boger <boger@contactless.ru>  Fri, 15 Sep 2017 21:36:14 +0300
+
 wb-hwconf-manager (1.18) stable; urgency=medium
 
   * adds support for WBE2-I-KNX

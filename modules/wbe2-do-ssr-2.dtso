@@ -26,9 +26,9 @@
         target-path = "/";
 
         __overlay__ {
-            SLOT_DT_ALIAS(pimux_dummy): SLOT_DT_ALIAS(pimux_dummy)@0 {
+            SLOT_DT_ALIAS(pinmux_dummy) {
                 compatible = "regulator-fixed";
-                regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pimux_dummy));
+                regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pinmux_dummy));
 
                 pinctrl-names = "default";
                 pinctrl-0 = <SLOT_TXRX_GPIO_PINCTRL>;
