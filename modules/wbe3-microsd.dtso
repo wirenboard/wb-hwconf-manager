@@ -1,0 +1,35 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE3-MICROSD: microSD module";
+	compatible-slots = "wbe3";
+
+	fragment@0 {
+		target = <SLOT_SPI_ALIAS>;
+
+		__overlay__ {
+			status = "okay";
+
+			microsd@0 {
+				compatible = "mmc-spi-slot";
+				spi-max-frequency = <50000000>;
+				voltage-ranges = <3200 3400>;
+
+				broken-cd;
+
+				reg = <0>;
+			};
+
+
+		};
+	};
+};

@@ -7,8 +7,8 @@
 #define SLOT_SCK	(CSI_DATA04,	4,	25)
 #define SLOT_CS		(CSI_DATA05,	4,	26)
 
-#define SLOT_UART_GPIO_PINCTRL &pinctrl_mod3_uart_gpio
 #define SLOT_SPI_GPIO_PINCTRL &pinctrl_mod3_spi_gpio
+#define SLOT_SPI_SPI_PINCTRL &pinctrl_ecspi1
 
 #define SLOT_TXRX_GPIO_PINCTRL &pinctrl_mod3_txrx_gpio
 #define SLOT_TXRX_UART_PINCTRL &pinctrl_uart7_txrx
