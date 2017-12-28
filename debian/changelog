@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.21) stable; urgency=medium
+
+  * add "No Modem" option for WB5
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 28 Dec 2017 18:39:36 +0300
+
 wb-hwconf-manager (1.20) stable; urgency=medium
 
   * WBIO-AI-DV-12 (single) support
