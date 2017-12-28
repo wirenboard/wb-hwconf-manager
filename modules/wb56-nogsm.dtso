@@ -1,0 +1,41 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "No GSM Modem";
+	compatible-slots = "wb55-gsm";
+
+
+    fragment@0 {
+        /* Turn off AUART0 so we can use UART pins as GPIOs */
+
+        target = <&auart0>;
+
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+	fragment@1 {
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(pinmux_dummy) {
+				compatible = "regulator-fixed";
+				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pinmux_dummy));
+
+				pinctrl-names = "default";
+				pinctrl-0 = <&gsm_uart_pins_gpio>;
+			};
+		};
+	};
+
+};
