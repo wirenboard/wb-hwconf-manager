@@ -26,7 +26,7 @@ remove_channels() {
 
 get_iio_match() {
 	local chip=$1
-	echo "${SLOT_I2C_DEVICE_ALIAS}/0-00`dec_to_hex $((ADS_ADDR + chip))`"
+	echo "${SLOT_I2C_DEVICE_MATCH}/*/0-00`dec_to_hex $((ADS_ADDR + chip))`"
 }
 
 hook_module_add() {

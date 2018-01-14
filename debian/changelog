@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.21.1) stable; urgency=medium
+
+  * more robust IIO match for AI-DV-12
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 15 Jan 2018 00:06:07 +0300
+
 wb-hwconf-manager (1.21) stable; urgency=medium
 
   * add "No Modem" option for WB5
