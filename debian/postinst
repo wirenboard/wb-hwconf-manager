@@ -37,10 +37,4 @@ jq -e '.slots' < $CONFFILE >/dev/null && {
 
 ucf --debconf-ok $CONFFILE_DIST $CONFFILE
 
-# Debhelper generates symlink to S runlevel, lvl3 is required for systemd
-if [ -x "/etc/init.d/wb-hwconf-manager" ]; then
-	ln -s /etc/init.d/wb-hwconf-manager /etc/rc3.d/S01wb-hwconf-manager
-fi
-
-
 #DEBHELPER#

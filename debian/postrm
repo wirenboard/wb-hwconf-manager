@@ -2,7 +2,6 @@
 CONFFILE=/etc/wb-hardware.conf
 
 if [ "$1" = "purge" ]; then
-    rm /etc/rc3.d/S01wb-hwconf-manager
     if [ -x /usr/bin/ucf ]; then
         ucf  --purge $CONFFILE
     fi
