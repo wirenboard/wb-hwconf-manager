@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.21.2) stable; urgency=medium
+
+  * runlevel 3 is added to init script for systemd support
+
+ -- Attila Door <a.door@contactless.ru>  Mon, 22 Jan 2018 14:06:07 +0300
+
 wb-hwconf-manager (1.21.1) stable; urgency=medium
 
   * more robust IIO match for AI-DV-12
