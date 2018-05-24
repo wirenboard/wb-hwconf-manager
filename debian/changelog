@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.22) stable; urgency=medium
+
+  * Adds support for WBIO-AO-10V-8
+
+ -- Evgeny Boger <boger@contactless.ru>  Thu, 24 May 2018 21:55:04 +0300
+
 wb-hwconf-manager (1.21.2) stable; urgency=medium
 
   * runlevel 3 is added to init script for systemd support
