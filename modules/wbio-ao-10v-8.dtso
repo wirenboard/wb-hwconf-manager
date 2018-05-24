@@ -1,0 +1,31 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+    description = "WBIO-AO-10V-8 Analog Outputs";
+    compatible-slots = "wb5-extio";
+
+    fragment@1 {
+        target = <SLOT_I2C_ALIAS>;
+
+        __overlay__ {
+            __address-cells = <1>;
+            __size-cells = <0>;
+
+            SLOT_DT_ALIAS(ao10v8): SLOT_DT_ALIAS(ao10v8)@SLOT_I2C_ADDRESS_DAC {
+                compatible = "ltc2637-l10";
+			    reg = <HEX_PREFIX(SLOT_I2C_ADDRESS_DAC)>;
+                __address-cells = <1>;
+                __size-cells = <0>;
+            };
+        };
+    };
+};
