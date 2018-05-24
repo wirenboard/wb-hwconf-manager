@@ -1,5 +1,4 @@
-#include "utils.h"
-
+#include "strutils.h"
 #define SLOT_ALIAS __cat(extio, EXTIO_SLOT_NUM)
 
 /* Fields: ADDRESS_IN, ADDRESS_OUT, GPIO_BASE_8, GPIO_BASE_40 */
@@ -11,6 +10,9 @@
 #define SLOT6 ( 26,	21,		200,	456 )
 #define SLOT7 ( 25,	22,		208,	496 )
 #define SLOT8 ( 23,	24,		216,	536 )
+/* utils.h has to be included after SLOT_ALIAS is defined */
+#include "utils.h"
+
 
 #define SLOT_DEF __cat(SLOT, EXTIO_SLOT_NUM)
 
