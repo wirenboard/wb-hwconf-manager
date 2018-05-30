@@ -1,23 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-/* For somewhat reason, tcc assumes that linux equals 1 */
-#undef linux
-
-/* Abusing the preprocessor violently */
-#define __cat_internal(a, ...) a ## __VA_ARGS__
-#define __cat(a, ...) __cat_internal(a, __VA_ARGS__)
-#define __cat3(a, b, ...) __cat(a, __cat(b, __VA_ARGS__))
-#define __cat4(a, b, c, ...) __cat(a, __cat3(b, c, __VA_ARGS__))
-#define __pass(...) __VA_ARGS__
-
-/* Append '0x' prefix to hex numbers */
-#define HEX_PREFIX(x) __cat(0x, x)
-
-#define __arg1(a, ...) a
-#define __arg2(a, b, ...) b
-#define __arg3(a, b, c, ...) c
-#define __arg4(a, b, c, d, ...) d
+#include "strutils.h"
 
 /* Pattern-matching accessors for pins declarations */
 #define __pad __arg1
@@ -52,9 +36,6 @@
 #define SLOT_GPIO_PIN(x) __pin_attr(x, gpio_pin)
 #define SLOT_GPIO(x) SLOT_GPIO_PORT_ALIAS(x) SLOT_GPIO_PIN(x) 0
 #define SLOT_DT_ALIAS(x) __cat3(SLOT_ALIAS, _, x)
-
-#define QUOTE(str) #str
-#define EXPAND_AND_QUOTE(str) QUOTE(str)
 
 #ifdef FROM_SHELL
 
