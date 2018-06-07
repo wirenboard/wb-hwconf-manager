@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.22.2) stable; urgency=medium
+
+  * Fixed jq build dependency
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Thu, 07 Jun 2018 21:09:27 +0300
+
 wb-hwconf-manager (1.22.1) stable; urgency=medium
 
   * Fixes WBE2-AO-10V-2 module in MOD2 slot
