@@ -78,6 +78,20 @@
             "options": {}
         },
         {
+            "id": "wb6-rs485-1-failsafe",
+            "compatible": ["wb6-fs"],
+            "name": "RS485-1 failsafe bias",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb6-rs485-2-failsafe",
+            "compatible": ["wb6-fs"],
+            "name": "RS485-2 failsafe bias",
+            "module": "",
+            "options": {}
+        },
+        {
             "id": "wb6-can",
             "compatible": ["wb6-can"],
             "name": "RS485-2/CAN interface mode",
