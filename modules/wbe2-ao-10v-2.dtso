@@ -15,32 +15,32 @@
 
 	#include "wbe2-i2c.dtsi"
 
-	fragment@2 {
-		target-path = "/";
-		
-		__overlay__ {
-			SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c) {
-				compatible = "i2c-gpio";
-				gpios = <SLOT_GPIO(TX)
-						 SLOT_GPIO(RX)
-						>;
-				i2c-gpio,delay-us = <20>;	   /* ~100 kHz */
+    fragment@2 {
+        target-path = "/";
+        
+        __overlay__ {
+            SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c) {
+                compatible = "i2c-gpio";
+                gpios = <SLOT_GPIO(TX)
+                         SLOT_GPIO(RX)
+                        >;
+                i2c-gpio,delay-us = <20>;       /* ~100 kHz */
 
-				pinctrl-names = "default";
-				pinctrl-0 = <SLOT_TXRX_GPIO_PINCTRL
-							 SLOT_DE_GPIO_PINCTRL
-							>;
+                pinctrl-names = "default";
+                pinctrl-0 = <SLOT_TXRX_GPIO_PINCTRL
+                             SLOT_DE_GPIO_PINCTRL
+                            >;
 
-				status = "okay";
+                status = "okay";
 
-				__address-cells = <1>;
-				__size-cells = <0>;
+                __address-cells = <1>;
+                __size-cells = <0>;
 
-				SLOT_DT_ALIAS(wbe2_ao_10v_2): SLOT_DT_ALIAS(wbe2_ao_10v_2)@60 {
-					compatible = "mcp4728";
-					reg = <0x60>;
-				};
-			};
-		};
-	};
+                SLOT_DT_ALIAS(wbe2_ao_10v_2): SLOT_DT_ALIAS(wbe2_ao_10v_2)@60 {
+                    compatible = "mcp4728";
+                    reg = <0x60>;
+                };
+            };
+        };
+    };
 };
