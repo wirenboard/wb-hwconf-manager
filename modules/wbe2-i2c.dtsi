@@ -1,0 +1,46 @@
+/*
+ * Copyright 2016-2017 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+
+
+#if defined (SLOT_NEED_CONTROL_JTAG_MOD)
+
+fragment@0 {
+	/* Free GPIO10 from hi-z state via disable led device */
+
+	target = <&led_jtag_mod>;
+
+	__overlay__ {
+		status = "disabled";
+	};
+};
+
+fragment@1 {
+	/* Turn on GPIO10 ( JTAG_MOD ) to pull up mod2 SDA line via R95 3K */
+
+	target-path="/";
+	__overlay__ {
+
+		led_jtag_mod_new: led_jtag_mod_new {
+		compatible = "gpio-leds";
+
+			jtag_mod_out_new: jtag_mod_out_new {
+				label = "mod2_sda_pullup_active";
+				gpios = <&gpio1 10 1>;
+				linux,default-trigger = "default-off";
+				open-drain;
+			};
+		};
+	};
+};
+
+
+#endif

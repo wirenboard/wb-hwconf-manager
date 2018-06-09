@@ -11,5 +11,7 @@
 
 #define SLOT_UART_ALIAS  &uart5
 
+#define SLOT_NEED_CONTROL_JTAG_MOD
+
 #include "imx6ul-pinfunc.h"
 #include "wbe2.h"
