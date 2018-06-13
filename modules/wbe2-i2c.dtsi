@@ -13,7 +13,7 @@
 
 #if defined (SLOT_NEED_CONTROL_JTAG_MOD)
 
-fragment@0 {
+fragment-free_m2pu_gpio {
 	/* Free GPIO10 from hi-z state via disable led device */
 
 	target = <&led_jtag_mod>;
@@ -23,16 +23,16 @@ fragment@0 {
 	};
 };
 
-fragment@1 {
+fragment-activate_m2pu_gpio {
 	/* Turn on GPIO10 ( JTAG_MOD ) to pull up mod2 SDA line via R95 3K */
 
 	target-path="/";
 	__overlay__ {
 
-		led_jtag_mod_new: led_jtag_mod_new {
+		led_jtag_mod_new {
 		compatible = "gpio-leds";
 
-			jtag_mod_out_new: jtag_mod_out_new {
+			jtag_mod_out_new {
 				label = "mod2_sda_pullup_active";
 				gpios = <&gpio1 10 1>;
 				linux,default-trigger = "default-off";
