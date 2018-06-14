@@ -29,10 +29,10 @@ fragment-activate_m2pu_gpio {
 	target-path="/";
 	__overlay__ {
 
-		led_jtag_mod_new: led_jtag_mod_new {
+		led_jtag_mod_new {
 		compatible = "gpio-leds";
 
-			jtag_mod_out_new: jtag_mod_out_new {
+			jtag_mod_out_new {
 				label = "mod2_sda_pullup_active";
 				gpios = <&gpio1 10 1>;
 				linux,default-trigger = "default-off";
