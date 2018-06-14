@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.23) stable; urgency=medium
+
+  * Add WBE2-I-1WIRE module support
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Thu, 14 Jun 2018 17:59:25 +0300
+
 wb-hwconf-manager (1.22.3) stable; urgency=medium
 
   * Fixed work WBE2-I-AO10V-2 in MOD2 slot (i2c SDA PULLUP via JTAG_MOD pin) and simultaneously work of two modules
