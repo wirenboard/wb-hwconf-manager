@@ -16,7 +16,7 @@
 	#include "wbe2-i2c.dtsi"
 
     fragment {
-		target-path = "/";
+        target-path = "/";
         
         __overlay__ {
             SLOT_DT_ALIAS(i2c) {
@@ -43,4 +43,5 @@
             };
         };
     };
+
 };
