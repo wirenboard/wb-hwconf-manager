@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Contactless Devices, LLC.
+ * Copyright 2016-2018 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -16,7 +16,7 @@
 	#include "wbe2-i2c.dtsi"
 
     fragment {
-		target-path = "/";
+        target-path = "/";
         
         __overlay__ {
             SLOT_DT_ALIAS(i2c) {
