@@ -1,4 +1,4 @@
-wb-hwconf-manager (1.23) UNRELEASED; urgency=medium
+wb-hwconf-manager (1.23) stable; urgency=medium
 
   * Add WBE2-I-1WIRE module support
 
