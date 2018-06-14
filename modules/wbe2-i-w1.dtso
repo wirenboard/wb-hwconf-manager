@@ -1,0 +1,46 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2-I-1WIRE: 1-Wire bus master";
+	compatible-slots = "wbe2";
+
+	#include "wbe2-i2c.dtsi"
+
+	fragment {
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(i2c) {
+				compatible = "i2c-gpio";
+				gpios = <SLOT_GPIO(TX)
+						 SLOT_GPIO(RX)
+						>;
+				i2c-gpio,delay-us = <20>;	   /* ~100 kHz */
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_TXRX_GPIO_PINCTRL
+							 SLOT_DE_GPIO_PINCTRL
+							>;
+
+				status = "okay";
+
+				__address-cells = <1>;
+				__size-cells = <0>;
+
+				SLOT_DT_ALIAS(ds2482)@18 {
+					compatible = "ds2482";
+					reg = <0x18>;
+				};
+			};
+		};
+	};
+};
