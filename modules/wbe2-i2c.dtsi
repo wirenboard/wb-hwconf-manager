@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 Contactless Devices, LLC.
+ * Copyright 2016-2018 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -9,13 +9,10 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-
-
 #if defined (SLOT_NEED_CONTROL_JTAG_MOD)
 
 fragment-free_m2pu_gpio {
 	/* Free GPIO10 from hi-z state via disable led device */
-
 	target = <&led_jtag_mod>;
 
 	__overlay__ {
@@ -25,12 +22,11 @@ fragment-free_m2pu_gpio {
 
 fragment-activate_m2pu_gpio {
 	/* Turn on GPIO10 ( JTAG_MOD ) to pull up mod2 SDA line via R95 3K */
+	target-path = "/";
 
-	target-path="/";
 	__overlay__ {
-
 		led_jtag_mod_new {
-		compatible = "gpio-leds";
+			compatible = "gpio-leds";
 
 			jtag_mod_out_new {
 				label = "mod2_sda_pullup_active";
@@ -41,6 +37,5 @@ fragment-activate_m2pu_gpio {
 		};
 	};
 };
-
 
 #endif
