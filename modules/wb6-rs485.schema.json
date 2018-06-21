@@ -1,0 +1,40 @@
+{
+	"module_wb6-rs485": {
+		"title": "RS485 failsafe bias configuration",
+		"type": "object",
+		"properties": {
+			"mode": {
+				"type": "string",
+				"title": "Failsafe bias mode",
+				"minLength": 1,
+				"enumSource": [
+					{
+						"source": [
+							{
+								"value": "enabled",
+								"title": "Enabled"
+							},
+							{
+								"value": "disabled",
+								"title": "Disabled"
+							}
+						],
+						"value": "{{item.value}}",
+						"title": "{{item.title}}"
+					}
+				],
+				"default": "enabled",
+				"options": {
+					"disable_collapse": true,
+					"disable_array_add": true,
+					"disable_array_delete": true,
+					"disable_array_reorder": true
+				},
+				"propertyOrder": 1
+			}
+		},
+		"required": [
+			"mode"
+		]
+	}
+}

@@ -1,7 +1,0 @@
-#define SLOT_RS485_FS	(LCD_DATA18,	3,	23)
-
-#define SLOT_ALL_PINS \
-	SLOT_FOR_PIN(RS485_FS)
-
-#include "imx6ul-pinfunc.h"
-#include "utils.h"

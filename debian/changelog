@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.24) stable; urgency=medium
+
+  * Changed WB6 RS485 bottom terminals mode configuration. Add control for RS485 failsafe bias
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Thu, 21 Jun 2018 12:51:46 +0300
+
 wb-hwconf-manager (1.23.1) stable; urgency=medium
 
   * Fixed work microsd in slot mod3 on wb6
