@@ -1,4 +1,4 @@
-wb-hwconf-manager (1.23.1) stable; urgency=medium
+wb-hwconf-manager (1.24) stable; urgency=medium
 
   * Fixed work microsd in slot mod3 on wb6
   * Add module WBE2-DO-OC-2
