@@ -13,7 +13,7 @@
 	description = "RS485 interface on bottom terminals WB6";
 	compatible-slots = "wb6-rs485";
 
-#if defined (HAS_CAN)
+#if defined (SLOT_HAS_CAN)
 	fragment_can_off {
 		target = <SLOT_CAN_ALIAS>;
 
