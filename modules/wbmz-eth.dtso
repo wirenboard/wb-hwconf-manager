@@ -9,15 +9,24 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
+/*
+ * This overlay is dummy now.
+ * Second Ethernet port is now controlled via U-boot overlays.
+ * For older systems without new U-boot, second Ethernet is
+ * enabled by default in DTB (since image version 4.9+wb20180706132725).
+ * This will not break systems with only one Ethernet
+ * (tested on WB5.8 Zero).
+ */
+
 / {
-	description = "2nd Ethernet option for WB5";
+	description = "2nd Ethernet option for WB5 (dummy)";
 	compatible-slots = "wb5-eth";
 
     fragment@0 {
         target = <&mac1>;
 
         __overlay__ {
-            status = "okay";
+            /* Nothing to change here */
         };
     };
 };
