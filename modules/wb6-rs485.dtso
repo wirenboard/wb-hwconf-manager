@@ -21,6 +21,7 @@
 			status = "disabled";
 		};
 	};
+#endif
 
 	fragment_uart_on {
 		target = <SLOT_UART_ALIAS>;
@@ -31,14 +32,4 @@
 			status = "okay";
 		};
 	};
-
-#else
-	fragment {
-		target_path = "/";
-
-		__overlay__ {
-		};
-	};
-
-#endif
 };

@@ -13,7 +13,7 @@
 	description = "UART-CAN interface on RS485-2 terminals for WB6";
 	compatible-slots = "wb6-can";
 
-	fragment@0 {
+	fragment_uart_on {
 		target = <SLOT_UART_ALIAS>;
 
 		__overlay__ {
@@ -23,7 +23,24 @@
 		};
 	};
 
-	fragment@1 {
+	fragment_reg{
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(pinmux_dummy) {
+				compatible = "regulator-fixed";
+				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pinmux_dummy));
+				regulator-min-microvolt = <5000000>;
+				regulator-max-microvolt = <5000000>;
+				regulator-boot-on;
+				regulator-always-on;
+				vin-supply = <SLOT_UART_CAN_REGULATOR>;
+			};
+		};
+	};
+
+
+	fragment_can_off {
 		target = <SLOT_CAN_ALIAS>;
 
 		__overlay__ {
