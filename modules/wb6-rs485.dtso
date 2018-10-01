@@ -28,6 +28,7 @@
 
 		__overlay__ {
 			pinctrl-0 = <SLOT_UART_RS485_PINCTRL>;
+			linux,rs485-enabled-at-boot-time;
 			uart-has-rtscts;
 			status = "okay";
 		};

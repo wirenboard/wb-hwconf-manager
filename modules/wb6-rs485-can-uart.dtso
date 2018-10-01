@@ -18,7 +18,6 @@
 
 		__overlay__ {
 			pinctrl-0 = <SLOT_UART_CAN_PINCTRL>;
-			uart-has-rtscts = <0>;
 			status = "okay";
 		};
 	};
