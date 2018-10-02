@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "RS485 interface on bottom terminals WB6";
+	description = "RS485 interface on RS485-1 and RS485-2 terminals for WB6";
 	compatible-slots = "wb6-rs485";
 
 #if defined (SLOT_HAS_CAN)
@@ -28,8 +28,6 @@
 
 		__overlay__ {
 			pinctrl-0 = <SLOT_UART_RS485_PINCTRL>;
-			linux,rs485-enabled-at-boot-time;
-			uart-has-rtscts;
 			status = "okay";
 		};
 	};
