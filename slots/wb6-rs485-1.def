@@ -3,5 +3,8 @@
 #define SLOT_ALL_PINS \
 	SLOT_FOR_PIN(RS485_FS)
 
+#define SLOT_UART_ALIAS &uart2
+#define SLOT_UART_RS485_PINCTRL &pinctrl_uart2
+
 #include "imx6ul-pinfunc.h"
 #include "utils.h"
