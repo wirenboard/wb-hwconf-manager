@@ -1,5 +1,5 @@
 {
-	"module_wb6-rs485": {
+	"module_wb6-can-rs485": {
 		"title": "RS485 failsafe bias configuration",
 		"type": "object",
 		"properties": {

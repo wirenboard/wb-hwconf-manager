@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "RS485 interface on RS485-1 and RS485-2 terminals for WB6";
+	description = "RS485 interface";
 	compatible-slots = "wb6-rs485";
 
 #if defined (SLOT_HAS_CAN)

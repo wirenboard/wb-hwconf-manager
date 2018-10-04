@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "CAN interface on RS485-2 terminals for WB6";
+	description = "CAN interface";
 	compatible-slots = "wb6-can";
 
 	fragment_uart_off {
