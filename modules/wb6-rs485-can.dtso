@@ -10,24 +10,22 @@
  */
 
 / {
-	description = "UART-CAN interface on RS485-2 terminals for WB6";
+	description = "CAN interface on RS485-2 terminals for WB6";
 	compatible-slots = "wb6-can";
 
-	fragment@0 {
+	fragment_uart_off {
 		target = <SLOT_UART_ALIAS>;
 
 		__overlay__ {
-			pinctrl-0 = <SLOT_UART_CAN_PINCTRL>;
-			uart-has-rtscts = <0>;
-			status = "okay";
+			status = "disabled";
 		};
 	};
 
-	fragment@1 {
+	fragment_can_on {
 		target = <SLOT_CAN_ALIAS>;
 
 		__overlay__ {
-			status = "disabled";
+			status = "okay";
 		};
 	};
 };

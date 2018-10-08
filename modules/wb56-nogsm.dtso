@@ -14,7 +14,7 @@
 	compatible-slots = "wb55-gsm";
 
 
-    fragment@0 {
+    fragment_uart_off {
         /* Turn off AUART0 so we can use UART pins as GPIOs */
 
         target = <&auart0>;
@@ -24,7 +24,7 @@
         };
     };
 
-	fragment@1 {
+	fragment_ {
 		target-path = "/";
 
 		__overlay__ {

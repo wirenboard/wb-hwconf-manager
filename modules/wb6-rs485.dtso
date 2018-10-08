@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Contactless Devices, LLC.
+ * Copyright 2017-2018 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -10,21 +10,24 @@
  */
 
 / {
-	description = "CAN interface on RS485-2 terminals for WB6";
-	compatible-slots = "wb6-can";
+	description = "RS485 interface on RS485-1 and RS485-2 terminals for WB6";
+	compatible-slots = "wb6-rs485";
 
-	fragment@0 {
-		target = <SLOT_UART_ALIAS>;
+#if defined (SLOT_HAS_CAN)
+	fragment_can_off {
+		target = <SLOT_CAN_ALIAS>;
 
 		__overlay__ {
 			status = "disabled";
 		};
 	};
+#endif
 
-	fragment@1 {
-		target = <SLOT_CAN_ALIAS>;
+	fragment_uart_on {
+		target = <SLOT_UART_ALIAS>;
 
 		__overlay__ {
+			pinctrl-0 = <SLOT_UART_RS485_PINCTRL>;
 			status = "okay";
 		};
 	};

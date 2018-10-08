@@ -127,8 +127,8 @@ sysfs_gpio_unexport() {
 # - GPIO number
 # - Direction, "in" or "out"
 sysfs_gpio_direction() {
-	[[ "$1" == "in" || "$1" == "out" ]] || return 1
-	echo "${1}" > "${SYSFS_GPIO}/gpio${1}/direction"
+	[[ "$2" == "in" || "$2" == "out" ]] || return 1
+	echo "${2}" > "${SYSFS_GPIO}/gpio${1}/direction"
 }
 
 # Set GPIO state

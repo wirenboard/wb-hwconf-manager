@@ -13,7 +13,7 @@
 	description = "2nd Ethernet option for WB5";
 	compatible-slots = "wb5-eth";
 
-    fragment@0 {
+    fragment {
         target = <&mac1>;
 
         __overlay__ {
