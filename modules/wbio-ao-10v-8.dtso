@@ -13,14 +13,12 @@
     description = "WBIO-AO-10V-8 Analog Outputs";
     compatible-slots = "wb5-extio";
 
-    fragment@1 {
+    fragment {
         target = <SLOT_I2C_ALIAS>;
 
         __overlay__ {
-            __address-cells = <1>;
-            __size-cells = <0>;
 
-            SLOT_DT_ALIAS(ao10v8): SLOT_DT_ALIAS(ao10v8)@SLOT_I2C_ADDRESS_DAC {
+            SLOT_DT_ALIAS(ao10v8)@SLOT_I2C_ADDRESS_DAC {
                 compatible = "ltc2637-l10";
 			    reg = <HEX_PREFIX(SLOT_I2C_ADDRESS_DAC)>;
                 __address-cells = <1>;
