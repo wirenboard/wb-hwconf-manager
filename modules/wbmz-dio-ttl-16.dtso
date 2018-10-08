@@ -13,7 +13,7 @@
 	description = "WBMZ-DIO-TTL-16: TTL GPIO mezonine extension module";
 	compatible-slots = "wb5-mod";
 
-	fragment@__COUNTER__ {
+	fragment-1 {
 		target = <&SLOT_DT_ALIAS(pins)>;
 
 		__overlay__ {
@@ -28,14 +28,11 @@
 	};
 
 
-	fragment@__COUNTER__ {
+	fragment-2 {
 	    target-path = "/";
 
 	    __overlay__ {
-			__address-cells = <1>;
-			__size-cells = <0>;
-
-			SLOT_DT_ALIAS(i2c): SLOT_DT_ALIAS(i2c)@0 {
+			SLOT_DT_ALIAS(i2c)@0 {
 			    compatible = "i2c-gpio";
 			    gpios = <SLOT_GPIO(SDA)
 				     SLOT_GPIO(SCL)
@@ -50,7 +47,7 @@
 				__address-cells = <1>;
 				__size-cells = <0>;
 
-				SLOT_DT_ALIAS(wbmz_dio_ttl_16): gpio@20 {
+				SLOT_DT_ALIAS(wbmz_dio_ttl_16)@20 {
 					compatible = "microchip,mcp23017";
 					gpio-controller;
 					__gpio-cells = <2>;
