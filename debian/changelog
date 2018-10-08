@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.25.1) stable; urgency=medium
+
+  * Fix problems with modules change order. Fix dtc warnings - node has a unit name, but no reg property.
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Mon, 08 Oct 2018 15:19:56 +0300
+
 wb-hwconf-manager (1.25) stable; urgency=medium
 
   * Changed WB6 RS485 bottom terminals mode configuration. Add control for RS485 failsafe bias
