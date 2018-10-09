@@ -1,7 +1,7 @@
 #define SLOT_ALIAS	w1
 
 #define SLOT_DATA	(JTAG_TMS,	1,	11)
-#define SLOT_PULLUP	(JTAG_TDI,	1,	23)
+#define SLOT_PULLUP	(JTAG_TDI,	1,	13)
 
 #define SLOT_1WIRE_ALIAS	&onewire_w1
 #define SLOT_PINCTRL &pinctrl_w1_gpio
