@@ -24,7 +24,7 @@
         };
     };
 
-	fragment_ {
+	fragment_off_pwr {
 		target-path = "/";
 
 		__overlay__ {
