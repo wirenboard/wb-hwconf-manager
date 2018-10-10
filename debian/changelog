@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.24.2) stable; urgency=medium
+
+  * fix problems with modules unload order 
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Wed, 10 Oct 2018 17:43:59 +0300
+
 wb-hwconf-manager (1.24.1) stable; urgency=medium
 
   * fix AI-DV-12 on WB6
