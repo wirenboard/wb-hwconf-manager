@@ -10,10 +10,10 @@
  */
 
 / {
-	description = "CAN interface on RS485-2 terminals for WB6";
+	description = "CAN interface";
 	compatible-slots = "wb6-can";
 
-	fragment@0 {
+	fragment_uart_off {
 		target = <SLOT_UART_ALIAS>;
 
 		__overlay__ {
@@ -21,7 +21,7 @@
 		};
 	};
 
-	fragment@1 {
+	fragment_can_on {
 		target = <SLOT_CAN_ALIAS>;
 
 		__overlay__ {

@@ -1,0 +1,23 @@
+#define SLOT_ALIAS  can
+
+#define SLOT_HAS_CAN
+
+
+#define SLOT_CAN_EN	(UART2_RTS_B,	1,	23)
+#define SLOT_RS485_RTS	(LCD_HSYNC,		3,	2)
+
+#define SLOT_RS485_FS	(LCD_DATA18,	3,	23)
+
+#define SLOT_ALL_PINS \
+	SLOT_FOR_PIN(CAN_EN) \
+	SLOT_FOR_PIN(RS485_RTS) \
+	SLOT_FOR_PIN(RS485_FS)
+
+#define SLOT_UART_ALIAS &uart4
+#define SLOT_CAN_ALIAS &can2
+
+#define SLOT_UART_RS485_PINCTRL &pinctrl_uart4_rs485
+#define SLOT_UART_CAN_PINCTRL &pinctrl_uart4_can
+
+#include "imx6ul-pinfunc.h"
+#include "utils.h"
