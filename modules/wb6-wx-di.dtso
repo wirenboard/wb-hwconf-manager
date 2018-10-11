@@ -13,7 +13,7 @@
 	description = "Discrete input";
 	compatible-slots = "wb6-wx";
 
-    fragment@0 {
+    fragment_w1_off {
         target = <SLOT_1WIRE_ALIAS>;
 
         __overlay__ {
@@ -21,7 +21,7 @@
         };
     };
 
-    fragment@1 {
+    fragment_di_on {
         target-path = "/";
 
         __overlay__ {

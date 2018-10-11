@@ -14,7 +14,7 @@
 	compatible-slots = "wb55-gsm";
 
 
-    fragment@0 {
+    fragment_uart_off {
         /* Turn off AUART0 so we can use RTS and TX pins as GPIOs */
 
         target = <&auart0>;
@@ -25,12 +25,12 @@
     };
 
 
-    fragment@1 {
+    fragment_rtc_power_on {
         /* Turn on GPIO17 to enable GSM 4V power rail used by RTC module */
         target-path = "/";
 
         __overlay__ {
-            SLOT_DT_ALIAS(rtc_vbus): SLOT_DT_ALIAS(rtc_vbus)@0 {
+            SLOT_DT_ALIAS(rtc_vbus): SLOT_DT_ALIAS(rtc_vbus) {
                 compatible = "regulator-fixed";
                 regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(rtc_vbus));
 
@@ -42,13 +42,10 @@
         };
     };
 
-    fragment@2 {
+    fragment_i2c_on {
         target-path = "/";
 
         __overlay__ {
-            __address-cells = <1>;
-            __size-cells = <0>;
-
             SLOT_DT_ALIAS(i2c) {
                 compatible = "i2c-gpio";
                 gpios = <&gpio3 0 0
@@ -70,8 +67,6 @@
                         compatible = "dallas,mcp7940x";
                         reg = <0x6f>;
                 };
-
-
             };
         };
     };
