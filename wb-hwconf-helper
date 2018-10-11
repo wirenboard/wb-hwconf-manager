@@ -51,6 +51,8 @@ config_wbio_pack() {
 config_apply_changes() {
 	local old_state=`mktemp`
 	local state=`mktemp`
+	local exclude=`mktemp`
+
 	cp "$CONFIG_STATE" "$old_state" 2>/dev/null
 
 	local CONFIG=${1:-${CONFIG}}
@@ -62,7 +64,7 @@ config_apply_changes() {
 			diff -uN "$old_state" <(config_parse | sort) |
 			sed -rn 's/^([\+-])([^+-]\S+) /\1 \2 /p'
 		)"
-		[[ -z "$delta" ]] && break
+		[[ "$(cat "$exclude")" = "$delta" ]] && break
 
 		local ACTION SLOT MODULE OPTIONS_HASH
 		while read ACTION SLOT MODULE OPTIONS_HASH; do
@@ -83,7 +85,11 @@ config_apply_changes() {
 			[[ "$ACTION" == "+" ]] || continue
 			[[ -n "$MODULE" ]] && {
 				log "Adding $SLOT:$MODULE"
-				module_run_hook add || continue
+				module_run_hook add || {
+					log_warning_msg "Not-existing module in config file $SLOT:$MODULE"
+					echo "$ACTION $SLOT $MODULE $OPTIONS_HASH" >> "$exclude"
+					continue
+				}
 				module_init "$SLOT" "$MODULE"
 			}
 			echo "$SLOT $MODULE $OPTIONS_HASH" >> "$state"
