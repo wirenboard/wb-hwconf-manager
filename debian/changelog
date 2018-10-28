@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.25.1) stable; urgency=medium
+
+  * remove slot name textbox
+
+ -- Evgeny Boger <boger@contactless.ru>  Sun, 28 Oct 2018 17:16:02 +0300
+
 wb-hwconf-manager (1.25) stable; urgency=medium
 
   * Changed WB6 RS485 bottom terminals mode configuration. Add control for RS485 failsafe bias
