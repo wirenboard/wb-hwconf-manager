@@ -36,7 +36,10 @@
           "type": "string",
           "title": "Name",
           "minLength": 1,
-          "propertyOrder": 1
+          "propertyOrder": 1,
+          "options": {
+            "hidden": true
+          }
         },
         "compatible": {
           "type": "array",
