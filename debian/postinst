@@ -1,17 +1,22 @@
 #!/bin/bash
-. /etc/wb_env.sh
+. /usr/lib/wb-utils/wb_env.sh
+wb_source "of"
 
 CONFFILE=/etc/wb-hardware.conf
 
-case "$WB_VERSION" in
-	52|55|58|60|61)
-		BOARD_CONF="wb${WB_VERSION}"
-	;;
-
-	*)
-		BOARD_CONF="default"
-	;;
-esac
+if of_machine_match "contactless,imx6ul-wirenboard61"; then
+	BOARD_CONF="wb61"
+elif of_machine_match "contactless,imx6ul-wirenboard60"; then
+	BOARD_CONF="wb60"
+elif of_machine_match "contactless,imx28-wirenboard58"; then
+	BOARD_CONF="wb58"
+elif of_machine_match "contactless,imx28-wirenboard55"; then
+	BOARD_CONF="wb55"
+elif of_machine_match "contactless,imx28-wirenboard52"; then
+	BOARD_CONF="wb52"
+else
+	BOARD_CONF="default"
+fi
 
 CONFFILE_DIST="/usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF"
 
