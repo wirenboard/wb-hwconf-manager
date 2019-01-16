@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.26.0) stable; urgency=medium
+
+  * add RFM69 module for WB6 mod3 slot
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Wed, 16 Jan 2019 14:32:12 +0300
+
 wb-hwconf-manager (1.25) stable; urgency=medium
 
   * Changed WB6 RS485 bottom terminals mode configuration. Add control for RS485 failsafe bias
