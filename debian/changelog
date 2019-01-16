@@ -1,4 +1,10 @@
-wb-hwconf-manager (1.25.2) stable; urgency=medium
+wb-hwconf-manager (1.26.0) stable; urgency=medium
+
+  * add RFM69 module for WB6 mod3 slot
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Wed, 16 Jan 2019 14:32:12 +0300
+ 
+ wb-hwconf-manager (1.25.2) stable; urgency=medium
 
   * use new wb-utils v.2 of_machine_match
 
