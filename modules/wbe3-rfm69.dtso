@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "WBE3-RFM69 433 MHz radio module";
+	description = "WBE2S-R-433MHZ radio module";
 	compatible-slots = "wbe3";
 
 	fragment_uart_off {
@@ -31,7 +31,7 @@
 
 			spidev@0 {
 				compatible = "hoperf,rfm69w";
-				spi-max-frequency = <10000>;
+				spi-max-frequency = <100000>;
 				reg = <0>;
 			};
 		};
@@ -54,15 +54,12 @@
 	};
 
 	fragment_change_wb_env {
-		target-path = "/wirenboard";
+		target-path = "/wirenboard/radio";
 
 		__overlay__ {
-			radio {
-				irq-gpios = <SLOT_GPIO(RTS)>;
-				dio2-gpios = <SLOT_GPIO(TX)>;
-				spi-device-phandle = <&{/fragment_add_spi_dev/__overlay__/spidev@0}>;
-			};
+			irq-gpios = <SLOT_GPIO(RTS)>;
+			dio2-gpios = <SLOT_GPIO(TX)>;
+			spi-device = <&{/fragment_add_spi_dev/__overlay__/spidev@0}>;
 		};
 	};
-
 };
