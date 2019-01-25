@@ -60,6 +60,7 @@
 			irq-gpios = <SLOT_GPIO(RTS)>;
 			dio2-gpios = <SLOT_GPIO(TX)>;
 			spi-device = <&{/fragment_add_spi_dev/__overlay__/spidev@0}>;
+			lirc-device = <&{/fragment_add_lirc/__overlay__/lirc-rfm69-mod3}>;
 		};
 	};
 };
