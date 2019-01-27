@@ -15,7 +15,8 @@ fragment {
 			__gpio-cells = <2>;
 			reg = <HEX_PREFIX(SLOT_I2C_ADDRESS)>;
 
-			microchip,irq-open-drain;
+			microchip,irq-open-drain; /* WB-specific, deprecated, use drive-open-drain instead */
+			drive-open-drain;
 
 			interrupt-parent = <SLOT_GPIO_PORT_ALIAS(INT)>;
 			interrupts = <SLOT_GPIO_PIN(INT) IRQ_TYPE_LEVEL_LOW>;

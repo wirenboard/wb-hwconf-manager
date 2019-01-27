@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.25.3) stable; urgency=medium
+
+  * use drive-open-drain property for mcp23s08 to follow mainline kernel API
+
+ -- Evgeny Boger <boger@contactless.ru>  Mon, 28 Jan 2019 01:46:21 +0300
+
 wb-hwconf-manager (1.25.2) stable; urgency=medium
 
   * use new wb-utils v.2 of_machine_match
