@@ -10,7 +10,7 @@ hook_module_add() {
     for chan in 1 2 3 4 5 6 7 8; do
         local iio_chan=${OUT_TO_CHIP_CHAN_MAP[chan-1]}
         items+=( "{
-            id: \"EXT${EXTIO_SLOT_NUM}_O$chan\",
+            id: \"EXT${SLOT_NUM}_O$chan\",
             iio_channel: $iio_chan,
             iio_of_name: \"${IIO_OF_NAME}\",
             max_value_mv: 10000,

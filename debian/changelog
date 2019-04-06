@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.26.1) stable; urgency=medium
+
+  * fixes config in case of multiple AO-10V devices
+
+ -- Evgeny Boger <boger@contactless.ru>  Sat, 06 Apr 2019 18:47:33 +0300
+
 wb-hwconf-manager (1.26.0) stable; urgency=medium
 
   * add RFM69 module for WB6 mod3 slot
