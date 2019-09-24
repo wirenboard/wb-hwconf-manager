@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.29.0) stable; urgency=medium
+
+  * add support for WBE2-I-1WIRE v4.0 - gpio driver
+
+ -- Nikita Kulikov <n.kulikov@wirenboard.ru>  Tue, 24 Sep 2019 19:24:55 +0300
+
 wb-hwconf-manager (1.28.0) stable; urgency=medium
 
   * add support for WBE2R-R-ZIGBEE extension module (via UART)
