@@ -4,7 +4,9 @@ wb_source "of"
 
 CONFFILE=/etc/wb-hardware.conf
 
-if of_machine_match "contactless,imx6ul-wirenboard61"; then
+if of_machine_match "contactless,imx6ul-wirenboard670"; then
+	BOARD_CONF="wb67"
+elif of_machine_match "contactless,imx6ul-wirenboard61"; then
 	BOARD_CONF="wb61"
 elif of_machine_match "contactless,imx6ul-wirenboard60"; then
 	BOARD_CONF="wb60"
