@@ -85,7 +85,7 @@
             "options": {}
         },
         {
-            "id": "wb6-rs485-1",
+            "id": "wb67-rs485-1",
             "compatible": ["wb6-rs485"],
             "name": "RS485-1 interface config",
             "module": "wb6-can-rs485",
@@ -94,7 +94,7 @@
             }
         },
         {
-            "id": "wb6-rs485-2",
+            "id": "wb67-rs485-2",
             "compatible": ["wb6-rs485", "wb6-can"],
             "name": "RS485-2/CAN interface config",
             "module": "wb6-can-rs485",
