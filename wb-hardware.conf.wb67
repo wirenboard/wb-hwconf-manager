@@ -15,15 +15,15 @@
             "options": {}
         },
         {
-            "id": "wb6-mod3",
-            "compatible": ["wbe3", "wbe3-reduced"],
+            "id": "wb67-mod3",
+            "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 3",
             "module": "",
             "options": {}
         },
         {
-            "id": "wb6-mod4",
-            "compatible": ["wbe2", "wbe3-reduced"],
+            "id": "wb6-mod3",
+            "compatible": ["wbe3", "wbe3-reduced"],
             "name": "Internal slot 4",
             "module": "",
             "options": {}
