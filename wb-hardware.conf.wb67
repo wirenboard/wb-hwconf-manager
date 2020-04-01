@@ -103,6 +103,13 @@
             }
         },
         {
+            "id": "wb67-wbc",
+            "compatible": ["wbc"],
+            "name": "Modem slot",
+            "module": "",
+            "options": {}
+        },
+        {
             "id": "wb6-w1",
             "compatible": ["wb6-wx"],
             "name": "W1 terminal mode",
