@@ -5,6 +5,7 @@
 
 #define SLOT_TXRX_GPIO_PINCTRL &pinctrl_mod1_txrx_gpio
 #define SLOT_TXRX_UART_PINCTRL &pinctrl_uart3_txrx
+#define SLOT_I2C_EXPOSE_PINCTRL &pinctrl_mod1_i2c_gpio
 
 #define SLOT_DE_GPIO_PINCTRL &pinctrl_mod1_de_gpio
 #define SLOT_DE_UART_PINCTRL &pinctrl_uart3_ctsb
