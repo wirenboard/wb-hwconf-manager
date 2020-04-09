@@ -108,6 +108,15 @@
             "name": "W2 terminal mode",
             "module": "wb6-wx-1wire",
             "options": {}
+        },
+        {
+            "id": "wb6-wbmz2",
+            "name": "WBMZ2 slot",
+            "compatible": [
+              "wb6-batt"
+            ],
+            "module": "",
+            "options": {}
         }
     ]
 }

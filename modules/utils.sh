@@ -65,6 +65,14 @@ wb_max_slot_num() {
 		max
 	' "$CONFIG"
 }
+# Get i2c device number by name
+# Args:
+# - i2c device name
+i2c_bus_num() {
+	local bus_name="$1"
+	[[ -z "$bus_name" ]] && return 1
+	grep -l "^${bus_name}$" /sys/bus/i2c/devices/i2c-*/name |  grep -Po '(?<=i2c-)(\d+)'
+}
 
 slot_i2c_bus_num() {
 	local bus_name=$(sed -rn "s/.*(mod[0-9]+)$/\1_i2c@0/p" <<< "$SLOT")
