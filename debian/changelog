@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.30.0) stable; urgency=medium
+
+  * add wbmz2-battery module
+
+ -- Yan Yanin <ianin@wirenboard.ru>  Thu, 09 Apr 2020 15:22:37 +0300
+
 wb-hwconf-manager (1.29.1) stable; urgency=medium
 
   * added PU 47K Ohms for i2c on wb6-mod1, wb6-mod2, wb6-mod3
