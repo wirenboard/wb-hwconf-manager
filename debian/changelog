@@ -4,6 +4,12 @@ wb-hwconf-manager (1.30.0) stable; urgency=medium
 
  -- Yan Yanin <ianin@wirenboard.ru>  Thu, 09 Apr 2020 15:22:37 +0300
 
+wb-hwconf-manager (1.29.1) stable; urgency=medium
+
+  * added PU 47K Ohms for i2c on wb6-mod1, wb6-mod2, wb6-mod3
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 9 Apr 2020 14:41:12 +0300
+
 wb-hwconf-manager (1.29.0) stable; urgency=medium
 
   * add support for WBE2-I-1WIRE v4.0 - gpio driver
