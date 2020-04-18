@@ -1,3 +1,3 @@
-#define SLOT_SCL		(UART1_CTS_B,	1,	18)
-#define SLOT_SDA		(UART1_RTS_B,	1,	19)
+#define SLOT_PIN1_SCL		(UART1_CTS_B,	1,	18)
+#define SLOT_PIN2_SDA		(UART1_RTS_B,	1,	19)
 #include "utils.h"

@@ -111,9 +111,9 @@
         },
         {
             "id": "wb6-wbmz2",
-            "name": "WBMZ2 slot",
+            "name": "Mezzanine board",
             "compatible": [
-              "wb6-batt"
+              "wb6-wbmz2-power"
             ],
             "module": "",
             "options": {}

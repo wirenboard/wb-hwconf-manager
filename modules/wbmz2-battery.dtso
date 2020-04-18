@@ -1,6 +1,6 @@
 / {
-    description = "WBMZ2 Battery";
-    compatible-slots = "wb6-batt";
+    description = "WBMZ2-BATTERY";
+    compatible-slots = "wb6-wbmz2-power";
 
 	fragment {
 		target-path = "/";
@@ -8,8 +8,8 @@
 		__overlay__ {
 			wbmz2_i2c: wbmz2_i2c@0 {
 				compatible = "i2c-gpio";
-				gpios = <SLOT_GPIO(SDA)
-						 SLOT_GPIO(SCL)
+				gpios = <SLOT_GPIO(PIN2_SDA)
+						 SLOT_GPIO(PIN1_SCL)
 						>;
 				i2c-gpio,delay-us = <20>;       /* ~100 kHz */
 				status = "okay";
