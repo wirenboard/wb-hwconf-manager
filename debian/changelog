@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.31.0) stable; urgency=medium
+
+  * add support for WBMZ2-SUPERCAP EDLC mezzanine
+
+ -- Evgeny Boger <boger@contactless.ru>  Sat, 18 Apr 2020 22:21:55 +0300
+
 wb-hwconf-manager (1.30.0) stable; urgency=medium
 
   * add wbmz2-battery module
