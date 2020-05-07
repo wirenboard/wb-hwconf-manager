@@ -14,4 +14,11 @@ hook_module_init() {
 	local bus=$(i2c_bus_num "wbmz2_i2c@0")
 	[[ -z "$bus" ]] && return 1
 	jq '.bus = '$bus /etc/wbmz2-battery.conf | sponge /etc/wbmz2-battery.conf
+	local bias_mode="$(config_module_option ".resetButon")"
+	if [ "$bias_mode" = "disabled" ]
+	then
+		jq '.resetButon = false' /etc/wbmz2-battery.conf | sponge /etc/wbmz2-battery.conf
+	else
+		jq '.resetButon = true' /etc/wbmz2-battery.conf | sponge /etc/wbmz2-battery.conf
+	fi
 }
