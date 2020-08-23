@@ -1,5 +1,5 @@
 wb-hwconf-manager (1.32.0) stable; urgency=medium
-  * add SPI port on MOD3 for DIY
+  * add SPI port on WBE2S-capable extension module socket for DIY
 
  -- Andrey Radionpv <andrey.radionov@contactless.ru>  Mon, 10 Aug 2020 14:21:03 +0300
 
