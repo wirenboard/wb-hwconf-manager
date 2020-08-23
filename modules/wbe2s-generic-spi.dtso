@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "Expose SPI (DIY): only SPI port";
+	description = "Expose SPI (DIY)";
 	compatible-slots = "wbe3";
 
 	fragment {
