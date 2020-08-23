@@ -24,7 +24,6 @@
 			spi@ {
 				compatible = "spidev";
 				spi-max-frequency = <20000000>;
-				voltage-ranges = <3200 3400>;
 				reg = <0>;
 			};
 		};
