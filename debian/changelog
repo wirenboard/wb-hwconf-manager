@@ -1,14 +1,39 @@
+wb-hwconf-manager (1.32.0) stable; urgency=medium
+
+  * add support for WirenBoard 6.7.0
+  * add support for WBC-modem slot on WB6.7
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Mon, 24 Aug 2020 19:09:12 +0300
+
+wb-hwconf-manager (1.31.0) stable; urgency=medium
+
+  * add support for WBMZ2-SUPERCAP EDLC mezzanine
+
+ -- Evgeny Boger <boger@contactless.ru>  Sat, 18 Apr 2020 22:21:55 +0300
+
+wb-hwconf-manager (1.30.2) stable; urgency=medium
+
+  * add KNX symlink
+
+ -- Yan Yanin <ianin@wirenboard.ru>  Mon, 18 May 2020 11:41:24 +0300
+
 wb-hwconf-manager (1.30.1) stable; urgency=medium
 
-  * add support for WBC-modems
+  * add reset button settings
 
- -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 1 Apr 2020 14:12:16 +0300
+ -- Yan Yanin <ianin@wirenboard.ru>  Wed, 29 Apr 2020 18:01:39 +0300
 
 wb-hwconf-manager (1.30.0) stable; urgency=medium
 
-  * add support for WirenBoard 6.7.0
+  * add wbmz2-battery module
 
- -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 12 Mar 2020 10:44:55 +0300
+ -- Yan Yanin <ianin@wirenboard.ru>  Thu, 09 Apr 2020 15:22:37 +0300
+
+wb-hwconf-manager (1.29.1) stable; urgency=medium
+
+  * added PU 47K Ohms for i2c on wb6-mod1, wb6-mod2, wb6-mod3
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 9 Apr 2020 14:41:12 +0300
 
 wb-hwconf-manager (1.29.0) stable; urgency=medium
 

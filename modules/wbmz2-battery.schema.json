@@ -1,0 +1,40 @@
+{
+	"module_wbmz2-battery": {
+		"title": "Reset button configuration",
+		"type": "object",
+		"properties": {
+			"resetButon": {
+				"type": "string",
+				"title": "Reset button",
+				"minLength": 1,
+				"enumSource": [
+					{
+						"source": [
+							{
+								"value": "enabled",
+								"title": "Enabled"
+							},
+							{
+								"value": "disabled",
+								"title": "Disabled"
+							}
+						],
+						"value": "{{item.value}}",
+						"title": "{{item.title}}"
+					}
+				],
+				"default": "enabled",
+				"options": {
+					"disable_collapse": true,
+					"disable_array_add": true,
+					"disable_array_delete": true,
+					"disable_array_reorder": true
+				},
+				"propertyOrder": 1
+			}
+		},
+		"required": [
+			"resetButon"
+		]
+	}
+}
