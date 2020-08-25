@@ -1,14 +1,14 @@
 {
     "slots": [
         {
-            "id": "wb6-mod1",
+            "id": "wb67-mod1",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 1",
             "module": "",
             "options": {}
         },
         {
-            "id": "wb6-mod2",
+            "id": "wb67-mod2",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 2",
             "module": "",
@@ -22,7 +22,7 @@
             "options": {}
         },
         {
-            "id": "wb6-mod3",
+            "id": "wb67-mod4",
             "compatible": ["wbe3", "wbe3-reduced"],
             "name": "Internal slot 4",
             "module": "",

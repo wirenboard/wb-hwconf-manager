@@ -1,4 +1,4 @@
-#define SLOT_ALIAS	mod4
+#define SLOT_ALIAS	mod3
 #define SLOT_TX		(CSI_MCLK,  4,	17)
 #define SLOT_RX		(CSI_PIXCLK,    4,	18)
 #define SLOT_RTS	(CSI_VSYNC, 4,	19)
