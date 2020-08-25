@@ -10,8 +10,8 @@
  */
 
 / {
-	description = "WBC-3G: 3G-modem module";
-	compatible-slots = "wbc";
+    description = "WBC-3G: 3G+2G Modem";
+    compatible-slots = "wbc";
 
     fragment_enable_uart {
         target = <SLOT_UART_ALIAS>;
@@ -22,14 +22,14 @@
     };
 
     fragment_change_wb_env {
-		target-path = "/wirenboard";
+        target-path = "/wirenboard";
 
-		__overlay__ {
+        __overlay__ {
             gsm {
                 status = "okay";
                 model = "sim5300e";
                 type = "3g", "edge", "gprs";
             };
-		};
-	};
+        };
+    };
 };

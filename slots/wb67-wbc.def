@@ -1,4 +1,4 @@
-#define SLOT_ALIAS	modem
+#define SLOT_ALIAS	wbc
 #define SLOT_UART_ALIAS  &uart8
 
 #include "utils.h"
