@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Hardware Modules Configuration",
-  "description": "Lists additional hardare modules configuration",
+  "description": "Lists additional hardware modules configuration",
   "limited": true,
   "strictProps": false,
   "definitions": {

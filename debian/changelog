@@ -1,4 +1,12 @@
+wb-hwconf-manager (1.33.0) stable; urgency=medium
+
+  * add support for WirenBoard 6.7.0
+  * add support for WBC-modem slot on WB6.7
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Mon, 24 Aug 2020 19:09:12 +0300
+
 wb-hwconf-manager (1.32.0) stable; urgency=medium
+
   * add SPI port on WBE2S-capable extension module socket for DIY
 
  -- Andrey Radionpv <andrey.radionov@contactless.ru>  Mon, 10 Aug 2020 14:21:03 +0300

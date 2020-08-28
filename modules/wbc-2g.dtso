@@ -1,0 +1,35 @@
+/*
+ * Copyright 2020 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+    description = "WBC-2G: 2G Modem";
+    compatible-slots = "wbc";
+
+    fragment_enable_uart {
+        target = <SLOT_UART_ALIAS>;
+
+        __overlay__ {
+            status = "okay";
+        };
+    };
+
+    fragment_change_wb_env {
+        target-path = "/wirenboard";
+
+        __overlay__ {
+            gsm {
+                status = "okay";
+                model = "sim800";
+                type = "edge", "gprs";
+            };
+        };
+    };
+};

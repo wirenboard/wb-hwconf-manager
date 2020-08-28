@@ -1,0 +1,16 @@
+#define SLOT_ALIAS	mod1
+#define SLOT_TX		(UART3_TX_DATA,	1,	24)
+#define SLOT_RX		(UART3_RX_DATA,	1,	25)
+#define SLOT_RTS	(UART3_CTS_B,	1,	26)
+
+#define SLOT_TXRX_GPIO_PINCTRL &pinctrl_mod1_txrx_gpio
+#define SLOT_TXRX_UART_PINCTRL &pinctrl_uart3_txrx
+#define SLOT_I2C_EXPOSE_PINCTRL &pinctrl_mod1_i2c_gpio
+
+#define SLOT_DE_GPIO_PINCTRL &pinctrl_mod1_de_gpio
+#define SLOT_DE_UART_PINCTRL &pinctrl_uart3_ctsb
+
+#define SLOT_UART_ALIAS  &uart3
+
+#include "imx6ul-pinfunc.h"
+#include "wbe2.h"
