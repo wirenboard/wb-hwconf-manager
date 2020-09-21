@@ -122,6 +122,15 @@
             "name": "W2 terminal mode",
             "module": "wb6-wx-1wire",
             "options": {}
+        },
+        {
+            "id": "wb6-wbmz2",
+            "name": "Mezzanine board",
+            "compatible": [
+              "wb6-wbmz2-power"
+            ],
+            "module": "",
+            "options": {}
         }
     ]
 }
