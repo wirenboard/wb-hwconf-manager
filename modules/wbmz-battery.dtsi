@@ -1,0 +1,28 @@
+/*
+ * Copyright 2020-2021 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+
+fragment {
+	target-path = "/";
+
+	__overlay__ {
+		wbmz2_i2c: wbmz2_i2c@0 {
+			compatible = "i2c-gpio";
+			gpios = <SLOT_GPIO(PIN2_SDA)
+						SLOT_GPIO(PIN1_SCL)
+					>;
+			i2c-gpio,delay-us = <20>;       /* ~100 kHz */
+			status = "okay";
+			__address-cells = <1>;
+			__size-cells = <0>;
+		};
+	};
+};

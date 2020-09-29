@@ -1,0 +1,5 @@
+/ {
+    description = "WBMZ3-BATTERY";
+    compatible-slots = "wb67-wbmz3-power";
+	#include "wbmz-battery.dtsi"
+};
