@@ -124,7 +124,7 @@
             "options": {}
         },
         {
-            "id": "wb6-wbmz2",
+            "id": "wb67-wbmz3",
             "name": "Backup power supply",
             "compatible": [
               "wb6-wbmz2-power"
