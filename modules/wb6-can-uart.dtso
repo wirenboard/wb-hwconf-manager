@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Contactless Devices, LLC.
+ * Copyright 2020 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -13,20 +13,5 @@
 	description = "UART-CAN interface";
 	compatible-slots = "wb6-can";
 
-	fragment_uart_on {
-		target = <SLOT_UART_ALIAS>;
-
-		__overlay__ {
-			pinctrl-0 = <SLOT_UART_CAN_PINCTRL>;
-			status = "okay";
-		};
-	};
-
-	fragment_can_off {
-		target = <SLOT_CAN_ALIAS>;
-
-		__overlay__ {
-			status = "disabled";
-		};
-	};
+	#include "wb6x-can-uart-common.dtsi"
 };
