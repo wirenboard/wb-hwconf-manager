@@ -1,5 +1,5 @@
 {
-	"module_wbmz2-battery": {
+	"battery_params": {
 		"title": "Reset button configuration",
 		"type": "object",
 		"properties": {
@@ -36,5 +36,7 @@
 		"required": [
 			"resetButon"
 		]
-	}
+	},
+	"module_wbmz2-battery": { "$ref": "#/definitions/battery_params" },
+	"module_wbmz3-battery": { "$ref": "#/definitions/battery_params" }
 }
