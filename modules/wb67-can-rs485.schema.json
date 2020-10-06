@@ -1,6 +1,6 @@
 {
 	"module_wb67-can-rs485": {
-		"title": "RS485 failsafe configuration",
+		"title": " ",
 		"type": "object",
 		"properties": {
 			"mode": {
@@ -34,7 +34,7 @@
 			},
 			"terminatorsMode": {
 				"type": "string",
-				"title": "Termination mode",
+				"title": "120Ω termination resistor",
 				"minLength": 1,
 				"enumSource": [
 					{
