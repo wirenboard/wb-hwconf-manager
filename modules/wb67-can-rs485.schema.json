@@ -5,7 +5,7 @@
 		"properties": {
 			"mode": {
 				"type": "string",
-				"title": "Failsafe bias mode",
+				"title": "Failsafe bias",
 				"minLength": 1,
 				"enumSource": [
 					{
