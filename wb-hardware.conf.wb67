@@ -90,7 +90,8 @@
             "name": "RS485-1 interface config",
             "module": "wb67-can-rs485",
             "options": {
-                "mode": "enabled"
+                "mode": "enabled",
+                "terminatorsMode": "enabled"
             }
         },
         {
@@ -99,7 +100,8 @@
             "name": "RS485-2/CAN interface config",
             "module": "wb67-can-rs485",
             "options": {
-                "mode": "enabled"
+                "mode": "enabled",
+                "terminatorsMode": "enabled"
             }
         },
         {
