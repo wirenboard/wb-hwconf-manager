@@ -9,9 +9,19 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-/ {
-	description = "RS485 interface";
-	compatible-slots = "wb6-rs485";
+fragment_uart_on {
+	target = <SLOT_UART_ALIAS>;
 
-	#include "wb6x-can-rs485-common.dtsi"
+	__overlay__ {
+		pinctrl-0 = <SLOT_UART_CAN_PINCTRL>;
+		status = "okay";
+	};
+};
+
+fragment_can_off {
+	target = <SLOT_CAN_ALIAS>;
+
+	__overlay__ {
+		status = "disabled";
+	};
 };

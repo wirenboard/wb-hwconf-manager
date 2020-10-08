@@ -11,7 +11,7 @@
 
 / {
 	description = "RS485 interface";
-	compatible-slots = "wb6-rs485";
+	compatible-slots = "wb67-rs485";
 
 	#include "wb6x-can-rs485-common.dtsi"
 };

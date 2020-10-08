@@ -86,20 +86,22 @@
         },
         {
             "id": "wb67-rs485-1",
-            "compatible": ["wb6-rs485"],
+            "compatible": ["wb67-rs485"],
             "name": "RS485-1 interface config",
-            "module": "wb6-can-rs485",
+            "module": "wb67-can-rs485",
             "options": {
-                "mode": "enabled"
+                "mode": "enabled",
+                "terminatorsMode": "enabled"
             }
         },
         {
             "id": "wb67-rs485-2",
-            "compatible": ["wb6-rs485", "wb6-can"],
+            "compatible": ["wb67-rs485", "wb67-can"],
             "name": "RS485-2/CAN interface config",
-            "module": "wb6-can-rs485",
+            "module": "wb67-can-rs485",
             "options": {
-                "mode": "enabled"
+                "mode": "enabled",
+                "terminatorsMode": "enabled"
             }
         },
         {
