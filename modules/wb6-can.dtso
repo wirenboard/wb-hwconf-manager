@@ -13,19 +13,5 @@
 	description = "CAN interface";
 	compatible-slots = "wb6-can";
 
-	fragment_uart_off {
-		target = <SLOT_UART_ALIAS>;
-
-		__overlay__ {
-			status = "disabled";
-		};
-	};
-
-	fragment_can_on {
-		target = <SLOT_CAN_ALIAS>;
-
-		__overlay__ {
-			status = "okay";
-		};
-	};
+	#include "wb6x-can-common.dtsi"
 };

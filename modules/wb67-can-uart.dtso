@@ -10,8 +10,8 @@
  */
 
 / {
-	description = "RS485 interface";
-	compatible-slots = "wb6-rs485";
+	description = "UART-CAN interface";
+	compatible-slots = "wb67-can";
 
-	#include "wb6x-can-rs485-common.dtsi"
+	#include "wb6x-can-uart-common.dtsi"
 };
