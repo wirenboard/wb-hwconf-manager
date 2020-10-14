@@ -27,7 +27,7 @@
         __overlay__ {
             gsm {
                 status = "okay";
-                model = "a7600e-h";
+                model = "a7600x";
                 type = "4g", "3g", "edge", "gprs";
             };
         };
