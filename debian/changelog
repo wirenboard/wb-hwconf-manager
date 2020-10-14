@@ -1,6 +1,6 @@
 wb-hwconf-manager (1.35.0) stable; urgency=medium
 
-  * add support for WBC-NB (NB-IOT) module
+  * add support for WBC-4G and WBC-NB (NB-IOT) modules
 
  -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 14 Oct 2020 16:25:19 +0300
 
