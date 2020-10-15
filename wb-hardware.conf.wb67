@@ -112,17 +112,17 @@
             "options": {}
         },
         {
-            "id": "wb6-w1",
-            "compatible": ["wb6-wx"],
+            "id": "wb67-w1",
+            "compatible": ["wb67-wx"],
             "name": "W1 terminal mode",
-            "module": "wb6-wx-1wire",
+            "module": "wb67-wx-1wire",
             "options": {}
         },
         {
-            "id": "wb6-w2",
-            "compatible": ["wb6-wx"],
+            "id": "wb67-w2",
+            "compatible": ["wb67-wx"],
             "name": "W2 terminal mode",
-            "module": "wb6-wx-1wire",
+            "module": "wb67-wx-1wire",
             "options": {}
         }
     ]
