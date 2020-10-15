@@ -13,29 +13,5 @@
 	description = "Discrete input";
 	compatible-slots = "wb6-wx";
 
-    fragment_w1_off {
-        target = <SLOT_1WIRE_ALIAS>;
-
-        __overlay__ {
-            status = "disabled";
-        };
-    };
-
-    fragment_di_on {
-        target-path = "/";
-
-        __overlay__ {
-            SLOT_DT_ALIAS(reg_pu_dummy) {
-                compatible = "regulator-fixed";
-                regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(reg_pu_dummy));
-
-                pinctrl-names = "default";
-                pinctrl-0 = <SLOT_PINCTRL>;
-
-                gpio = <SLOT_GPIO(PULLUP)>;
-                enable-active-high;
-            };
-        };
-    };
-
+    #include "wb6x-wx-di-common.dtsi"
 };

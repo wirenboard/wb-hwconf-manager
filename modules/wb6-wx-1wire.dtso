@@ -13,11 +13,5 @@
 	description = "1-Wire master";
 	compatible-slots = "wb6-wx";
 
-    fragment {
-        target = <SLOT_1WIRE_ALIAS>;
-
-        __overlay__ {
-            status = "okay";
-        };
-    };
+    #include "wb6x-wx-1wire-common.dtsi"
 };
