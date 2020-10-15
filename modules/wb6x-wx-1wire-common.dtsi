@@ -1,0 +1,23 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "1-Wire master";
+	compatible-slots = "wb6-wx";
+
+    fragment {
+        target = <SLOT_1WIRE_ALIAS>;
+
+        __overlay__ {
+            status = "okay";
+        };
+    };
+};
