@@ -1,0 +1,10 @@
+#define SLOT_ALIAS	w2
+
+#define SLOT_DATA	(LCD_RESET,	3,	4)
+#define SLOT_PULLUP	(NAND_DQS,	4,	16)
+
+#define SLOT_1WIRE_ALIAS	&onewire_w2
+#define SLOT_PINCTRL &pinctrl_w2_gpio
+
+#include "imx6ul-pinfunc.h"
+#include "wb6-wx.h"
