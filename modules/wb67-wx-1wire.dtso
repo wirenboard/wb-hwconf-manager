@@ -13,5 +13,5 @@
 	description = "1-Wire master";
 	compatible-slots = "wb67-wx";
 
-    #include "wb6x-wx-1wire-common.dtsi"
+	#include "wb6x-wx-1wire-common.dtsi"
 };

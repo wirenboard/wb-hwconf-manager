@@ -13,5 +13,5 @@
 	description = "Discrete input";
 	compatible-slots = "wb6-wx";
 
-    #include "wb6x-wx-di-common.dtsi"
+	#include "wb6x-wx-di-common.dtsi"
 };
