@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.36.0) stable; urgency=medium
+
+  * fix problems with DI-mode of 1Wire slots on WirenBoard6.7.x devices
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 15 Oct 2020 16:03:42 +0300
+
 wb-hwconf-manager (1.35.0) stable; urgency=medium
 
   * add support for WBC-4G and WBC-NB (NB-IOT) modules
