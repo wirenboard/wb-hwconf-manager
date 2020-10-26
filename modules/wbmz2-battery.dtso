@@ -1,5 +1,5 @@
 / {
-    description = "WBMZ2-BATTERY";
-    compatible-slots = "wb6-wbmz2-power";
+	description = "WBMZ2-BATTERY";
+	compatible-slots = "wb6-wbmz2-power";
 	#include "wbmz-battery.dtsi"
 };
