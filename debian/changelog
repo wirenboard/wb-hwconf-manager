@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.37.0) stable; urgency=medium
+
+  * add support for wb67-wbmz3 slot (battery & supercap) in WirenBoard 6.7.x
+  * add support for wbmz3-battery and wbmz3-supercap modules
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Fri, 9 Oct 2020 13:35:22 +0300
+
 wb-hwconf-manager (1.36.0) stable; urgency=medium
 
   * fix problems with DI-mode of 1Wire slots on WirenBoard6.7.x devices

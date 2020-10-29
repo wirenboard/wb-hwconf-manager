@@ -1,21 +1,5 @@
 / {
-    description = "WBMZ2-BATTERY";
-    compatible-slots = "wb6-wbmz2-power";
-
-	fragment {
-		target-path = "/";
-		
-		__overlay__ {
-			wbmz2_i2c: wbmz2_i2c@0 {
-				compatible = "i2c-gpio";
-				gpios = <SLOT_GPIO(PIN2_SDA)
-						 SLOT_GPIO(PIN1_SCL)
-						>;
-				i2c-gpio,delay-us = <20>;       /* ~100 kHz */
-				status = "okay";
-				__address-cells = <1>;
-				__size-cells = <0>;
-			};
-		};
-	};
+	description = "WBMZ2-BATTERY";
+	compatible-slots = "wb6-wbmz2-power";
+	#include "wbmz-battery.dtsi"
 };

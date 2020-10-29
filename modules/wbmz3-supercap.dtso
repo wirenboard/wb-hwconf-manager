@@ -1,0 +1,12 @@
+/ {
+	description = "WBMZ3-SUPERCAP";
+	compatible-slots = "wb67-wbmz3-power";
+	fragment {
+		target-path = "/";
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+};

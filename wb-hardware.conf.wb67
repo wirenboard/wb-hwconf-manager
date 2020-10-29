@@ -124,6 +124,15 @@
             "name": "W2 terminal mode",
             "module": "wb6-wx-1wire",
             "options": {}
+        },
+        {
+            "id": "wb67-wbmz3",
+            "name": "Backup power supply",
+            "compatible": [
+              "wb67-wbmz3-power"
+            ],
+            "module": "",
+            "options": {}
         }
     ]
 }
