@@ -277,7 +277,7 @@ slot_preprocess() {
 
 # Feeds input through dtc compiler to produce dtb
 dts_compile() {
-	cat - | dtc -I dts -O dtb -@ -
+	cat - | dtc -I dts -O dtb -M -@ -
 }
 
 # Adds valid dts header to stdin
