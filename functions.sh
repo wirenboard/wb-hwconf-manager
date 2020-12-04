@@ -282,7 +282,7 @@ dts_compile() {
 
 # Adds valid dts header to stdin
 dts_add_header() {
-	echo '/dts-v1/ /plugin/;'
+	echo '/dts-v1/; /plugin/;'
 	cat -
 }
 
