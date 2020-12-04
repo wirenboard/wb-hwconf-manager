@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.37.1) stable; urgency=medium
+
+  * Fix for device-tree-compiler 1.6.0-1: Add missing ";" in the generated DTSO header
+
+ -- Ivan Zaentsev <ivan.zaentsev@wirenboard.ru>  Fri, 4 Dec 2020 11:06:26 +0300
+
 wb-hwconf-manager (1.37.0) stable; urgency=medium
 
   * add support for wb67-wbmz3 slot (battery & supercap) in WirenBoard 6.7.x
