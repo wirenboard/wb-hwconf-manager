@@ -19,7 +19,7 @@ fragment {
 			gpios = <SLOT_GPIO(PIN2_SDA)
 						SLOT_GPIO(PIN1_SCL)
 					>;
-			i2c-gpio,delay-us = <20>;       /* ~100 kHz */
+			i2c-gpio,delay-us = <200>;       /* ~10 kHz */
 			status = "okay";
 			__address-cells = <1>;
 			__size-cells = <0>;

@@ -1,14 +1,20 @@
-wb-hwconf-manager (1.37.2) stable; urgency=medium
+wb-hwconf-manager (1.38.2) stable; urgency=medium
 
   * Add dependency on device-tree-compiler >=1.6.0-1
 
  -- Ivan Zaentsev <ivan.zaentsev@wirenboard.ru>  Fri, 11 Dec 2020 13:00:00 +0300
 
-wb-hwconf-manager (1.37.1) stable; urgency=medium
+wb-hwconf-manager (1.38.1) stable; urgency=medium
 
   * Fix for device-tree-compiler 1.6.0-1: Add missing ";" in the generated DTSO header
 
- -- Ivan Zaentsev <ivan.zaentsev@wirenboard.ru>  Fri, 4 Dec 2020 11:06:26 +0300
+ -- Ivan Zaentsev <ivan.zaentsev@wirenboard.ru>  Fri, 10 Dec 2020 11:06:26 +0300
+
+wb-hwconf-manager (1.38.0) stable; urgency=medium
+
+  * fixed problems with wbmz3-battery software (by lowering I2C-bus speed)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 9 Dec 2020 17:20:11 +0300
 
 wb-hwconf-manager (1.37.0) stable; urgency=medium
 
