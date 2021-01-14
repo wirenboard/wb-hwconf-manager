@@ -110,6 +110,8 @@ Commands:
   config-apply           Run modules add/remove hooks when config is changed
   load-overlay <fname>   Compile and load standalone DTS overlay
   unload-overlay <fname> Unload standalone DTS
+  enable-node <node>
+  disable-node <node>
 EOF
 	exit 1
 }
