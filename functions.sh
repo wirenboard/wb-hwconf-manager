@@ -539,6 +539,52 @@ dts_unload() {
 	rmdir ${overlay_path}
 }
 
+# Disables peripheral by applying overlay
+# Args:
+# - peripheral node label
+disable_peripheral_node() {
+	local tmpfile=$(mktemp)
+	local label=$1
+	(cat <<EOF
+/ {
+	fragment0 {
+		target = <&$label>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+};
+EOF
+	) | dts_add_header |
+	dts_compile > "$tmpfile" || {
+		rm "$tmpfile"
+		die "Device Tree overlay building failed"
+		return 1
+	}
+
+	local overlay_path="$OVERLAYS/__hwconf-helper_disable_node_$label"
+	debug "Loading DTBO"
+
+	mkdir "${overlay_path}" &&
+	cat "$tmpfile" > "${overlay_path}/dtbo"
+
+	local i
+	for ((i=0; i<5; i++)); do
+		log_action_cont_msg
+		[[ $(cat "${overlay_path}/status") == "applied" ]] && break
+		sleep 1
+	done
+	[[ $i == 3 ]] && {
+		rm "$tmpfile"
+		die "Device Tree overlay loading failed"
+		return 1
+	}
+	rm "$tmpfile"
+}
+
+
+
 # Deinitialize any module plugged to given slot.
 # This runs module hook 'deinit' and unloads DTBO.
 # Args:
