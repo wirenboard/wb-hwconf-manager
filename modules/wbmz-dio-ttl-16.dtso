@@ -54,7 +54,7 @@
 					reg = <0x20>;
 
 					interrupt-parent = <SLOT_GPIO_PORT_ALIAS(CS)>;
-					interrupts = <SLOT_GPIO_PIN(CS) IRQ_TYPE_LEVEL_LOW>;
+					interrupts = <SLOT_GPIO_PIN(CS) IRQ_TYPE_NONE>;
 					interrupt-controller;
 					__interrupt-cells=<2>;
 					microchip,irq-mirror;
