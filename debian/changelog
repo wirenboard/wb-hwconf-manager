@@ -1,6 +1,6 @@
 wb-hwconf-manager (1.39.0) stable; urgency=medium
 
-  * Added support for wbe2-ai-cm-1 current/voltage/power monitor
+  * Added support for wbe2-ai-cm-1 current/voltage/power monitor (only in sysfs)
 
  -- Vladimir Romanov <v.romanov@wirenboard.ru>  Fri, 02 Apr 2021 13:17:11 +0300
 
