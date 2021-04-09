@@ -37,7 +37,7 @@
 				SLOT_DT_ALIAS(ina219)@40 {
 					compatible = "ti,ina219";
 					reg = <0x40>;
-					shunt-resistor = <10000>;
+					shunt-resistor = <100000>;
 				};
 			};
 		};
