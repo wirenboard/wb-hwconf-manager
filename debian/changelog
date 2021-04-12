@@ -1,7 +1,13 @@
+wb-hwconf-manager (1.39.0) stable; urgency=medium
+
+  * Added support for wbe2-ai-cm-1 current/voltage/power monitor (only in sysfs)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Fri, 02 Apr 2021 13:17:11 +0300
+
 wb-hwconf-manager (1.38.3) stable; urgency=medium
 
   * do not specify irq type for mcp23-based extio modules
-  Together with the updated kernel which sets irq type to edge 
+  Together with the updated kernel which sets irq type to edge
   instead to level-triggered, it fixes the kernel hang during boot.
 
  -- Evgeny Boger <boger@contactless.ru>  Thu, 14 Jan 2021 14:17:32 +0300
