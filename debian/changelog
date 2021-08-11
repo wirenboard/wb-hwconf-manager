@@ -1,5 +1,11 @@
 wb-hwconf-manager (1.40.0) stable; urgency=medium
 
+  * Bugfix for module Zigbee use RTS pin
+
+ -- Andrey <andrey.radionov@wirenboard.ru>  Wed, 11 Aug 2021 16:13:59 +0300
+
+wb-hwconf-manager (1.40.0) stable; urgency=medium
+
   * add WBE2-I-EBUS and WBE2-I-OPENTHERM entries
 
  -- Evgeny Boger <boger@contactless.ru>  Tue, 15 Jun 2021 16:48:14 +0300
