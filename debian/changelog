@@ -1,8 +1,9 @@
-wb-hwconf-manager (1.40.0) stable; urgency=medium
+wb-hwconf-manager (1.40.1) stable; urgency=medium
 
-  * Bugfix for module Zigbee use RTS pin
+  * fix use RTS pin module WBE2R-R-ZIGBEE for 5.x kernel
 
- -- Andrey <andrey.radionov@wirenboard.ru>  Wed, 11 Aug 2021 16:13:59 +0300
+ -- Andrey Radionov <andrey.radionov@wirenboard.ru>  Wed, 11 Aug 2021 16:13:59 +0300
+
 
 wb-hwconf-manager (1.40.0) stable; urgency=medium
 
