@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.40.1) stable; urgency=medium
+
+  * fix use RTS pin module WBE2R-R-ZIGBEE for 5.x kernel
+
+ -- Andrey Radionov <andrey.radionov@wirenboard.ru>  Wed, 11 Aug 2021 16:13:59 +0300
+
+
 wb-hwconf-manager (1.40.0) stable; urgency=medium
 
   * add WBE2-I-EBUS and WBE2-I-OPENTHERM entries
