@@ -1,9 +1,14 @@
+wb-hwconf-manager (1.40.2) stable; urgency=medium
+
+  * Added new 2g modem model (wbc-2g-v2)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 8 Sep 2021 12:21:22 +0300
+
 wb-hwconf-manager (1.40.1) stable; urgency=medium
 
   * fix use RTS pin module WBE2R-R-ZIGBEE for 5.x kernel
 
  -- Andrey Radionov <andrey.radionov@wirenboard.ru>  Wed, 11 Aug 2021 16:13:59 +0300
-
 
 wb-hwconf-manager (1.40.0) stable; urgency=medium
 
