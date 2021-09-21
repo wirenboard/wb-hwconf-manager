@@ -29,7 +29,6 @@
                 status = "okay";
                 model = "sim800c-ds";
                 type = "edge", "gprs";
-                sim-toggle = "at";
             };
         };
     };
