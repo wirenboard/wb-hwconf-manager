@@ -20,6 +20,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <SLOT_TXRX_UART_PINCTRL>;
 			status = "okay";
+			rts-gpios;
 		};
 	};
 
