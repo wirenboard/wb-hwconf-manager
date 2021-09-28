@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.42.0) stable; urgency=medium
+
+  * Russian translation
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Mon, 11 Oct 2021 09:30:18 +0500
+
 wb-hwconf-manager (1.41.2) stable; urgency=medium
 
   * fix I2C on Wiren Board 6.7 MOD3 slot
