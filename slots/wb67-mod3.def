@@ -9,6 +9,8 @@
 #define SLOT_DE_GPIO_PINCTRL &pinctrl_mod4_de_gpio
 #define SLOT_DE_UART_PINCTRL &pinctrl_uart6_ctsb
 
+#define SLOT_RTS_GPIOS &gpio4 19 GPIO_ACTIVE_HIGH
+
 #define SLOT_UART_ALIAS  &uart6
 
 #define SLOT_NEED_CONTROL_JTAG_MOD
