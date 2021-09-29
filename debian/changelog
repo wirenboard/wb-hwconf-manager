@@ -1,3 +1,11 @@
+wb-hwconf-manager (1.41.0) stable; urgency=medium
+
+  * Set rts-gpios explicitly for some modules.
+    It is necessary after removing rts-gpios from main Wiren Board DTS.
+    This fixes some internal modules (GPS, ZigBee) on 5.x kernels
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Mon, 27 Sep 2021 22:26:23 +0300
+
 wb-hwconf-manager (1.40.2) stable; urgency=medium
 
   * Added new 2g modem model (wbc-2g-v2)

@@ -20,6 +20,7 @@
             status = "okay";
             pinctrl-names = "default";
             pinctrl-0 = <SLOT_TXRX_UART_PINCTRL SLOT_DE_UART_PINCTRL>;
+            rts-gpios = <SLOT_RTS_GPIOS>;
 
             linux,rs485-enabled-at-boot-time;
         };

@@ -20,6 +20,7 @@
             status = "okay";
             pinctrl-names = "default";
             pinctrl-0 = <SLOT_TXRX_UART_PINCTRL>;
+            rts-gpios = <SLOT_RTS_GPIOS>;
 
             /* TODO: This suppresses local echo by disabling RX during 
             TX. The local echo could be useful in some cases.

@@ -20,7 +20,6 @@ fragment@0 {
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <SLOT_TXRX_UART_PINCTRL>;
-		rts-gpios;
 	};
 };
 
