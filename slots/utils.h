@@ -53,5 +53,6 @@ local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
 #include "irq.h"
+#include "gpio.h"
 
 #endif /* UTILS_H */

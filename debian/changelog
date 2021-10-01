@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.41.1) stable; urgency=medium
+
+  * Fix rts-gpios GPIO number in MOD1 slot definitions
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Thu, 30 Sep 2021 22:29:46 +0300
+
 wb-hwconf-manager (1.41.0) stable; urgency=medium
 
   * Set rts-gpios explicitly for some modules.
