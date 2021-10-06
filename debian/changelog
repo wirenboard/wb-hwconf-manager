@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.41.2) stable; urgency=medium
+
+  * fix I2C on Wiren Board 6.7 MOD3 slot
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Wed, 06 Oct 2021 19:02:23 +0300
+
 wb-hwconf-manager (1.41.1) stable; urgency=medium
 
   * Fix rts-gpios GPIO number in MOD1 slot definitions
