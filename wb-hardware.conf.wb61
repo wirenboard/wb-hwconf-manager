@@ -111,7 +111,7 @@
         },
         {
             "id": "wb6-wbmz2",
-            "name": "Mezzanine board",
+            "name": "Backup power supply",
             "compatible": [
               "wb6-wbmz2-power"
             ],
