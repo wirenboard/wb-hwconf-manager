@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /usr/share/wb-hwconf-manager/functions.sh
+. /usr/lib/wb-hwconf-manager/functions.sh
 
 NO_RESTART_SERVICE="yes" wb-hwconf-helper config-apply
 
