@@ -9,6 +9,7 @@ all:
 
 install_data:
 	install -D -m 0644 functions.sh $(datadir)/functions.sh
+	install -D -m 0755 init.sh $(datadir)/init.sh
 	cp -rv ./slots $(datadir)/slots
 	cd $(datadir)/slots && ./gen_extio_slots.sh && rm *.sh
 	install -d -m 0755 $(datadir)/modules

@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.43.0) stable; urgency=medium
+
+  * Start as systemd service instead of initscript
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Wed, 13 Oct 2021 22:53:15 +0300
+
 wb-hwconf-manager (1.42.0) stable; urgency=medium
 
   * Russian translation

@@ -1,0 +1,1 @@
+rm_conffile /etc/init.d/wb-hwconf-manager 1.43.0~
