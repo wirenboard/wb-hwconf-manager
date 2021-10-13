@@ -16,4 +16,91 @@
 	#define WBIO_NAME wbio_di_dr_16
 	#define WBIO_INPUT
 	#include "wbio16.dtsi"
+
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			GPIO_NAME_ALIAS(DR1) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 0 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(01)>;
+			};
+			GPIO_NAME_ALIAS(DR2) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 1 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(02)>;
+			};
+			GPIO_NAME_ALIAS(DR3) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 2 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(03)>;
+			};
+			GPIO_NAME_ALIAS(DR4) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 3 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(04)>;
+			};
+			GPIO_NAME_ALIAS(DR5) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 4 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(05)>;
+			};
+			GPIO_NAME_ALIAS(DR6) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 5 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(06)>;
+			};
+			GPIO_NAME_ALIAS(DR7) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 6 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(07)>;
+			};
+			GPIO_NAME_ALIAS(DR8) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 7 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(08)>;
+			};
+			GPIO_NAME_ALIAS(DR9) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 8 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(09)>;
+			};
+			GPIO_NAME_ALIAS(DR10) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 9 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(10)>;
+			};
+			GPIO_NAME_ALIAS(DR11) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 10 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(11)>;
+			};
+			GPIO_NAME_ALIAS(DR12) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 11 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(12)>;
+			};
+			GPIO_NAME_ALIAS(DR13) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 12 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(13)>;
+			};
+			GPIO_NAME_ALIAS(DR14) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 13 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(14)>;
+			};
+			GPIO_NAME_ALIAS(DR15) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 14 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(15)>;
+			};
+			GPIO_NAME_ALIAS(DR16) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 15 0>;
+				input;
+				sort-order = <GPIO_SORT_ORDER(16)>;
+			};
+		};
+	};
 };

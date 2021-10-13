@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.42.1) stable; urgency=medium
+
+  * GPIO DT
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Wed, 13 Oct 2021 16:30:28 +0500
+
 wb-hwconf-manager (1.43.0) stable; urgency=medium
 
   * Start as systemd service instead of initscript

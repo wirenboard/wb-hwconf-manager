@@ -22,6 +22,9 @@
 #define SLOT_GPIO_BASE_8		__pass(__arg4 SLOT_DEF)
 #define SLOT_GPIO_BASE_40		__pass(__arg5 SLOT_DEF)
 
+#define GPIO_NAME_ALIAS(x) __cat4(EXT, EXTIO_SLOT_NUM, _, x)
+#define GPIO_SORT_ORDER(n) __cat(EXTIO_SLOT_NUM, n)
+
 #ifdef FROM_SHELL
 local GPIO_BASE_8=SLOT_GPIO_BASE_8
 local GPIO_BASE_40=SLOT_GPIO_BASE_40

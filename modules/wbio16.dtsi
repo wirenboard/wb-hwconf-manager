@@ -9,7 +9,7 @@ fragment {
 	target = <SLOT_I2C_ALIAS>;
 
 	__overlay__ {
-		SLOT_DT_ALIAS(WBIO_NAME)@SLOT_I2C_ADDRESS {
+		SLOT_DT_ALIAS(WBIO_NAME): SLOT_DT_ALIAS(WBIO_NAME)@SLOT_I2C_ADDRESS {
 			compatible = "microchip,mcp23017";
 			gpio-controller;
 			__gpio-cells = <2>;

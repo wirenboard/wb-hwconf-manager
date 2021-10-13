@@ -16,4 +16,52 @@
 	#define WBIO_NAME wbio_do_r10r_8
 	#define WBIO_OUTPUT
 	#include "wbio.dtsi"
+
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			GPIO_NAME_ALIAS(DIR1) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 0 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(01)>;
+			};
+			GPIO_NAME_ALIAS(ON1) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 1 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(02)>;
+			};
+			GPIO_NAME_ALIAS(DIR2) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 2 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(03)>;
+			};
+			GPIO_NAME_ALIAS(ON2) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 3 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(04)>;
+			};
+			GPIO_NAME_ALIAS(DIR3) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 4 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(05)>;
+			};
+			GPIO_NAME_ALIAS(ON3) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 5 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(06)>;
+			};
+			GPIO_NAME_ALIAS(DIR4) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 6 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(07)>;
+			};
+			GPIO_NAME_ALIAS(ON4) {
+				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 7 0>;
+				output-high;
+				sort-order = <GPIO_SORT_ORDER(08)>;
+			};
+		};
+	};
+
 };
