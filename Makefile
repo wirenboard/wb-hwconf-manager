@@ -9,8 +9,9 @@ all:
 	@echo "Nothing to do"
 
 install_data:
-	install -D -m 0644 functions.sh $(libdir)/functions.sh
-	install -D -m 0755 init.sh $(libdir)/init.sh
+	install -m 0755 -d $(datadir) $(libdir)
+	install -m 0644 functions.sh $(libdir)/functions.sh
+	install -m 0755 init.sh $(libdir)/init.sh
 	cp -rv ./slots $(datadir)/slots
 	cd $(datadir)/slots && ./gen_extio_slots.sh && rm *.sh
 	install -d -m 0755 $(datadir)/modules
