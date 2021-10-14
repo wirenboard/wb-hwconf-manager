@@ -5,7 +5,7 @@ After=local-fs.target wb-configs.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/share/wb-hwconf-manager/init.sh
+ExecStart=/usr/lib/wb-hwconf-manager/init.sh
 
 [Install]
 WantedBy=multi-user.target
