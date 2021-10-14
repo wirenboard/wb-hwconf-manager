@@ -4,9 +4,12 @@ Priority: extra
 Maintainer: Evgeny Boger <boger@contactless.ru>
 Build-Depends: debhelper (>= 8.0.0), jq
 Standards-Version: 3.9.4
+Homepage: https://github.com/wirenboard/wb-hwconf-manager
 
 Package: wb-hwconf-manager
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ucf, wb-utils (>= 2.1.2), wb-configs (>= 1.63), perl, jq, tcc, device-tree-compiler (>= 1.6.0-1), linux-image-wb6 (>= 5.10.35-wb6~~) | linux-image-wb2 (>= 4.9+wb20200925234629), mqtt-tools (>= 1.1.1), wb-mqtt-dac (>= 1.1), wb-rules-system (>= 1.6.8)
 Breaks: wb-mqtt-confed (<< 1.0.2), wb-homa-adc (<< 1.14.2), wb-mqtt-homeui (<< 1.6.1)
 Description: Provides infrastructure for hardware re-configuration via Device Tree overlays
+ This package provides Device tree overlays and scripts to
+ configure Wiren Board modules and onboard hardware.

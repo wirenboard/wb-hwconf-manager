@@ -1,5 +1,5 @@
 #!/bin/bash
-2>/dev/null . /usr/share/wb-hwconf-manager/functions.sh || . ./functions.sh
+2>/dev/null . /usr/lib/wb-hwconf-manager/functions.sh || . ./functions.sh
 
 # This function reorders WBIO modules to make continuous sequence of plugged devices
 # in the begginning of list, moving all empty slots to the end.
