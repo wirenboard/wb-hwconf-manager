@@ -1,4 +1,5 @@
 #define SLOT_ALIAS	mod2
+#define MOD_SLOT_NUM 2
 #define SLOT_TX		(CSI_DATA00,	4,	21)
 #define SLOT_RX		(CSI_DATA01,	4,	22)
 #define SLOT_RTS	(GPIO1_IO09,	1,	9)

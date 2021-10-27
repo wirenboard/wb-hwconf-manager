@@ -1,4 +1,5 @@
 #define SLOT_ALIAS	mod2
+#define MOD_SLOT_NUM 1
 #define SLOT_RX		(AUART3_RX,		3,	12)
 #define SLOT_TX		(AUART3_TX,		3,	13)
 #define SLOT_RTS		(AUART3_RTS,	3,	15)

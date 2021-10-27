@@ -1,4 +1,5 @@
 #define SLOT_ALIAS	mod4
+#define MOD_SLOT_NUM 4
 #define SLOT_TX		(LCD_DATA16,	3,	21)
 #define SLOT_RX		(LCD_DATA17,	3,	22)
 #define SLOT_RTS	(LCD_CLK,       3,	0)
