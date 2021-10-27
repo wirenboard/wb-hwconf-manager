@@ -1,4 +1,5 @@
 #define SLOT_ALIAS	w1
+#define W_SLOT_NUM 1
 
 #define SLOT_DATA	(JTAG_TMS,	1,	11)
 #define SLOT_PULLUP	(JTAG_TDI,	1,	13)
