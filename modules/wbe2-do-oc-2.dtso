@@ -36,4 +36,20 @@
         };
     };
 
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			__cat4(MOD, MOD_SLOT_NUM, _, K1) {
+				io-gpios = <SLOT_GPIO(TX)>;
+				output-high;
+				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
+			};
+			__cat4(MOD, MOD_SLOT_NUM, _, K2) {
+				io-gpios = <SLOT_GPIO(RX)>;
+				output-high;
+				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
+			};
+		};
+	};
 };
