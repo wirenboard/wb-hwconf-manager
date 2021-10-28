@@ -5,7 +5,7 @@ AIDV_CHAN_PER_CHIP=4
 AIDV_CHANNEL_NUM=$((AIDV_CHIPS * AIDV_CHAN_PER_CHIP))
 ADS_ADDR=72
 
-local AIDV_JSON="/etc/wb-homa-adc.conf"
+local AIDV_JSON="/var/lib/wb-mqtt-adc/conf.d/wbio-ai-dv-12.conf"
 
 dec_to_hex() {
 	printf '%x\n' $1
@@ -16,12 +16,7 @@ schedule_service_restart() {
 }
 
 remove_channels() {
-	local JSON=${AIDV_JSON}
-
-	for ((chip = 0; chip < AIDV_CHIPS; chip++)); do
-		json_array_delete ".iio_channels" \
-			". as \$chan | ([\"`get_iio_match $chip`\"] | map(. == \$chan.match_iio) | any)"
-	done
+	rm -f ${AIDV_JSON}
 }
 
 get_iio_match() {
@@ -30,11 +25,10 @@ get_iio_match() {
 }
 
 hook_module_add() {
-	remove_channels
-
-	local items=()
+	ADCCONF='{\n "iio_channels": ['
 	local chan mul max_voltage
 
+	first=1
 	# Single-ended channels
 	for ((chip = 0; chip < AIDV_CHIPS; chip++)); do
 		for ((chip_chan = 0; chip_chan < AIDV_CHAN_PER_CHIP; chip_chan++)); do
@@ -57,15 +51,23 @@ hook_module_add() {
 					;;
 			esac
 
-			items+=( "{channel_number: \"voltage${chip_chan}\",
-					   id: \"EXT1_A$((chan + 1))\",
-					   averaging_window: 1,
-					   decimal_places: 5,
-					   max_voltage: 4.5,
-					   scale: $scale,
-					   match_iio: \"`get_iio_match $chip`\",
-					   mqtt_type: \"${mqtt_type}\",
-					   voltage_multiplier: ${voltage_multiplier}  }" )
+			ITEM="{\"channel_number\": \"voltage${chip_chan}\",
+					   \"id\": \"EXT1_A$((chan + 1))\",
+					   \"averaging_window\": 1,
+					   \"decimal_places\": 5,
+					   \"max_voltage\": 4.5,
+					   \"scale\": $scale,
+					   \"match_iio\": \"`get_iio_match $chip`\",
+					   \"mqtt_type\": \"${mqtt_type}\",
+					   \"voltage_multiplier\": ${voltage_multiplier}  }"
+			
+			if (( first )); then
+				first=0
+			else
+				ADCCONF="$ADCCONF,"
+			fi
+			
+			ADCCONF="$ADCCONF\n$ITEM"
 		done
 	done
 
@@ -95,20 +97,28 @@ hook_module_add() {
 						;;
 				esac
 
-				items+=( "{channel_number: \"voltage$((pair * 2))-voltage$((pair * 2 + 1))\",
-						   id: \"EXT1_A$((chan0 + 1))_A$((chan1 + 1))\",
-						   averaging_window: 1,
-						   decimal_places: 3,
-						   max_voltage: 10,
-						   scale: ${scale},
-						   match_iio: \"`get_iio_match $chip`\",
-						   voltage_multiplier: ${voltage_multiplier}  }" )
+				ITEM="{\"channel_number\": \"voltage$((pair * 2))-voltage$((pair * 2 + 1))\",
+						   \"id\": \"EXT1_A$((chan0 + 1))_A$((chan1 + 1))\",
+						   \"averaging_window\": 1,
+						   \"decimal_places\": 3,
+						   \"max_voltage\": 10,
+						   \"scale\": ${scale},
+						   \"match_iio\": \"`get_iio_match $chip`\",
+						   \"voltage_multiplier\": ${voltage_multiplier}  }"
+
+				if (( first )); then
+					first=0
+				else
+					ADCCONF="$ADCCONF,"
+				fi
+
+				ADCCONF="$ADCCONF\n$ITEM"
 			fi
 		done
 	done
 
-	local JSON=${AIDV_JSON}
-	json_array_append ".iio_channels" "${items[@]}"
+	ADCCONF="$ADCCONF\n]}"
+	echo -e $ADCCONF > ${AIDV_JSON}
 
 	schedule_service_restart
 }
