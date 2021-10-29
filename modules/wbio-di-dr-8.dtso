@@ -21,46 +21,14 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			GPIO_NAME_ALIAS(DR1) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 0 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(01)>;
-			};
-			GPIO_NAME_ALIAS(DR2) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 1 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(02)>;
-			};
-			GPIO_NAME_ALIAS(DR3) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 2 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(03)>;
-			};
-			GPIO_NAME_ALIAS(DR4) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 3 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(04)>;
-			};
-			GPIO_NAME_ALIAS(DR5) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 4 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(05)>;
-			};
-			GPIO_NAME_ALIAS(DR6) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 5 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(06)>;
-			};
-			GPIO_NAME_ALIAS(DR7) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 6 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(07)>;
-			};
-			GPIO_NAME_ALIAS(DR8) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 7 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(08)>;
-			};
+			EXTIO_INPUT(DR1, 0, 01);
+			EXTIO_INPUT(DR2, 1, 02);
+			EXTIO_INPUT(DR3, 2, 03);
+			EXTIO_INPUT(DR4, 3, 04);
+			EXTIO_INPUT(DR5, 4, 05);
+			EXTIO_INPUT(DR6, 5, 06);
+			EXTIO_INPUT(DR7, 6, 07);
+			EXTIO_INPUT(DR8, 7, 08);
 		};
 	};
 };

@@ -21,76 +21,20 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			GPIO_NAME_ALIAS(DR1) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 0 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(01)>;
-			};
-			GPIO_NAME_ALIAS(DR2) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 1 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(02)>;
-			};
-			GPIO_NAME_ALIAS(DR3) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 2 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(03)>;
-			};
-			GPIO_NAME_ALIAS(DR4) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 3 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(04)>;
-			};
-			GPIO_NAME_ALIAS(DR5) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 4 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(05)>;
-			};
-			GPIO_NAME_ALIAS(DR6) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 5 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(06)>;
-			};
-			GPIO_NAME_ALIAS(DR7) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 6 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(07)>;
-			};
-			GPIO_NAME_ALIAS(DR8) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 7 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(08)>;
-			};
-			GPIO_NAME_ALIAS(DR9) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 8 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(09)>;
-			};
-			GPIO_NAME_ALIAS(DR10) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 9 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(10)>;
-			};
-			GPIO_NAME_ALIAS(DR11) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 10 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(11)>;
-			};
-			GPIO_NAME_ALIAS(DR12) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 11 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(12)>;
-			};
-			GPIO_NAME_ALIAS(DR13) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 12 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(13)>;
-			};
-			GPIO_NAME_ALIAS(DR14) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 13 0>;
-				input;
-				sort-order = <GPIO_SORT_ORDER(14)>;
-			};
+			EXTIO_INPUT(DR1, 0, 01);
+			EXTIO_INPUT(DR2, 1, 02);
+			EXTIO_INPUT(DR3, 2, 03);
+			EXTIO_INPUT(DR4, 3, 04);
+			EXTIO_INPUT(DR5, 4, 05);
+			EXTIO_INPUT(DR6, 5, 06);
+			EXTIO_INPUT(DR7, 6, 07);
+			EXTIO_INPUT(DR8, 7, 08);
+			EXTIO_INPUT(DR9, 8, 09);
+			EXTIO_INPUT(DR10, 9, 10);
+			EXTIO_INPUT(DR11, 10, 11);
+			EXTIO_INPUT(DR12, 11, 12);
+			EXTIO_INPUT(DR13, 12, 13);
+			EXTIO_INPUT(DR14, 13, 14);
 		};
 	};
 };

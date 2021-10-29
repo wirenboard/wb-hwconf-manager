@@ -21,26 +21,10 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			GPIO_NAME_ALIAS(R3A1) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 0 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(01)>;
-			};
-			GPIO_NAME_ALIAS(R3A2) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 1 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(02)>;
-			};
-			GPIO_NAME_ALIAS(R3A3) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 2 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(03)>;
-			};
-			GPIO_NAME_ALIAS(R3A4) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 3 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(04)>;
-			};
+			EXTIO_OUTPUT_HIGH(R3A1, 0, 01);
+			EXTIO_OUTPUT_HIGH(R3A2, 1, 02);
+			EXTIO_OUTPUT_HIGH(R3A3, 2, 03);
+			EXTIO_OUTPUT_HIGH(R3A4, 3, 04);
 		};
 	};
 };

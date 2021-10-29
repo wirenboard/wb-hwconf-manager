@@ -21,46 +21,14 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			GPIO_NAME_ALIAS(TTL1) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 0 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(01)>;
-			};
-			GPIO_NAME_ALIAS(TTL2) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 1 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(02)>;
-			};
-			GPIO_NAME_ALIAS(TTL3) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 2 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(03)>;
-			};
-			GPIO_NAME_ALIAS(TTL4) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 3 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(04)>;
-			};
-			GPIO_NAME_ALIAS(TTL5) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 4 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(05)>;
-			};
-			GPIO_NAME_ALIAS(TTL6) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 5 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(06)>;
-			};
-			GPIO_NAME_ALIAS(TTL7) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 6 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(07)>;
-			};
-			GPIO_NAME_ALIAS(TTL8) {
-				io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) 7 0>;
-				output-high;
-				sort-order = <GPIO_SORT_ORDER(08)>;
-			};
+			EXTIO_OUTPUT_HIGH(TTL1, 0, 01);
+			EXTIO_OUTPUT_HIGH(TTL2, 1, 02);
+			EXTIO_OUTPUT_HIGH(TTL3, 2, 03);
+			EXTIO_OUTPUT_HIGH(TTL4, 3, 04);
+			EXTIO_OUTPUT_HIGH(TTL5, 4, 05);
+			EXTIO_OUTPUT_HIGH(TTL6, 5, 06);
+			EXTIO_OUTPUT_HIGH(TTL7, 6, 07);
+			EXTIO_OUTPUT_HIGH(TTL8, 7, 08);
 		};
 	};
 };
