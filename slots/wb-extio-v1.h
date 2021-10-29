@@ -29,14 +29,14 @@
 */
 #define EXTIO_INPUT(name, pin, order) \
     __cat4(EXT, EXTIO_SLOT_NUM, _, name) {\
-        io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin 0>;\
+        io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin GPIO_ACTIVE_HIGH>;\
         input;\
         sort-order = <__cat(EXTIO_SLOT_NUM, order)>;\
     }
 
 #define EXTIO_OUTPUT_HIGH(name, pin, order) \
     __cat4(EXT, EXTIO_SLOT_NUM, _, name) {\
-        io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin 0>;\
+        io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin GPIO_ACTIVE_HIGH>;\
         output-high;\
         sort-order = <__cat(EXTIO_SLOT_NUM, order)>;\
     }
