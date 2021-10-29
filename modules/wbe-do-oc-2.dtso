@@ -31,16 +31,8 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			__cat4(MOD, MOD_SLOT_NUM, _, K1) {
-				io-gpios = <SLOT_GPIO(SDA)>;
-				output-high;
-				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
-			};
-			__cat4(MOD, MOD_SLOT_NUM, _, K2) {
-				io-gpios = <SLOT_GPIO(SCL)>;
-				output-high;
-				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
-			};
+			WBE_OUTPUT_HIGH(K1, SDA, 1);
+			WBE_OUTPUT_HIGH(K2, SCL, 2);
 		};
 	};
 };

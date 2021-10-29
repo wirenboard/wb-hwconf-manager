@@ -7,3 +7,4 @@
 	SLOT_FOR_PIN(RTS)
 
 #include "utils.h"
+#include "wb-wbe-gpio.h"

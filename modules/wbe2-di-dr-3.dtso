@@ -33,21 +33,9 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			__cat4(MOD, MOD_SLOT_NUM, _, IN1) {
-				io-gpios = <SLOT_GPIO(TX)>;
-				input;
-				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
-			};
-			__cat4(MOD, MOD_SLOT_NUM, _, IN2) {
-				io-gpios = <SLOT_GPIO(RX)>;
-				input;
-				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
-			};
-			__cat4(MOD, MOD_SLOT_NUM, _, IN3) {
-				io-gpios = <SLOT_GPIO(RTS)>;
-				input;
-				sort-order = <__cat(MOD_SLOT_NUM, 1)>;
-			};
+			WBE_INPUT(IN1, TX, 1);
+			WBE_INPUT(IN2, RX, 2);
+			WBE_INPUT(IN3, RTS, 3);
 		};
 	};
 };

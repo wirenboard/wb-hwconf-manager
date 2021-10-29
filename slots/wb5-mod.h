@@ -18,3 +18,4 @@
 
 #include "imx28-pinfunc.h"
 #include "utils.h"
+#include "wb-wbe-gpio.h"
