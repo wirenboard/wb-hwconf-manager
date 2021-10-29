@@ -9,8 +9,7 @@
 #define __gpio_pin __arg3
 #define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
-#define GPIO_ACTIVE_HIGH 0
-#define GPIO_ACTIVE_LOW 1
+#include "gpio.h"
 
 /* Helper macros that substitutes actual pins values depending on used slot
  * e.g. if SLOT == wb5-mod1 it will expand to pins regarding to MOD1 connector
@@ -28,7 +27,7 @@
  * SLOT_GPIO_PIN(FOO) -> <GPIO pin number>
  *	use to get GPIO pin number
  * SLOT_GPIO(FOO) -> &gpio<port> <pin>
- *	use in periherial device nodes, e.g. gpios = <SLOT_GPIO(FOO)>
+ *	use in peripheral device nodes, e.g. gpios = <SLOT_GPIO(FOO)>
  * SLOT_DT_ALIAS(foo) -> mod<n>_foo
  *	use to reference on per-slot peripherials (i2c, spi, uart)
  */
@@ -57,6 +56,5 @@ local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
 #include "irq.h"
-#include "gpio.h"
 
 #endif /* UTILS_H */
