@@ -21,14 +21,14 @@
 		target-path = "/wirenboard/gpios";
 
 		__overlay__ {
-			EXTIO_INPUT(IN1, 0, 01, 0);
-			EXTIO_INPUT(IN2, 1, 02, 0);
-			EXTIO_INPUT(IN3, 2, 03, 0);
-			EXTIO_INPUT(IN4, 3, 04, 0);
-			EXTIO_INPUT(IN5, 4, 05, 0);
-			EXTIO_INPUT(IN6, 5, 06, 0);
-			EXTIO_INPUT(IN7, 6, 07, 0);
-			EXTIO_INPUT(IN8, 7, 08, 0);
+			EXTIO_INPUT(IN1, 0, 01);
+			EXTIO_INPUT(IN2, 1, 02);
+			EXTIO_INPUT(IN3, 2, 03);
+			EXTIO_INPUT(IN4, 3, 04);
+			EXTIO_INPUT(IN5, 4, 05);
+			EXTIO_INPUT(IN6, 5, 06);
+			EXTIO_INPUT(IN7, 6, 07);
+			EXTIO_INPUT(IN8, 7, 08);
 		};
 	};
 };
