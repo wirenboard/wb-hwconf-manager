@@ -125,5 +125,11 @@ hook_module_add() {
 
 hook_module_del() {
 	remove_channels
+	# Remove old definitions in wb-homa-adc.conf
+	local JSON="/etc/wb-homa-adc.conf"
+	for ((chip = 0; chip < AIDV_CHIPS; chip++)); do
+		json_array_delete ".iio_channels" \
+			". as \$chan | ([\"`get_iio_match $chip`\"] | map(. == \$chan.match_iio) | any)"
+	done
 	schedule_service_restart
 }
