@@ -43,7 +43,7 @@
 
 		__overlay__ {
 			__cat4(W, W_SLOT_NUM, _, IN) {
-				io-gpios = <SLOT_GPIO_PORT_ALIAS(DATA) SLOT_GPIO_PIN(DATA) 1>;
+				io-gpios = <SLOT_GPIO_LOW(DATA)>;
 				input;
 				sort-order = <__cat(W_SLOT_NUM, 001)>;
 			};
