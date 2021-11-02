@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.43.1) stable; urgency=medium
+
+  * HWconf schema title translation to Russian
+
+ -- Dmitry Vorobjev <d.vorobjev@wirenboard.ru>  Tue, 02 Nov 2021 14:57:22 +0300
+
 wb-hwconf-manager (1.43.0) stable; urgency=medium
 
   * Start as systemd service instead of initscript
