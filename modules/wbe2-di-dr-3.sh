@@ -5,6 +5,7 @@ hook_module_add() {
 }
 
 hook_module_del() {
+	systemctl stop wb-mqtt-gpio || true
 	wb_gpio_del $GPIO_TX
 	wb_gpio_del $GPIO_RX
 	wb_gpio_del $GPIO_RTS
