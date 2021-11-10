@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.43.2) stable; urgency=medium
+
+  * Device Tree overlay loading error message is fixed
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Wed, 10 Nov 2021 15:38:40 +0500
+
 wb-hwconf-manager (1.43.1) stable; urgency=medium
 
   * HWconf schema title translation to Russian

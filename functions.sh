@@ -422,13 +422,14 @@ module_init() {
 	mkdir "$overlay" &&
 	cat "$dtbo" > "$overlay/dtbo"
 
+	local OVERLAY_LOADING_CHECK_COUNT=5
 	local i
-	for ((i=0; i<5; i++)); do
+	for ((i=0; i<$OVERLAY_LOADING_CHECK_COUNT; i++)); do
 		log_action_cont_msg
 		[[ $(cat "$overlay/status") == "applied" ]] && break
 		sleep 1
 	done
-	[[ $i == 3 ]] && {
+	[[ $i == $OVERLAY_LOADING_CHECK_COUNT ]] && {
 		rm "$dtbo"
 		die "Device Tree overlay loading failed"
 		return 1
