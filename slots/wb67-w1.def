@@ -1,4 +1,5 @@
 #define SLOT_ALIAS	w1
+#define W_SLOT_NUM 1
 
 #define SLOT_DATA	(LCD_RESET,	3,	4)
 #define SLOT_PULLUP	(NAND_DQS,	4,	16)

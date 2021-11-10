@@ -26,4 +26,12 @@
 			};
 		};
 	};
+
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			WBE_OUTPUT_HIGH(OUT1, CS, 1);
+		};
+	};
 };

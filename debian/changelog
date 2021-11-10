@@ -1,3 +1,13 @@
+wb-hwconf-manager (1.44.0) stable; urgency=medium
+
+  * GPIO modules are exported to sysfs using device tree,
+    information is located in /wirenboard/gpios folder.
+    GPIO modules configuration is not written anymore to /etc/wb-mqtt-gpio.conf.
+  * wbio-ai-dv-12 generates description in /var/lib/wb-mqtt-adc/conf.d
+    It's configuration in not written anymore to /etc/wb-mqtt-adc.conf.
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Wed, 10 Nov 2021 18:03:42 +0500
+
 wb-hwconf-manager (1.43.2) stable; urgency=medium
 
   * Translation remarks correction

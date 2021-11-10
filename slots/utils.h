@@ -9,6 +9,8 @@
 #define __gpio_pin __arg3
 #define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
+#include "gpio.h"
+
 /* Helper macros that substitutes actual pins values depending on used slot
  * e.g. if SLOT == wb5-mod1 it will expand to pins regarding to MOD1 connector
  * Supposed to be used to avoid DTS duplication for modules fitting more than
@@ -25,7 +27,7 @@
  * SLOT_GPIO_PIN(FOO) -> <GPIO pin number>
  *	use to get GPIO pin number
  * SLOT_GPIO(FOO) -> &gpio<port> <pin>
- *	use in periherial device nodes, e.g. gpios = <SLOT_GPIO(FOO)>
+ *	use in peripheral device nodes, e.g. gpios = <SLOT_GPIO(FOO)>
  * SLOT_DT_ALIAS(foo) -> mod<n>_foo
  *	use to reference on per-slot peripherials (i2c, spi, uart)
  */
@@ -34,7 +36,8 @@
 #define SLOT_GPIO_PORT(x) __pin_attr(x, gpio_port)
 #define SLOT_GPIO_PORT_ALIAS(x) __cat(&gpio, __pin_attr(x, gpio_port))
 #define SLOT_GPIO_PIN(x) __pin_attr(x, gpio_pin)
-#define SLOT_GPIO(x) SLOT_GPIO_PORT_ALIAS(x) SLOT_GPIO_PIN(x) 0
+#define SLOT_GPIO(x) SLOT_GPIO_PORT_ALIAS(x) SLOT_GPIO_PIN(x) GPIO_ACTIVE_HIGH
+#define SLOT_GPIO_LOW(x) SLOT_GPIO_PORT_ALIAS(x) SLOT_GPIO_PIN(x) GPIO_ACTIVE_LOW
 #define SLOT_DT_ALIAS(x) __cat3(SLOT_ALIAS, _, x)
 
 #ifdef FROM_SHELL
@@ -53,6 +56,5 @@ local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
 #include "irq.h"
-#include "gpio.h"
 
 #endif /* UTILS_H */

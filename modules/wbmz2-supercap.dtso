@@ -9,4 +9,20 @@
 		};
 	};
 
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			SUPERCAP_PRESENT {
+				io-gpios = <SLOT_GPIO_LOW(PIN1_SCL)>;
+				input;
+				sort-order = <10001>;
+			};
+			SUPERCAP_DISCHARGING {
+				io-gpios = <SLOT_GPIO(PIN2_SDA)>;
+				input;
+				sort-order = <10002>;
+			};
+		};
+	};
 };

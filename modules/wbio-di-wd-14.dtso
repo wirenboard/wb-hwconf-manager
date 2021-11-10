@@ -16,4 +16,25 @@
 	#define WBIO_NAME wbio_di_wd_14
 	#define WBIO_INPUT
 	#include "wbio16.dtsi"
+
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			EXTIO_INPUT(IN1, 0, 01);
+			EXTIO_INPUT(IN2, 1, 02);
+			EXTIO_INPUT(IN3, 2, 03);
+			EXTIO_INPUT(IN4, 3, 04);
+			EXTIO_INPUT(IN5, 4, 05);
+			EXTIO_INPUT(IN6, 5, 06);
+			EXTIO_INPUT(IN7, 6, 07);
+			EXTIO_INPUT(IN8, 7, 08);
+			EXTIO_INPUT(IN9, 8, 09);
+			EXTIO_INPUT(IN10, 9, 10);
+			EXTIO_INPUT(IN11, 10, 11);
+			EXTIO_INPUT(IN12, 11, 12);
+			EXTIO_INPUT(IN13, 12, 13);
+			EXTIO_INPUT(IN14, 13, 14);
+		};
+	};
 };
