@@ -22,6 +22,25 @@
 #define SLOT_GPIO_BASE_8		__pass(__arg4 SLOT_DEF)
 #define SLOT_GPIO_BASE_40		__pass(__arg5 SLOT_DEF)
 
+/* order for EXTIO_INPUT and EXTIO_OUTPUT_HIGH
+   must be two digit number, 1 must be 01, 2 - 02 etc.
+   The macros concatenates EXTIO_SLOT_NUM and supplied order.
+   Resulting sort order for extio pins starts from 100.
+*/
+#define EXTIO_INPUT(name, pin, order) \
+    __cat4(EXT, EXTIO_SLOT_NUM, _, name) {\
+        io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin GPIO_ACTIVE_HIGH>;\
+        input;\
+        sort-order = <__cat(EXTIO_SLOT_NUM, order)>;\
+    }
+
+#define EXTIO_OUTPUT_HIGH(name, pin, order) \
+    __cat4(EXT, EXTIO_SLOT_NUM, _, name) {\
+        io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin GPIO_ACTIVE_HIGH>;\
+        output-high;\
+        sort-order = <__cat(EXTIO_SLOT_NUM, order)>;\
+    }
+
 #ifdef FROM_SHELL
 local GPIO_BASE_8=SLOT_GPIO_BASE_8
 local GPIO_BASE_40=SLOT_GPIO_BASE_40

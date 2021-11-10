@@ -27,4 +27,15 @@
 			};
 		};
 	};
+
+	
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			WBE_INPUT(IN1, TX, 1);
+			WBE_INPUT(IN2, RX, 2);
+			WBE_INPUT(IN3, RTS, 3);
+		};
+	};
 };

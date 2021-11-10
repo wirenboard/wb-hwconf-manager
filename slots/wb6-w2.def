@@ -1,4 +1,5 @@
 #define SLOT_ALIAS	w2
+#define W_SLOT_NUM 2
 
 #define SLOT_DATA	(NAND_READY_B,	4,	12)
 #define SLOT_PULLUP	(NAND_DQS,	4,	16)

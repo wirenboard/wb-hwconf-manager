@@ -16,4 +16,19 @@
 	#define WBIO_NAME wbio_do_hs_8
 	#define WBIO_OUTPUT
 	#include "wbio.dtsi"
+
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			EXTIO_OUTPUT_HIGH(HS1, 0, 01);
+			EXTIO_OUTPUT_HIGH(HS2, 1, 02);
+			EXTIO_OUTPUT_HIGH(HS3, 2, 03);
+			EXTIO_OUTPUT_HIGH(HS4, 3, 04);
+			EXTIO_OUTPUT_HIGH(HS5, 4, 05);
+			EXTIO_OUTPUT_HIGH(HS6, 5, 06);
+			EXTIO_OUTPUT_HIGH(HS7, 6, 07);
+			EXTIO_OUTPUT_HIGH(HS8, 7, 08);
+		};
+	};
 };
