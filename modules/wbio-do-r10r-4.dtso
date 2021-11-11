@@ -15,6 +15,16 @@
 
 	#define WBIO_NAME wbio_do_r10r_8
 	#define WBIO_OUTPUT
+	#define GPIO_LINE_NAMES \
+			EXTIO_LINE_NAME(DIR1), \
+			EXTIO_LINE_NAME(ON1), \
+			EXTIO_LINE_NAME(DIR2), \
+			EXTIO_LINE_NAME(ON2), \
+			EXTIO_LINE_NAME(DIR3), \
+			EXTIO_LINE_NAME(ON3), \
+			EXTIO_LINE_NAME(DIR4), \
+			EXTIO_LINE_NAME(ON4)
+
 	#include "wbio.dtsi"
 
 	fragment-gpio {

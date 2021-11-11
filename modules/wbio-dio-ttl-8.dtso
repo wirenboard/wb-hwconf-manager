@@ -15,6 +15,16 @@
 	
 	#define WBIO_NAME wbio_dio_ttl_8
 	#define WBIO_OUTPUT
+	#define GPIO_LINE_NAMES \
+			EXTIO_LINE_NAME(TTL1), \
+			EXTIO_LINE_NAME(TTL2), \
+			EXTIO_LINE_NAME(TTL3), \
+			EXTIO_LINE_NAME(TTL4), \
+			EXTIO_LINE_NAME(TTL5), \
+			EXTIO_LINE_NAME(TTL6), \
+			EXTIO_LINE_NAME(TTL7), \
+			EXTIO_LINE_NAME(TTL8)
+
 	#include "wbio.dtsi"
 
 	fragment-gpio {

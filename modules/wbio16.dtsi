@@ -24,7 +24,9 @@ fragment {
 			__interrupt-cells=<2>;
 
 			linux,gpio-base = <SLOT_GPIO_BASE_40>;
+			#if defined(GPIO_LINE_NAMES)
+				gpio-line-names = GPIO_LINE_NAMES;
+			#endif
 		};
 	};
 };
-
