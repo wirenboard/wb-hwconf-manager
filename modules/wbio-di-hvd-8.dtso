@@ -15,6 +15,16 @@
 	
 	#define WBIO_NAME wbio_di_hvd_8
 	#define WBIO_INPUT
+	#define GPIO_LINE_NAMES \
+			EXTIO_LINE_NAME(IN1), \
+			EXTIO_LINE_NAME(IN2), \
+			EXTIO_LINE_NAME(IN3), \
+			EXTIO_LINE_NAME(IN4), \
+			EXTIO_LINE_NAME(IN5), \
+			EXTIO_LINE_NAME(IN6), \
+			EXTIO_LINE_NAME(IN7), \
+			EXTIO_LINE_NAME(IN8)
+
 	#include "wbio.dtsi"
 
 	fragment-gpio {
