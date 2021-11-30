@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.45.1) stable; urgency=medium
+
+  * Fix circular dependency on wb-knxd-config on boot
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Tue, 30 Nov 2021 13:56:50 +0300
+
 wb-hwconf-manager (1.45.0) stable; urgency=medium
 
   * Trigger KNXD config rebuild when KNX module is added or removed
