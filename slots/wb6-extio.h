@@ -2,7 +2,7 @@
 
 #define SLOT_I2C_ALIAS	&i2c2
 
-#include "imx6ul-pinfunc.h"
+#include "imx6ul-soc.h"
 #include "wb-extio-v1.h"
 
 #ifdef FROM_SHELL
