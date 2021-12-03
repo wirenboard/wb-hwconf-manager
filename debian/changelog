@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.46.0) stable; urgency=medium
+
+  * partial wb7 support: everything modem and battery modules
+
+ -- Evgeny Boger <boger@contactless.ru>  Tue, 23 Nov 2021 00:50:31 +0300
+
 wb-hwconf-manager (1.45.2) stable; urgency=medium
 
   * Correct sort order is set for GPIO
