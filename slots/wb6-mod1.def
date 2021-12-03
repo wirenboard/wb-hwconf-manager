@@ -8,11 +8,8 @@
 #define SLOT_I2C_EXPOSE_PINCTRL &pinctrl_mod1_i2c_gpio
 
 #define SLOT_DE_GPIO_PINCTRL &pinctrl_mod1_de_gpio
-#define SLOT_DE_UART_PINCTRL &pinctrl_uart3_ctsb
-
-#define SLOT_RTS_GPIOS &gpio1 26 GPIO_ACTIVE_HIGH
 
 #define SLOT_UART_ALIAS  &uart3
 
-#include "imx6ul-pinfunc.h"
+#include "imx6ul-soc.h"
 #include "wbe2.h"

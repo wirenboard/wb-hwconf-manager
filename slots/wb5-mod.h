@@ -16,6 +16,6 @@
 	SLOT_PINMUX_GPIO(SDA) \
 	SLOT_PINMUX_GPIO(SCL)
 
-#include "imx28-pinfunc.h"
+#include "imx28-soc.h"
 #include "utils.h"
 #include "wb-wbe-gpio.h"

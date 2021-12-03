@@ -2,7 +2,7 @@
 
 #define SLOT_I2C_ALIAS	&i2c0
 
-#include "imx28-pinfunc.h"
+#include "imx28-soc.h"
 #include "wb-extio-v1.h"
 
 #ifdef FROM_SHELL
