@@ -1,0 +1,16 @@
+#define SLOT_ALIAS	mod1
+#define MOD_SLOT_NUM 1
+#define SLOT_TX		(8,	20)
+#define SLOT_RX		(8, 21)
+#define SLOT_RTS	(1, 4)
+
+#define SLOT_TXRX_GPIO_PINCTRL &pinctrl_mod1_txrx_gpio
+#define SLOT_TXRX_UART_PINCTRL &pinctrl_mod1_txrx_uart
+#define SLOT_I2C_EXPOSE_PINCTRL &pinctrl_mod1_i2c_gpio
+
+#define SLOT_DE_GPIO_PINCTRL &pinctrl_mod1_de_gpio
+
+#define SLOT_UART_ALIAS  &uart7
+
+#include "r40-soc.h"
+#include "wbe2.h"
