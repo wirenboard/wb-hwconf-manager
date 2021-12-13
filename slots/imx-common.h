@@ -35,6 +35,9 @@
 #define SLOT_GPIO_SPEC(x) SLOT_GPIO_PIN(x)
 #define SLOT_GPIO_XLATE_TYPE(x) "offset"
 #define SLOT_GPIO_PINS_PER_BANK(x) 0
+
+#include "strutils.h"
+
 #ifdef FROM_SHELL
 
 

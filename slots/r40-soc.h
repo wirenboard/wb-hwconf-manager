@@ -1,5 +1,5 @@
-#ifndef __DTS_IMX6UL_PINFUNC_H
-#define __DTS_IMX6UL_PINFUNC_H
+#ifndef __DTS_R40_PINFUNC_H
+#define __DTS_R40_PINFUNC_H
 
 #define SOC_TYPE R40
 
