@@ -1,0 +1,25 @@
+{
+	"module_wb67-can-uart": {
+		"type": "object",
+		"properties": {
+			"terminatorsMode": {
+				"title": "120Ω termination resistor",
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
+				],
+				"default": "disabled",
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				}
+			}
+		},
+		"required": [
+			"terminatorsMode"
+		]
+	}
+}
