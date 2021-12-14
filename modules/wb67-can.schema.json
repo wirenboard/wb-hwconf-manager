@@ -1,0 +1,40 @@
+{
+	"module_wb67-can": {
+		"title": " ",
+		"type": "object",
+		"properties": {
+			"terminatorsMode": {
+				"type": "string",
+				"title": "120Ω termination resistor",
+				"minLength": 1,
+				"enumSource": [
+					{
+						"source": [
+							{
+								"value": "enabled",
+								"title": "Enabled"
+							},
+							{
+								"value": "disabled",
+								"title": "Disabled"
+							}
+						],
+						"value": "{{item.value}}",
+						"title": "{{item.title}}"
+					}
+				],
+				"default": "disabled",
+				"options": {
+					"disable_collapse": true,
+					"disable_array_add": true,
+					"disable_array_delete": true,
+					"disable_array_reorder": true
+				},
+				"propertyOrder": 1
+			}
+		},
+		"required": [
+			"terminatorsMode"
+		]
+	}
+}

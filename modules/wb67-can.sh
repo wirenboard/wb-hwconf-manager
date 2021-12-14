@@ -12,6 +12,19 @@ hook_module_init() {
 	sysfs_gpio_export $GPIO_RS485_RTS
 	sysfs_gpio_direction $GPIO_RS485_RTS out
 	sysfs_gpio_set $GPIO_RS485_RTS 0
+
+	sysfs_gpio_export $GPIO_RS485_TERM
+	sysfs_gpio_direction $GPIO_RS485_TERM out
+
+	local term_mode="$(config_module_option ".terminatorsMode")"
+	if [ "$term_mode" = "disabled" ]
+	then
+		echo "terminators are disabled"
+		sysfs_gpio_set $GPIO_RS485_TERM 0
+	else
+		echo "terminators are enabled"
+		sysfs_gpio_set $GPIO_RS485_TERM 1
+	fi
 }
 
 hook_module_deinit() {
@@ -23,4 +36,7 @@ hook_module_deinit() {
 
 	sysfs_gpio_direction $GPIO_RS485_RTS in
 	sysfs_gpio_unexport $GPIO_RS485_RTS
+
+	sysfs_gpio_direction $GPIO_RS485_TERM in
+	sysfs_gpio_unexport $GPIO_RS485_TERM
 }
