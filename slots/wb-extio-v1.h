@@ -27,18 +27,17 @@
    The macros concatenates EXTIO_SLOT_NUM and supplied order.
    Resulting sort order for extio pins starts from 100.
 */
-#define EXTIO_INPUT(name, pin, order) \
+#define EXTIO_INPUT(name, pin, index) \
     __cat4(EXT, EXTIO_SLOT_NUM, _, name) {\
         io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin GPIO_ACTIVE_HIGH>;\
         input;\
-        sort-order = <__cat(EXTIO_SLOT_NUM, order)>;\
+        sort-order = <__cat(EXTIO_SLOT_NUM, index)>;\
     }
 
-#define EXTIO_OUTPUT_HIGH(name, pin, order) \
+#define EXTIO_OUTPUT_HIGH(name, pin, index) \
     __cat4(EXT, EXTIO_SLOT_NUM, _, name) {\
         io-gpios = <&SLOT_DT_ALIAS(WBIO_NAME) pin GPIO_ACTIVE_HIGH>;\
-        output-high;\
-        sort-order = <__cat(EXTIO_SLOT_NUM, order)>;\
+        sort-order = <__cat(EXTIO_SLOT_NUM, index)>;\
     }
 
 #define EXTIO_LINE_NAME(name) \

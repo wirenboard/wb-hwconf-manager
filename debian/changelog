@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.45.2) stable; urgency=medium
+
+  * Correct sort order is set for GPIO
+  * Default output state for module's GPIO is set to low
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Tue, 14 Dec 2021 09:13:46 +0500
+
 wb-hwconf-manager (1.45.1) stable; urgency=medium
 
   * Fix circular dependency on wb-knxd-config on boot
