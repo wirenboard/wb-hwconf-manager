@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.43.2-wb3) stable; urgency=medium
+
+  * Kernel panic after GPIO removal is fixed
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Wed, 15 Dec 2021 18:11:19 +0500
+
 wb-hwconf-manager (1.43.2-wb2) stable; urgency=medium
 
   * Fix circular dependency on wb-knxd-config on boot

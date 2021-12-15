@@ -26,6 +26,7 @@ hook_module_add() {
 }
 
 hook_module_del() {
+	systemctl stop wb-mqtt-gpio || true
 	wb_gpio_del $(seq $GPIO_BASE $[GPIO_BASE+GPIO_COUNT-1])
 }
 
