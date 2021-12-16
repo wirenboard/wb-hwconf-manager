@@ -1,63 +1,36 @@
 {
 	"module_wb67-can-rs485": {
-		"title": " ",
 		"type": "object",
 		"properties": {
 			"mode": {
-				"type": "string",
 				"title": "Failsafe bias",
-				"minLength": 1,
-				"enumSource": [
-					{
-						"source": [
-							{
-								"value": "enabled",
-								"title": "Enabled"
-							},
-							{
-								"value": "disabled",
-								"title": "Disabled"
-							}
-						],
-						"value": "{{item.value}}",
-						"title": "{{item.title}}"
-					}
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
 				],
 				"default": "enabled",
 				"options": {
-					"disable_collapse": true,
-					"disable_array_add": true,
-					"disable_array_delete": true,
-					"disable_array_reorder": true
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
 				},
 				"propertyOrder": 1
 			},
 			"terminatorsMode": {
-				"type": "string",
 				"title": "120Ω termination resistor",
-				"minLength": 1,
-				"enumSource": [
-					{
-						"source": [
-							{
-								"value": "enabled",
-								"title": "Enabled"
-							},
-							{
-								"value": "disabled",
-								"title": "Disabled"
-							}
-						],
-						"value": "{{item.value}}",
-						"title": "{{item.title}}"
-					}
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
 				],
 				"default": "enabled",
 				"options": {
-					"disable_collapse": true,
-					"disable_array_add": true,
-					"disable_array_delete": true,
-					"disable_array_reorder": true
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
 				},
 				"propertyOrder": 2
 			}
@@ -65,6 +38,11 @@
 		"required": [
 			"mode",
 			"terminatorsMode"
-		]
+		],
+		"options": {
+			"wb": {
+				"disable_title": true
+			}
+		}
 	}
 }
