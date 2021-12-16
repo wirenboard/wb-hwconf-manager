@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.43.2-wb4) stable; urgency=medium
+
+  * Stop wb-mqtt-gpio before wbe module removal to avoid kernel panic
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 16 Dec 2021 11:32:04 +0500
+
 wb-hwconf-manager (1.43.2-wb3) stable; urgency=medium
 
   * Kernel panic after GPIO removal is fixed
