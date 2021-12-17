@@ -19,5 +19,5 @@
 #define SLOT_UART_RS485_PINCTRL &pinctrl_uart4_rs485
 #define SLOT_UART_CAN_PINCTRL &pinctrl_uart4_can
 
-#include "imx6ul-pinfunc.h"
+#include "imx6ul-soc.h"
 #include "utils.h"

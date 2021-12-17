@@ -15,6 +15,12 @@ fragment_uart_on {
 	__overlay__ {
 		pinctrl-0 = <SLOT_UART_CAN_PINCTRL>;
 		status = "okay";
+
+		/* We must disable RS-495 transceiver direction control,
+		  so the RS-485 transciever is always powered off in CAN UART mode.
+		  Empty rts-gpio property frees the corresponding gpio from the kernel.
+		*/
+		rts-gpios;
 	};
 };
 

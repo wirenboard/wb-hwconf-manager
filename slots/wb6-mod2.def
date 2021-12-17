@@ -8,13 +8,10 @@
 #define SLOT_I2C_EXPOSE_PINCTRL &pinctrl_mod2_i2c_gpio
 
 #define SLOT_DE_GPIO_PINCTRL &pinctrl_mod2_de_gpio
-#define SLOT_DE_UART_PINCTRL &pinctrl_uart5_ctsb
-
-#define SLOT_RTS_GPIOS &gpio1 9 GPIO_ACTIVE_HIGH
 
 #define SLOT_UART_ALIAS  &uart5
 
 #define SLOT_NEED_CONTROL_JTAG_MOD
 
-#include "imx6ul-pinfunc.h"
+#include "imx6ul-soc.h"
 #include "wbe2.h"

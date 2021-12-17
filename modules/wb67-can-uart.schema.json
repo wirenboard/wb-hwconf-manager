@@ -1,23 +1,7 @@
 {
-	"module_wb67-can-rs485": {
+	"module_wb67-can-uart": {
 		"type": "object",
 		"properties": {
-			"mode": {
-				"title": "Failsafe bias",
-				"type": "string",
-				"enum": [
-					"enabled",
-					"disabled"
-				],
-				"default": "enabled",
-				"options": {
-					"enum_titles": [
-						"Enabled",
-						"Disabled"
-					]
-				},
-				"propertyOrder": 1
-			},
 			"terminatorsMode": {
 				"title": "120Ω termination resistor",
 				"type": "string",
@@ -25,18 +9,16 @@
 					"enabled",
 					"disabled"
 				],
-				"default": "enabled",
+				"default": "disabled",
 				"options": {
 					"enum_titles": [
 						"Enabled",
 						"Disabled"
 					]
-				},
-				"propertyOrder": 2
+				}
 			}
 		},
 		"required": [
-			"mode",
 			"terminatorsMode"
 		],
 		"options": {

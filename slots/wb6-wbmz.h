@@ -3,7 +3,7 @@
 #define SLOT_PIN2_SDA		(UART1_RTS_B,	1,	19)
 
 
-#include "imx6ul-pinfunc.h"
+#include "imx6ul-soc.h"
 
 /* All known pins for module */
 #define SLOT_ALL_PINS \

@@ -1,4 +1,4 @@
 #define SLOT_ALIAS  gsm
 
-#include "imx28-pinfunc.h"
+#include "imx28-soc.h"
 #include "utils.h"

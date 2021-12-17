@@ -19,7 +19,7 @@
 		__overlay__ {
 			pinctrl-names = "default";
 			pinctrl-0 = <SLOT_TXRX_UART_PINCTRL>;
-			rts-gpios = <SLOT_RTS_GPIOS>;
+			rts-gpios = <SLOT_GPIO(RTS)>;
 			status = "okay";
 		};
 	};
