@@ -44,6 +44,8 @@
 		__overlay__ {
 			__cat4(W, W_SLOT_NUM, _, IN) {
 				io-gpios = <SLOT_GPIO_LOW(DATA)>;
+                gpio-xlate-type = SLOT_GPIO_XLATE_TYPE(DATA);
+                gpio-pins-per-bank = <SLOT_GPIO_PINS_PER_BANK(DATA)>;
 				input;
 				sort-order = <__cat(W_SLOT_NUM, 001)>;
 			};

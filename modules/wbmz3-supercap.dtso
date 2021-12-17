@@ -15,11 +15,15 @@
 		__overlay__ {
 			SUPERCAP_PRESENT {
 				io-gpios = <SLOT_GPIO_LOW(PIN1_SCL)>;
+                gpio-xlate-type = SLOT_GPIO_XLATE_TYPE(PIN1_SCL);
+                gpio-pins-per-bank = <SLOT_GPIO_PINS_PER_BANK(PIN1_SCL)>;
 				input;
 				sort-order = <10001>;
 			};
 			SUPERCAP_DISCHARGING {
 				io-gpios = <SLOT_GPIO_LOW(PIN2_SDA)>;
+                gpio-xlate-type = SLOT_GPIO_XLATE_TYPE(PIN2_SDA);
+                gpio-pins-per-bank = <SLOT_GPIO_PINS_PER_BANK(PIN2_SDA)>;
 				input;
 				sort-order = <10002>;
 			};
