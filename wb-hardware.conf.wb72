@@ -103,6 +103,20 @@
                 "mode": "enabled",
                 "terminatorsMode": "enabled"
             }
+        },
+        {
+            "id": "wb72-w1",
+            "compatible": ["wb6-wx"],
+            "name": "W1 terminal mode",
+            "module": "wb6-wx-1wire",
+            "options": {}
+        },
+        {
+            "id": "wb72-w2",
+            "compatible": ["wb6-wx"],
+            "name": "W2 terminal mode",
+            "module": "wb6-wx-1wire",
+            "options": {}
         }
     ]
 }
