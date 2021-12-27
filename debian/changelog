@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.46.1) stable; urgency=medium
+
+  * add dependency on linux-image-wb7
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Sun, 26 Dec 2021 13:51:28 +0300
+
 wb-hwconf-manager (1.46.0) stable; urgency=medium
 
   * partial wb7 support: everything modem and battery modules
