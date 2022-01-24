@@ -1,0 +1,27 @@
+/*
+ * Copyright 2022 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+    description = "WBC-4G: 4G+3G+2G Modem";
+    compatible-slots = "wbc-usb";
+
+    fragment_change_wb_env {
+        target-path = "/wirenboard";
+
+        __overlay__ {
+            gsm {
+                status = "okay";
+                model = "a7600x";
+                type = "4g", "3g", "edge", "gprs";
+            };
+        };
+    };
+};

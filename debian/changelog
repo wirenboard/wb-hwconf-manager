@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.46.2) stable; urgency=medium
+
+  * wb7: added wbc-modem slot (usb-only)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Mon, 24 Jan 2022 14:11:41 +0300
+
 wb-hwconf-manager (1.46.1) stable; urgency=medium
 
   * add dependency on linux-image-wb7
@@ -32,7 +38,7 @@ wb-hwconf-manager (1.45.0) stable; urgency=medium
 wb-hwconf-manager (1.44.2) stable; urgency=medium
 
   * Add meaningful gpio line names for WBIO modules.
-  They are shown in gpioinfo output and in 
+  They are shown in gpioinfo output and in
   /sys/kernel/debug/gpio
 
  -- Evgeny Boger <boger@contactless.ru>  Thu, 11 Nov 2021 04:15:30 +0300

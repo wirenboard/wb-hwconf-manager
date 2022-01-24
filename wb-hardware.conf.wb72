@@ -105,6 +105,13 @@
             }
         },
         {
+            "id": "wb72-wbc",
+            "compatible": ["wbc-usb"],
+            "name": "Modem slot",
+            "module": "",
+            "options": {}
+        },
+        {
             "id": "wb72-w1",
             "compatible": ["wb6-wx"],
             "name": "W1 terminal mode",
