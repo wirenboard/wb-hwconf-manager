@@ -19,6 +19,7 @@
         __overlay__ {
             gsm {
                 status = "okay";
+                conn-type = "usb";
                 model = "a7600x";
                 type = "4g", "3g", "edge", "gprs";
             };
