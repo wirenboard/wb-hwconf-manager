@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.46.2) stable; urgency=medium
+
+  * fix module slots definitions for WB6x (<< WB67)
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Wed, 09 Feb 2022 19:26:26 +0300
+
 wb-hwconf-manager (1.46.1) stable; urgency=medium
 
   * add dependency on linux-image-wb7
