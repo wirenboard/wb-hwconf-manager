@@ -1,6 +1,7 @@
 wb-hwconf-manager (1.47.0) stable; urgency=medium
 
   * wb7: added wbc-modem slot (usb-only)
+  * defined "compatible" prop in wbc-nb, wbc-3g, wbc-4g, wbc-4g-usb modules
 
  -- Vladimir Romanov <v.romanov@wirenboard.ru>  Mon, 24 Jan 2022 14:11:41 +0300
 

@@ -29,6 +29,7 @@
                 status = "okay";
                 model = "a7600x";
                 type = "4g", "3g", "edge", "gprs";
+                compatible = "wirenboard,wbc-usb";
             };
         };
     };

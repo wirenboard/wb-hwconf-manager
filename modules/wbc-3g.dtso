@@ -29,6 +29,7 @@
                 status = "okay";
                 model = "sim5300e";
                 type = "3g", "edge", "gprs";
+                compatible = "wirenboard,wbc-usb";
             };
         };
     };

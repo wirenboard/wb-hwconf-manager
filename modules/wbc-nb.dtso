@@ -29,6 +29,7 @@
                 status = "okay";
                 model = "sim7000e";
                 type = "nb-iot", "emtc", "edge", "gprs";
+                compatible = "wirenboard,wbc-usb";
             };
         };
     };
