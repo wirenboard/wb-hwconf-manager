@@ -3,7 +3,13 @@ wb-hwconf-manager (1.47.0) stable; urgency=medium
   * wb7: added wbc-modem slot (usb-only)
   * changed overlay target in wbc-nb, wbc-3g, wbc-4g, wbc-4g-usb modules to modem's usb node
 
- -- Vladimir Romanov <v.romanov@wirenboard.ru>  Mon, 24 Jan 2022 14:11:41 +0300
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Mon, 14 Feb 2022 00:44:12 +0300
+
+wb-hwconf-manager (1.46.2) stable; urgency=medium
+
+  * fix module slots definitions for WB6x (<< WB67)
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Wed, 09 Feb 2022 19:26:26 +0300
 
 wb-hwconf-manager (1.46.1) stable; urgency=medium
 
