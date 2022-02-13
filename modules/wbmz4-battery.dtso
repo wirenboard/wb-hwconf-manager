@@ -1,0 +1,63 @@
+/ {
+	description = "WBMZ4-BATTERY";
+	compatible-slots = "wb72-wbmz4-power";
+
+	fragment-00-declare-battery {
+		target-path = "/";
+
+		__overlay__ {
+			wbmz4_battery_info: wbmz4-battery-info {
+				compatible = "simple-battery";
+				constant-charge-current-max-microamp = <600000>;
+				voltage-min-design-microvolt = <2600000>;
+				constant-charge-voltage-max-microvolt = <4100000>;
+				charge-full-design-microamp-hours = <2600000>;
+				status = "okay";
+			};
+		};
+	};
+
+	/* Has no effect until of_reconfig_notifier is implemented for the driver or for the MFD subsystem. 
+	   So we rely on bind/unbind instead to reinitialize monitored-battery. */
+	fragment-01-enable-battery-ps {
+		target = <&battery_power_supply>;
+
+		__overlay__ {
+			status = "okay";
+			monitored-battery = <&wbmz4_battery_info>;
+
+			// it's 46C-50C high temperature limit
+			x-powers,charge-high-temp-microvolt = <499200>;
+		};
+	};
+
+
+	fragment-02-temperature {
+		target-path = "/";
+
+		__overlay__ {
+			/* Huge pullup voltage is here to emulate 80uA constant current source*/
+			wbmz4-battery-temp {
+				compatible = "murata,ncp15xh103";
+				pullup-uv = <1000000000>; // 1E9 uV
+				pullup-ohm = <12500000>; // pullup_uv/80
+				pulldown-ohm = <0>;
+				series-ohm = <2000>;
+				io-channels = <&axp_adc 4>;
+			};
+		};
+	};
+
+	fragment-03-temperature-display {
+		target-path = "/wirenboard/hwmon-nodes";
+
+		__overlay__ {
+			battemp {
+				title = "Battery Temperature";
+				hwmon-node-name = "wbmz4-battery-temp";
+				hwmon-channel = "temp1";
+			};
+		};
+	};
+
+};

@@ -263,7 +263,7 @@ slot_preprocess() {
 	local slot=`slot_get_filename` || return 1
 
 	cat "$slot" - |
-	sed -r 's/#(\w+-cells)/__\1/' |
+	sed -r 's/#((\w+-)+cells)/__\1/' |
 	tcc -x assembler-with-cpp \
 		-Ulinux \
 		-nostdinc \
@@ -271,7 +271,7 @@ slot_preprocess() {
 	perl -ne '
 		next if m/^\s*(# |$)/;
 		s/__COUNTER__/$n++/ge;
-		s/__(\w+-cells)/#$1/g;
+		s/__((\w+-)+cells)/#$1/g;
 		print;'
 }
 
@@ -562,5 +562,3 @@ module_deinit() {
 	debug "Unloading DTBO"
 	rmdir "$t"
 }
-
-
