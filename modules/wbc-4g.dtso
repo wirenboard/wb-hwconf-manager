@@ -22,15 +22,13 @@
     };
 
     fragment_change_wb_env {
-        target-path = "/wirenboard";
+        target = <&wbc_modem>;
 
         __overlay__ {
-            gsm {
-                status = "okay";
-                model = "a7600x";
-                type = "4g", "3g", "edge", "gprs";
-                compatible = "wirenboard,wbc-usb";
-            };
+            status = "okay";
+            model = "a7600x";
+            type = "4g", "3g", "edge", "gprs";
+            compatible = "wirenboard,wbc-usb";
         };
     };
 };
