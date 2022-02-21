@@ -1,4 +1,4 @@
-#define SLOT_INT		(8, 18)
+#define SLOT_INT		(8, 16)
 
 #define SLOT_I2C_ALIAS	&i2c1
 
