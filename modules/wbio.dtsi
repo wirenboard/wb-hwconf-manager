@@ -18,7 +18,7 @@ fragment {
 			microchip,irq-open-drain;
 
 			interrupt-parent = <SLOT_GPIO_PORT_ALIAS(INT)>;
-			interrupts = <SLOT_GPIO_PIN(INT) IRQ_TYPE_NONE>;
+			interrupts = <SLOT_GPIO_SPEC(INT) IRQ_TYPE_NONE>;
 			interrupt-controller;
 			__interrupt-cells=<2>;
 
