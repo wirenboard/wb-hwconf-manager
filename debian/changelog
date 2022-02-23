@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.47.0) stable; urgency=medium
+
+  * add support for battery on WB7
+
+ -- Evgeny Boger <boger@wirenboard.com>  Sun, 06 Feb 2022 16:48:31 +0300
+
 wb-hwconf-manager (1.46.3) stable; urgency=medium
 
   * wb7: fix interrupt on wbio modules
