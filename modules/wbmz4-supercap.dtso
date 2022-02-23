@@ -1,0 +1,57 @@
+/ {
+	description = "WBMZ4-SUPERCAP";
+	compatible-slots = "wb72-wbmz4-power";
+
+	/* Has no effect until of_reconfig_notifier is implemented for the driver or for the MFD subsystem. So we rely on unbind instead.*/
+	fragment-00-disable-li-battery-ps {
+		target = <&battery_power_supply>;
+
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment-01-voltage-and-bat-desc {
+		target-path = "/";
+
+		__overlay__ {
+			wbmz4_supercap_cell_volt: wbmz4-supercap-cell-volt {
+				compatible = "voltage-divider";
+				io-channels = <&axp_adc 1>;
+				__io-channel-cells = <1>;
+
+				output-ohms = <4700>;
+				full-ohms = <5700>;
+
+				status = "okay";
+			};
+
+
+			wbmz4_supercap_bat_info: wbmz4-supercap-bat-info {
+				compatible = "simple-battery";
+
+				/* Expected 5V +/- tolerance. 4.9V will get good estimation during first charge, but won't prevent capacity from reaching 100% */
+				voltage-max-design-microvolt = <4900000>;
+				voltage-min-design-microvolt = <527500>;
+				energy-full-design-microwatt-hours = <150000>;
+
+				status = "okay";
+			};
+		};
+	};
+
+
+	fragment-02-driver {
+		target-path = "/";
+
+		__overlay__ {
+			wbmz4_supercap: wbmz4-supercap {
+				compatible = "edlc-battery";
+				io-channels = <&wbmz4_supercap_cell_volt 0>;
+
+				io-channel-names = "voltage";
+				monitored-battery = <&wbmz4_supercap_bat_info>;
+			};
+		};
+	};
+};
