@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.48.0) stable; urgency=medium
+
+  * wb7: added wbc-modem slot (usb-only)
+  * changed overlay target in wbc-nb, wbc-3g, wbc-4g, wbc-4g-usb modules to modem's usb node
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 23 Feb 2022 23:33:41 +0300
+
 wb-hwconf-manager (1.47.0) stable; urgency=medium
 
   * add support for battery on WB7
@@ -50,7 +57,7 @@ wb-hwconf-manager (1.45.0) stable; urgency=medium
 wb-hwconf-manager (1.44.2) stable; urgency=medium
 
   * Add meaningful gpio line names for WBIO modules.
-  They are shown in gpioinfo output and in 
+  They are shown in gpioinfo output and in
   /sys/kernel/debug/gpio
 
  -- Evgeny Boger <boger@contactless.ru>  Thu, 11 Nov 2021 04:15:30 +0300

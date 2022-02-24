@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Contactless Devices, LLC.
+ * Copyright 2022 Contactless Devices, LLC.
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -10,24 +10,16 @@
  */
 
 / {
-    description = "WBC-NB: NB-IoT + eMTC + 2G Modem";
-    compatible-slots = "wbc";
-
-    fragment_enable_uart {
-        target = <SLOT_UART_ALIAS>;
-
-        __overlay__ {
-            status = "okay";
-        };
-    };
+    description = "WBC-4G: 4G+3G+2G Modem";
+    compatible-slots = "wbc-usb";
 
     fragment_change_wb_env {
         target = <&wbc_modem>;
 
         __overlay__ {
             status = "okay";
-            model = "sim7000e";
-            type = "nb-iot", "emtc", "edge", "gprs";
+            model = "a7600x";
+            type = "4g", "3g", "edge", "gprs";
             compatible = "wirenboard,wbc-usb";
         };
     };
