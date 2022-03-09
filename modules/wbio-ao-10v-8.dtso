@@ -17,6 +17,8 @@
         target = <SLOT_I2C_ALIAS>;
 
         __overlay__ {
+            __address-cells = <1>;
+            __size-cells = <0>;
 
             SLOT_DT_ALIAS(ao10v8)@SLOT_I2C_ADDRESS_DAC {
                 compatible = "ltc2637-l10";
