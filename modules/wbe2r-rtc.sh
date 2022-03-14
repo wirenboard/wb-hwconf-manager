@@ -5,6 +5,8 @@ source "$DATADIR/modules/utils.sh"
 
 # => calling hwclock -w to initiallize RTC, if systime is appropriate (synchronized with NTP)
 hook_module_init() {
+	modprobe rtc-rv8803
+
 	hwclock --show && return 0 || {
 		log "RTC chip was powered OFF. Performing first initiallization.."
 		ntpstat && {
