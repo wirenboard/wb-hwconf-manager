@@ -15,7 +15,7 @@
 
 	#include "wbe2-i2c.dtsi"
 
-	fragment_rtc_off {
+	fragment_onboard_rtc_off {
 		target = <&rtc_onboard>;
 
 		__overlay__ {

@@ -7,16 +7,21 @@ source "$DATADIR/modules/utils.sh"
 hook_module_init() {
 	modprobe rtc-rv8803
 
-	hwclock --show && return 0 || {
+	if hwclock --show ; then
+		return 0
+	else
 		log "RTC chip was powered OFF. Performing first initiallization.."
-		ntpstat && {
-			hwclock -w && log "Proper systime has written into RTC" || {
-				log "No connection to RTC device"
-				return 1
-				}
-			} || {
-			log "RTC needs proper systime to initiallization, but systime is not synchronized with NTP"
+	fi
+
+	if ntpstat ; then
+		if hwclock -w ; then
+			log "Proper systime has written into RTC"
+		else
+			log "No connection to RTC device"
 			return 1
-		}
-	}
+		fi
+	else
+		log "RTC needs proper systime to initiallization, but systime is not synchronized with NTP"
+		return 1
+	fi
 }
