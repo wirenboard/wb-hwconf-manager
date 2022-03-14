@@ -16,7 +16,7 @@
 	#include "wbe2-i2c.dtsi"
 
 	fragment_rtc_off {
-		target = <ONBOARD_RTC_ALIAS>;
+		target = <&rtc_onboard>;
 
 		__overlay__ {
 			status = "disabled";
