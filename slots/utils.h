@@ -5,6 +5,10 @@
 
 #include "gpio.h"
 
+#ifdef FROM_SHELL
+local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
+#endif
+
 /*
  * SLOT_DT_ALIAS(foo) -> mod<n>_foo
  *	use to reference on per-slot peripherials (i2c, spi, uart)
