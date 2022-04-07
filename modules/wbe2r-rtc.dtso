@@ -10,7 +10,7 @@
  */
 
 / {
-	description = "WBE2-R-RTC: Temp-compensated Real Time Clock module";
+	description = "WBE2R-RTC: Temp-compensated Real Time Clock module";
 	compatible-slots = "wbe3-reduced";
 
 	#include "wbe2-i2c.dtsi"
