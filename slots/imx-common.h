@@ -47,7 +47,6 @@ SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
 #endif
 
-local QUOTE(SLOT_ALIAS)=EXPAND_AND_QUOTE(SLOT_ALIAS);
 #endif
 
 #endif

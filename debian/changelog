@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.49.1) stable; urgency=medium
+
+  * WBIO-AO-10V-8 configuration is fixed
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Wed, 06 Apr 2022 10:02:37 +0500
+
 wb-hwconf-manager (1.49.0) stable; urgency=medium
 
   * wb6, wb7: added rtc module (mod1-mod4); turning existing rtc off
