@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.49.2) stable; urgency=medium
+
+  * wbe2-ai-cm-1 and wbe2r-rtc are hidden from webui (via json-schema)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 07 Apr 2022 23:37:12 +0500
+
 wb-hwconf-manager (1.49.1) stable; urgency=medium
 
   * WBIO-AO-10V-8 configuration is fixed
