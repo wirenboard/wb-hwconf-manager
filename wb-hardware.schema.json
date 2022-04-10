@@ -57,7 +57,7 @@
                         "slot_compatible": "slot_item.compatible"
                     },
                     "options": {
-                        "enum_hidden": ["wbe2-ai-cm-1", "wbe2r-rtc"]
+                        "enum_hidden": []
                     },
                     "enumSource": [
                         {

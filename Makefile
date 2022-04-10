@@ -5,6 +5,10 @@ libdir = $(DESTDIR)/$(prefix)/lib/wb-hwconf-manager
 datadir = $(DESTDIR)/$(prefix)/share/wb-hwconf-manager
 test_tmpdir = ./test/tmp
 
+modules_schema_part = modules/*.schema.json
+hidden_modules_schema_part = modules/hidden_modules.json
+hidden_modules = $(shell jq -cM '.hidden_from_webui' $(hidden_modules_schema_part))
+
 all:
 	@echo "Nothing to do"
 
@@ -22,8 +26,10 @@ install_data:
 install: install_data
 	install -D -m 0755 wb-hwconf-helper $(DESTDIR)/$(prefix)/bin/wb-hwconf-helper
 	install -d -m 0755 $(DESTDIR)/usr/share/wb-mqtt-confed/schemas
-	cat wb-hardware.schema.json modules/*.schema.json | \
-		jq --slurp '.[0].definitions = .[0].definitions + (.[1:] | add) | .[0]' \
+	@echo "Embedding modules from $(modules_schema_part) to schema; $(hidden_modules) (from $(hidden_modules_schema_part)) are hidden"
+	cat wb-hardware.schema.json $(modules_schema_part) | \
+		jq --slurp '.[0].definitions = .[0].definitions + (.[1:] | add) | .[0]' | \
+		jq '.definitions.slot.properties.module.options.enum_hidden += $(hidden_modules)' \
 		> $(DESTDIR)/usr/share/wb-mqtt-confed/schemas/wb-hardware.schema.json
 	install -D -m 0644 wb-hwconf-manager.wbconfigs $(DESTDIR)/etc/wb-configs.d/02wb-hwconf-manager
 
