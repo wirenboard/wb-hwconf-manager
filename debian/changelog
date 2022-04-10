@@ -1,6 +1,7 @@
-wb-hwconf-manager (1.49.2) stable; urgency=medium
+wb-hwconf-manager (1.50.0) stable; urgency=medium
 
-  * wbe2-ai-cm-1 and wbe2r-rtc are hidden from webui (via json-schema)
+  * added ability to hide modules from webui (add name to modules/hidden_modules.json before build)
+  * wbe2-ai-cm-1 and wbe2r-rtc are hidden from webui
   * removed duplicates in wb-hardware.schema.json
 
  -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 07 Apr 2022 23:37:12 +0500
