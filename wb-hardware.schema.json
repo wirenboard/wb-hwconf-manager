@@ -17,18 +17,16 @@
 
     "slot": {
       "type": "object",
-      "headerTemplate": "{{translate self.name}}",
+      "title": "Slot",
+      "headerTemplate": "{{self.name}}",
       "id": "slot_item",
       "options": {
-        "disable_collapse": true,
-        "wb": {
-          "disable_panel": true,
-          "disable_title": true
-        }
+        "disable_collapse": true
       },
       "properties": {
         "id": {
           "type": "string",
+          "title": "Slot ID",
           "minLength": 1,
           "options": {
             "hidden": true
@@ -36,6 +34,7 @@
         },
         "name": {
           "type": "string",
+          "title": "Name",
           "minLength": 1,
           "propertyOrder": 1,
           "options": {
@@ -44,6 +43,7 @@
         },
         "compatible": {
           "type": "array",
+          "title": "Slot capabilities",
           "minLength": 1,
           "options": {
             "hidden": true
@@ -125,14 +125,12 @@
     "slots": {
       "type": "array",
       "title": "List of extension slots",
+      "description": "Lists available extension slots",
       "options": {
         "disable_collapse": true,
         "disable_array_add": true,
         "disable_array_delete": true,
-        "disable_array_reorder": true,
-        "wb": {
-          "disable_title": true
-        }
+        "disable_array_reorder": true
       },
       "items": { "$ref": "#/definitions/slot" },
       "_format": "tabs",
@@ -153,123 +151,5 @@
     "service": "wb-hwconf-manager",
     "toJSON": ["wb-hwconf-helper", "confed-tojson"],
     "fromJSON": ["wb-hwconf-helper", "confed-fromjson"]
-  },
-
-  "options": {
-    "disable_collapse": true
-  },
-
-  "translations": {
-    "ru": {
-      "Hardware Modules Configuration": "Настройка аппаратных модулей расширения",
-      "Lists additional hardware modules configuration": "Настройка дополнительных аппаратных модулей расширения",
-      "List of extension slots": "Список слотов расширения",
-      "Module type": "Тип модуля",
-      "Type of the module plugged to the slot": "Тип модуля, установленного в слоте",
-      "None": "Не установлен",
-      "Internal slot 1": "Внутренний слот 1",
-      "Internal slot 2": "Внутренний слот 2",
-      "Internal slot 3": "Внутренний слот 3",
-      "Internal slot 4": "Внутренний слот 4",
-      "External I/O module 1": "Внешний модуль ввода/вывода 1",
-      "External I/O module 2": "Внешний модуль ввода/вывода 2",
-      "External I/O module 3": "Внешний модуль ввода/вывода 3",
-      "External I/O module 4": "Внешний модуль ввода/вывода 4",
-      "External I/O module 5": "Внешний модуль ввода/вывода 5",
-      "External I/O module 6": "Внешний модуль ввода/вывода 6",
-      "External I/O module 7": "Внешний модуль ввода/вывода 7",
-      "External I/O module 8": "Внешний модуль ввода/вывода 8",
-      "RS485-1 interface config": "Конфигурация интерфейса RS485-1",
-      "RS485-2/CAN interface config": "Конфигурация интерфейса RS485-2/CAN",
-      "Modem slot": "Слот модема",
-      "W1 terminal mode": "Режим W1",
-      "W2 terminal mode": "Режим W2",
-      "Backup power supply": "Источник резервного питания",
-      "2nd Ethernet Slot": "Второй Ethernet слот",
-      "GSM modem": "GSM модем",
-      "RS485 interface": "Интерфейс RS485",
-      "RS485 failsafe bias configuration": "Настройка RS485 failsafe bias",
-      "Failsafe bias mode": "Режим failsafe bias",
-      "Enabled": "Включен",
-      "Disabled": "Выключен",
-      "UART-CAN interface": "Интерфейс UART-CAN",
-      "CAN interface": "Интерфейс CAN",
-      "1-Wire master": "1-Wire мастер",
-      "Discrete input": "Дискретный вход",
-      "RTC option for WB5.6 (w/o GSM modem)": "RTC для WB5.6 (без GSM модема)",
-      "No GSM Modem": "Без GSM модема",
-      "120Ω termination resistor": "120Ω резистор-терминатор",
-      "WBC-2G v.2: 2G Modem (v.2xx)": "WBC-2G v.2: 2G модем (v.2xx)",
-      "WBC-2G: 2G Modem": "WBC-2G: 2G модем",
-      "WBC-3G: 3G+2G Modem": "WBC-3G: 3G+2G модем",
-      "WBC-4G: 4G+3G+2G Modem": "WBC-4G: 4G+3G+2G модем",
-      "WBC-NB: NB-IoT + eMTC + 2G Modem": "WBC-NB: NB-IoT + eMTC + 2G модем",
-      "WBE-AI-CVR-2: analog inputs extension module": "WBE-AI-CVR-2: модуль расширения аналоговых входов",
-      "WBE-AI-CVR-2 module configuration": "Настройки модуля WBE-AI-CVR-2",
-      "Channels": "Каналы",
-      "Channel options": "Настройки канала",
-      "Channel {{i1}}": "Канал {{i1}}",
-      "Mode": "Режим",
-      "Voltage, 0-3.3 V": "Напряжение, 0-3.3 В",
-      "Voltage x10, 0-33.3 V": "Напряжение x10, 0-33.3 В",
-      "Current, 0-70 mA": "Ток, 0-70 мА",
-      "Gain": "Усиление",
-      "WBE-AO-10V-2: Dual channel analog voltage output (0-10V) module": "WBE-AO-10V-2: двухканальный модуль аналоговых выходов (0-10В)",
-      "WBE-DI-DR-3: digital inputs extension module": "WBE-DI-DR-3: модуль расширения цифровых входов",
-      "WBE-DO-OC-2: Dual Open-Collector Output Module": "WBE-DO-OC-2: двухканальный модуль выходов типа \"открытый коллектор\"",
-      "WBE-DO-R6C-1: Single SPDT relay output extension module": "WBE-DO-R6C-1: модуль расширения с одним SPDT релейным выходом",
-      "WBE-I-CAN-ISO: Isolated CAN interface module": "WBE-I-CAN-ISO: модуль с изолированным CAN интерфейсом",
-      "WBE-I-KNX: KIMaip KNX interface module": "WBE-I-KNX: модуль с интерфейсом KIMaip KNX",
-      "WBE-I-W1: 1-Wire interface module": "WBE-I-W1: модуль с интерфейсом 1-Wire",
-      "WBE-MICROSD: microSD module (slow)": "WBE-MICROSD: низкоскоростной модуль microSD",
-      "WBE-MICROSD: microSD module (fast)": "WBE-MICROSD: высокоскоростной модуль microSD",
-      "Temperature and humidity sensor and status LED for Wiren Board NETMON-2 r.1": "Датчик температуры и влажности и светодиодный индикатор состояния для Wiren Board NETMON-2 r.1",
-      "WBE-R-GPS: GPS/GLONASS GNSS extension module": "WBE-R-GPS: модуль расширения GPS/ГЛОНАСС",
-      "WBE2-AI-CM-1: Current, voltage, power monitor": "WBE2-AI-CM-1: монитор тока, напряжения, мощности",
-      "WBE2-AO-10V-2: Dual channel analog voltage output (0-10V) module": "WBE2-AO-10V-2: двухканальный модуль аналоговых выходов (0-10В)",
-      "WBE-DO-SSR-2: Dual Small Signal SSR Module": "WBE-DO-SSR-2: двухканальный модуль выходов типа \"сухой контакт\" (оптореле)",
-      "WBE2-DO-SSR-2: Dual Small Signal SSR Module": "WBE2-DO-SSR-2: двухканальный модуль выходов типа \"сухой контакт\" (оптореле)",
-      "WBE2-DI-DR-3: digital inputs extension module": "WBE2-DI-DR-3: модуль расширения цифровых входов",
-      "WBE2-DO-OC-2: Dual Open collector Module": "WBE2-DO-OC-2: двухканальный модуль выходов типа \"открытый коллектор\"",
-      "WBE2-DO-R6C-1: Single SPDT relay output extension module": "WBE2-DO-R6C-1: модуль расширения с одним SPDT релейным выходом",
-      "WBE2-I-EBUS: eBus Boiler Interface": "WBE2-I-EBUS: интерфейс eBus для котлов",
-      "WBE2-I-OPENTHERM: OpenTherm Boiler Interface": "WBE2-I-OPENTHERM: интерфейс OpenTherm для котлов",
-      "WBE2-I-RS232: RS-232 interface module": "WBE2-I-RS232: модуль с интерфейсом RS-232",
-      "WBE2-I-RS485-ISO: Isolated RS-485 interface module": "WBE2-I-RS485-ISO: модуль с изолированным интерфейсом RS-485",
-      "WBE2-I-UARTCAN-ISO: Isolated UART-CAN interface module": "WBE2-I-UARTCAN-ISO: модуль с изолированным интерфейсом UART-CAN",
-      "WBE2-I-1WIRE v4.0: 1-Wire bus master": "WBE2-I-1WIRE v4.0: мастер шины 1-Wire",
-      "WBE2-I-1WIRE: 1-Wire bus master": "WBE2-I-1WIRE: мастер шины 1-Wire",
-      "WBE2R-R-ZIGBEE: ZigBee Interface": "WBE2R-R-ZIGBEE: интерфейс ZigBee",
-      "Expose SPI (DIY)": "Интерфейс SPI (DIY)",
-      "WBE2S-R-433MHZ radio module": "WBE2S-R-433MHZ: радио модуль",
-      "Expose I2C Pins (DIY)": "Интерфейс I2C (DIY)",
-      "Expose UART Pins (DIY)": "Интерфейс UART (DIY)",
-      "WBE3-MICROSD: microSD module": "WBE3-MICROSD: модуль microSD",
-      "WBE3-R-GPS: GPS/GLONASS Receiver": "WBE3-R-GPS: приёмник GPS/ГЛОНАСС",
-      "WBIO-AI-DV-12 Analog Inputs": "WBIO-AI-DV-12: аналоговые входы",
-      "2nd Ethernet option for WB5": "Второй Ethernet порт для WB5",
-      "WBMZ-DIO-TTL-16: TTL GPIO mezonine extension module": "WBMZ-DIO-TTL-16: мезонинный модуль расширения TTL GPIO",
-      "WBIO-DO-SSR-8: Small Signal SSR I/O Module": "WBIO-DO-SSR-8: модуль ввода/вывода с выходами типа \"сухой контакт\"",
-      "WBIO-DO-R10R-4: 4 Channel Roller Shutter Relay I/O module": "WBIO-DO-R10R-4: 4-канальный релейный модуль ввода/вывода для приводов штор и т.п.",
-      "WBIO-DO-RxA-8: 8 Channel Relay I/O module": "WBIO-DO-RxA-8: 8-канальный релейный модуль ввода/вывода",
-      "WBIO-DO-R3A-4: 4 Channel Relay I/O module": "WBIO-DO-R3A-4: 4-канальный релейный модуль ввода/вывода",
-      "WBIO-DO-R1G-16: 16 Channel Relay I/O module": "WBIO-DO-R1G-16: 16-канальный релейный модуль ввода/вывода",
-      "WBIO-DO-HS-8: High side switch I/O module": "WBIO-DO-HS-8: модуль ввода/вывода с выходами типа \"High side switch\"",
-      "WBIO-DIO-TTL-8: TTL GPIO I/O module": "WBIO-DIO-TTL-8: модуль ввода/вывода TTL GPIO",
-      "WBIO-DI-WD-14: Digital inputs (dry/wet contact) I/O module": "WBIO-DI-WD-14: модуль ввода/вывода с цифровыми входами типа \"сухой или мокрый контакт\"",
-      "WBIO-DI-LVD-16: Low Voltage Digital Inputs I/O module": "WBIO-DI-LVD-16: модуль ввода/вывода с низковольтными цифровыми входами",
-      "WBIO-DI-LVD-8: Low Voltage Digital Inputs I/O module": "WBIO-DI-LVD-8: модуль ввода/вывода с низковольтными цифровыми входами",
-      "WBIO-DI-HVD-16: High Voltage Digital Inputs I/O module": "WBIO-DI-HVD-16: модуль ввода/вывода с высоковольтными цифровыми входами",
-      "WBIO-DI-HVD-8: High Voltage Digital Inputs I/O module": "WBIO-DI-HVD-8: модуль ввода/вывода с высоковольтными цифровыми входами",
-      "WBIO-DI-DR-16: Digital inputs (dry contact) I/O module": "WBIO-DI-DR-16: модуль ввода/вывода с цифровыми входами типа \"сухой контакт\"",
-      "WBIO-DI-DR-14: Digital inputs (dry contact) I/O module": "WBIO-DI-DR-14: модуль ввода/вывода с цифровыми входами типа \"сухой контакт\"",
-      "WBIO-DI-DR-8: Digital inputs (dry contact) I/O module": "WBIO-DI-DR-8: модуль ввода/вывода с цифровыми входами типа \"сухой контакт\"",
-      "WBIO-AO-10V-8 Analog Outputs": "WBIO-AO-10V-8 аналоговые выходы",
-      "WBIO-AI-DV-12 module configuration": "Настройки модуля WBIO-AI-DV-12",
-      "Channel A{{i1}}": "Канал А{{i1}}",
-      "Voltage, 0-2.5 V": "Напряжение 0-2.5В",
-      "Voltage +/-50V": "Напряжение +/-50В",
-      "Current 0-20mA": "Ток 0-20мА"
-    }
   }
 }
