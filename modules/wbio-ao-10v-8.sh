@@ -1,5 +1,5 @@
 source "$DATADIR/modules/utils.sh"
-local CONFIG_DAC=${CONFIG_DAC:-/etc/wb-mqtt-dac.conf}
+local CONFIG_DAC=${CONFIG_DAC:-/var/lib/wb-mqtt-dac/conf.d/system.conf}
 local IIO_OF_NAME="${SLOT_ALIAS}_ao10v8"
 
 hook_module_add() {

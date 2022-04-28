@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.51.0) stable; urgency=medium
+
+  * /etc/wb-mqtt-dac.conf is removed.
+    Config is moved to /var/lib/wb-mqtt-dac/conf.d/system.conf
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 28 Apr 2022 12:44:22 +0500
+
 wb-hwconf-manager (1.50.0) stable; urgency=medium
 
   * added ability to hide modules from webui (add name to modules/hidden_modules.json before build)
