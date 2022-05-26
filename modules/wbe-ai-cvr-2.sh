@@ -1,6 +1,6 @@
 source "$DATADIR/modules/utils.sh"
 
-local CONFIG_ADC=${CONFIG_ADC:-/etc/wb-homa-adc.conf}
+local CONFIG_ADC=${CONFIG_ADC:-/etc/wb-mqtt-adc.conf}
 local I2C_ADDR=48
 
 hook_module_add() {
@@ -33,14 +33,14 @@ hook_module_add() {
 	done
 	json_array_append ".iio_channels" "${items[@]}"
 
-	hook_once_after_config_change "service_restart_delete_retained wb-homa-adc /devices/wb-adc/#"
+	hook_once_after_config_change "service_restart_delete_retained wb-mqtt-adc /devices/wb-adc/#"
 }
 
 hook_module_del() {
 	local JSON=$CONFIG_ADC
 	json_array_delete ".iio_channels" \
 		". as \$chan | ([\"MOD${SLOT_NUM}_A1\", \"MOD${SLOT_NUM}_A2\"] | map(. == \$chan.id) | any)"
-	hook_once_after_config_change "service_restart_delete_retained wb-homa-adc /devices/wb-adc/#"
+	hook_once_after_config_change "service_restart_delete_retained wb-mqtt-adc /devices/wb-adc/#"
 }
 
 hook_module_init() {

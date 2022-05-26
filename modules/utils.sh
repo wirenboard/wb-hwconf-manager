@@ -2,7 +2,7 @@ eval "`slot_get_vars $SLOT`"
 local SLOT_TYPE=${SLOT%%[0-9]}
 local SLOT_NUM=${SLOT#$SLOT_TYPE}
 
-CONFIG_GPIO=${CONFIG_GPIO:-/etc/wb-homa-gpio.conf}
+CONFIG_GPIO=${CONFIG_GPIO:-/etc/wb-mqtt-gpio.conf}
 
 # Waits until given path become available, with timeout
 # Args:
@@ -19,7 +19,7 @@ wait_for_path() {
 	return 1
 }
 
-# Remove GPIO from the wb-homa-gpio driver config
+# Remove GPIO from the wb-mqtt-gpio driver config
 # Args:
 # - gpio number (as in /sys/class/gpio)
 wb_gpio_del() {
