@@ -12,7 +12,7 @@ EXTIO_FRAGMENT_NAME {
 		__address-cells = <1>;
 		__size-cells = <0>;
 
-		SLOT_DT_ALIAS(WBIO_NAME): SLOT_DT_ALIAS(WBIO_NAME)@SLOT_I2C_ADDRESS {
+		SLOT_DT_ALIAS(WBIO_NAME)@SLOT_I2C_ADDRESS {
 			compatible = "microchip,mcp23008";
 			gpio-controller;
 			__gpio-cells = <2>;
