@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.52.0) stable; urgency=medium
+
+  * wb6, wb7: added ability to deinit WBIO modules in any order
+  (no labels in overlays anymore)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Sun, 05 Jun 2022 23:19:49 +0500
+
 wb-hwconf-manager (1.51.0) stable; urgency=medium
 
   * /etc/wb-mqtt-dac.conf is removed.
