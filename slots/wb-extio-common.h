@@ -12,6 +12,8 @@
 #define SLOT_GPIO_BASE_8		__pass(__arg4 SLOT_DEF)
 #define SLOT_GPIO_BASE_40		__pass(__arg5 SLOT_DEF)
 
+#define EXTIO_FRAGMENT_NAME fragment_i2c_extio
+
 /* order for EXTIO_INPUT and EXTIO_OUTPUT_HIGH
    must be two digit number, 1 must be 01, 2 - 02 etc.
    The macros concatenates EXTIO_SLOT_NUM and supplied order.
