@@ -5,9 +5,8 @@ hook_module_add() {
 }
 
 hook_module_del() {
-	systemctl stop wb-mqtt-gpio || true
+	stop_service_and_schedule_restart "wb-mqtt-gpio" "/devices/wb-gpio/#"
 	wb_gpio_del $GPIO_TX
 	wb_gpio_del $GPIO_RX
 	wb_gpio_del $GPIO_RTS
-	hook_once_after_config_change "service_restart_delete_retained wb-mqtt-gpio /devices/wb-gpio/#"
 }

@@ -72,6 +72,13 @@ service_restart() {
 	[[ -z "$NO_RESTART_SERVICE" ]] && service "$1" restart
 }
 
+# Starts given service
+# Args:
+# - service name (from /etc/init.d/)
+service_start() {
+	nohup systemctl start "$1" &
+}
+
 # Restarts given service if $NO_RESTART_SERVICE is not set,
 # and also deletes retained MQTT messages with supplied topic pattern.
 # Args
@@ -119,4 +126,17 @@ sysfs_gpio_direction() {
 sysfs_gpio_set() {
 	sysfs_gpio_direction "$1" "out"
 	echo "$2" > "${SYSFS_GPIO}/gpio${1}/value"
+}
+
+
+# Stops given service, schedules deleting of MQTT messages with supplied topic pattern
+# and restart of the service
+# Args
+# - service name
+# - MQTT topic to delete
+stop_service_and_schedule_restart() {
+	local act=`systemctl is-active "$1"`
+	systemctl stop "$1"
+	hook_once_after_config_change "mqtt-delete-retained $2"
+	[[ "$act" == "active" ]] &&	hook_once_after_config_change "service_start $1"
 }

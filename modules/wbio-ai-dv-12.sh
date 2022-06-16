@@ -12,7 +12,7 @@ dec_to_hex() {
 }
 
 schedule_service_restart() {
-	hook_once_after_config_change "service_restart_delete_retained wb-mqtt-adc /devices/wb-adc/#"
+	stop_service_and_schedule_restart "wb-mqtt-adc" "/devices/wb-adc/#"
 }
 
 remove_channels() {
