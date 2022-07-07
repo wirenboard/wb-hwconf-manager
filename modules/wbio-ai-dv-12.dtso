@@ -20,21 +20,21 @@
             __address-cells = <1>;
             __size-cells = <0>;
 
-            SLOT_DT_ALIAS(aidv12_1): SLOT_DT_ALIAS(aidv12_1)@48 {
-                compatible = "ti,ads1015";
+            SLOT_DT_ALIAS(aidv12_1)@48 {
+                compatible = "ti,ads1115";
                 reg = <0x48>;
                 __address-cells = <1>;
                 __size-cells = <0>;
             };
 
-            SLOT_DT_ALIAS(aidv12_2): SLOT_DT_ALIAS(aidv12_2)@49 {
-                compatible = "ti,ads1015";
+            SLOT_DT_ALIAS(aidv12_2)@49 {
+                compatible = "ti,ads1115";
                 reg = <0x49>;
                 __address-cells = <1>;
                 __size-cells = <0>;
             };
-            SLOT_DT_ALIAS(aidv12_3): SLOT_DT_ALIAS(aidv12_3)@4a {
-                compatible = "ti,ads1015";
+            SLOT_DT_ALIAS(aidv12_3)@4a {
+                compatible = "ti,ads1115";
                 reg = <0x4a>;
                 __address-cells = <1>;
                 __size-cells = <0>;

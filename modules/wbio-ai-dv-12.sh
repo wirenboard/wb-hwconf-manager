@@ -37,12 +37,12 @@ hook_module_add() {
 			local scale mqtt_type
 			case ${chan_mode} in
 				"voltage")
-					scale=2
+					scale=0.125
 					voltage_multiplier=1
 					mqtt_type="voltage"
 					;;
 				"current_20ma")
-					scale=1
+					scale=0.0625
 					voltage_multiplier=0.01
 					mqtt_type="current"
 					;;
@@ -86,11 +86,11 @@ hook_module_add() {
 				case "$chan0_mode" in
 					"voltage")
 						voltage_multiplier=1
-						scale=0.5
+						scale=0.03125
 						;;
 					"voltage_pm50")
 						voltage_multiplier=21.26
-						scale=2
+						scale=0.125
 						;;
 					*)
 						continue;

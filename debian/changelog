@@ -1,8 +1,21 @@
-wb-hwconf-manager (1.51.1) stable; urgency=medium
+wb-hwconf-manager (1.52.2) stable; urgency=medium
 
   * wb-mqtt-adc and wb-mqtt-gpio restart after modules addition or removal is fixed
 
- -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 26 May 2022 17:46:31 +0500
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 07 Jul 2022 18:06:34 +0500
+
+wb-hwconf-manager (1.52.1) stable; urgency=medium
+
+  * WBIO-AI-DV-12 dts is modified to use ADS1115 instead of ADS1015
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Tue, 14 Jun 2022 11:13:36 +0500
+
+wb-hwconf-manager (1.52.0) stable; urgency=medium
+
+  * wb6, wb7: added ability to deinit WBIO modules in any order
+  (no labels in overlays anymore)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Sun, 05 Jun 2022 23:19:49 +0500
 
 wb-hwconf-manager (1.51.0) stable; urgency=medium
 
