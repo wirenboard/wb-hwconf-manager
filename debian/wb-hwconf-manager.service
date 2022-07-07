@@ -9,3 +9,4 @@ ExecStart=/usr/lib/wb-hwconf-manager/init.sh
 
 [Install]
 WantedBy=multi-user.target
+RequiredBy=wb-mqtt-adc.service wb-mqtt-gpio.service

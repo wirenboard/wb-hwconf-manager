@@ -12,7 +12,7 @@ dec_to_hex() {
 }
 
 schedule_service_restart() {
-	hook_once_after_config_change "service_restart_delete_retained wb-homa-adc /devices/wb-adc/#"
+	stop_service_and_schedule_restart "wb-mqtt-adc" "/devices/wb-adc/#"
 }
 
 remove_channels() {
@@ -125,8 +125,8 @@ hook_module_add() {
 
 hook_module_del() {
 	remove_channels
-	# Remove old definitions in wb-homa-adc.conf
-	local JSON="/etc/wb-homa-adc.conf"
+	# Remove old definitions in wb-mqtt-adc.conf
+	local JSON="/etc/wb-mqtt-adc.conf"
 	for ((chip = 0; chip < AIDV_CHIPS; chip++)); do
 		json_array_delete ".iio_channels" \
 			". as \$chan | ([\"`get_iio_match $chip`\"] | map(. == \$chan.match_iio) | any)"

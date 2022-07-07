@@ -2,7 +2,7 @@ eval "`slot_get_vars $SLOT`"
 local SLOT_TYPE=${SLOT%%[0-9]}
 local SLOT_NUM=${SLOT#$SLOT_TYPE}
 
-CONFIG_GPIO=${CONFIG_GPIO:-/etc/wb-homa-gpio.conf}
+CONFIG_GPIO=${CONFIG_GPIO:-/etc/wb-mqtt-gpio.conf}
 
 # Waits until given path become available, with timeout
 # Args:
@@ -19,7 +19,7 @@ wait_for_path() {
 	return 1
 }
 
-# Remove GPIO from the wb-homa-gpio driver config
+# Remove GPIO from the wb-mqtt-gpio driver config
 # Args:
 # - gpio number (as in /sys/class/gpio)
 wb_gpio_del() {
@@ -119,4 +119,20 @@ sysfs_gpio_direction() {
 sysfs_gpio_set() {
 	sysfs_gpio_direction "$1" "out"
 	echo "$2" > "${SYSFS_GPIO}/gpio${1}/value"
+}
+
+
+# Stops given service, schedules deleting of MQTT messages with supplied topic pattern
+# and restart of the service
+# Args
+# - service name
+# - MQTT topic to delete
+stop_service_and_schedule_restart() {
+	[[ -z "$NO_RESTART_SERVICE" ]] && {
+		local act=`systemctl is-active "$1"`
+		[[ "$act" == "active" ]] &&	{
+			systemctl stop "$1"
+			hook_once_after_config_change "service_restart_delete_retained $1 $2"
+		}
+	}
 }
