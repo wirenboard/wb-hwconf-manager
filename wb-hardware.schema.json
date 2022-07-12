@@ -2,7 +2,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "title": "Hardware Modules Configuration",
-    "description": "Hardware modules and ports configuration",
     "limited": true,
     "strictProps": false,
     "definitions": {
@@ -181,7 +180,6 @@
     "translations": {
         "ru": {
             "Hardware Modules Configuration": "Модули расширения и порты",
-            "Hardware modules and ports configuration": "Настройка модулей расширения и портов контроллера",
             "List of extension slots": "Список слотов расширения",
             "Module type": "Тип модуля",
             "Type of the module plugged to the slot": "Тип модуля, установленного в слоте",

@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.52.3) stable; urgency=medium
+
+  * Unused description is removed from JSON-schema
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Tue, 12 Jul 2022 10:11:26 +0500
+
 wb-hwconf-manager (1.52.2) stable; urgency=medium
 
   * wb-mqtt-adc and wb-mqtt-gpio restart after modules addition or removal is fixed
