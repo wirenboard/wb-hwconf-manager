@@ -1,6 +1,9 @@
 source "$DATADIR/modules/utils.sh"
+source "$DATADIR/modules/can-common.sh"
 
 hook_module_init() {
+	is_errwb730001_check_and_warn && return 0
+
 	sysfs_gpio_export $GPIO_RS485_FS
 	sysfs_gpio_direction $GPIO_RS485_FS out
 	sysfs_gpio_direction $GPIO_RS485_FS 0
@@ -28,6 +31,8 @@ hook_module_init() {
 }
 
 hook_module_deinit() {
+	is_errwb730001_check_and_warn && return 0
+
 	sysfs_gpio_direction $GPIO_CAN_EN in
 	sysfs_gpio_unexport $GPIO_CAN_EN
 
