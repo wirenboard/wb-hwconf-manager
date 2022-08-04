@@ -28,9 +28,10 @@ hook_module_init() {
 		sysfs_gpio_set $GPIO_RS485_TERM 1
 	fi
 
-	is_errwb730001_check_and_warn && return 0
 
 	if [ ! -z $GPIO_CAN_EN ]; then
+		is_errwb730001_check_and_warn && return 0
+
 		sysfs_gpio_export $GPIO_CAN_EN
 		sysfs_gpio_direction $GPIO_CAN_EN out
 		sysfs_gpio_set $GPIO_CAN_EN 0
@@ -44,9 +45,9 @@ hook_module_deinit() {
 	sysfs_gpio_direction $GPIO_RS485_TERM in
 	sysfs_gpio_unexport $GPIO_RS485_TERM
 
-	is_errwb730001_check_and_warn && return 0
-
 	if [ ! -z $GPIO_CAN_EN ]; then
+		is_errwb730001_check_and_warn && return 0
+
 		sysfs_gpio_direction $GPIO_CAN_EN in
 		sysfs_gpio_unexport $GPIO_CAN_EN
 	fi
