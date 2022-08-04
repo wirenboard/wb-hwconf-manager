@@ -12,8 +12,10 @@ SYSLOG_TAG="wb-hwconf-manager"
 
 VERBOSE="yes"
 2>/dev/null . /lib/lsb/init-functions
-
 2>/dev/null . ./wb-hwconf-manager.env
+
+. /usr/lib/wb-utils/wb_env.sh
+wb_source "of"
 
 MODULES="$DATADIR/modules"
 SLOTS="$DATADIR/slots"
@@ -561,4 +563,46 @@ module_deinit() {
 
 	debug "Unloading DTBO"
 	rmdir "$t"
+}
+
+
+is_live_system() {
+	if [[ -e /proc/device-tree/compatible ]]; then
+		for compat in `tr < /proc/device-tree/compatible  '\000' '\n'`; do
+			if [[ "$compat" == wirenboard,* ]] || [[ "$compat" ==  contactless,* ]]; then
+				return 0
+			fi
+		done
+	fi
+	return 1
+}
+
+get_dist_conffile() {
+	if of_machine_match "wirenboard,wirenboard-731"; then
+		BOARD_CONF="wb72x-73x"
+	elif of_machine_match "wirenboard,wirenboard-730"; then
+		BOARD_CONF="wb730"
+	elif of_machine_match "wirenboard,wirenboard-73x"; then
+		BOARD_CONF="wb72x-73x"
+	elif of_machine_match "wirenboard,wirenboard-72x"; then
+		BOARD_CONF="wb72x-73x"
+	elif of_machine_match "wirenboard,wirenboard-720"; then
+		BOARD_CONF="wb72x-73x"
+	elif of_machine_match "contactless,imx6ul-wirenboard670"; then
+		BOARD_CONF="wb67"
+	elif of_machine_match "contactless,imx6ul-wirenboard61"; then
+		BOARD_CONF="wb61"
+	elif of_machine_match "contactless,imx6ul-wirenboard60"; then
+		BOARD_CONF="wb60"
+	elif of_machine_match "contactless,imx28-wirenboard58"; then
+		BOARD_CONF="wb58"
+	elif of_machine_match "contactless,imx28-wirenboard55"; then
+		BOARD_CONF="wb55"
+	elif of_machine_match "contactless,imx28-wirenboard52"; then
+		BOARD_CONF="wb52"
+	else
+		BOARD_CONF="default"
+	fi
+
+	echo "/usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF"
 }
