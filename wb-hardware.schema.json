@@ -197,6 +197,7 @@
             "External I/O module 7": "Модуль WBIO 7",
             "External I/O module 8": "Модуль WBIO 8",
             "RS485-1 interface config": "Интерфейс RS485-1",
+            "RS485-2 interface config": "Интерфейс RS485-2",
             "RS485-2/CAN interface config": "Интерфейс RS485-2/CAN",
             "Modem slot": "Слот модема",
             "W1 terminal mode": "Режим W1",
