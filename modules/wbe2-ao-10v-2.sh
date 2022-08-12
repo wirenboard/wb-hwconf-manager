@@ -18,7 +18,7 @@ hook_module_add() {
     done
     [[ -e "$CONFIG_DAC" ]] || {
         mkdir -p "$(dirname "$CONFIG_DAC")" && touch "$CONFIG_DAC"
-        echo '{\n    "device_name" : "Analog Outputs",\n    "channels" : []\n}' >> $CONFIG_DAC
+        echo -e '{\n    "device_name" : "Analog Outputs",\n    "channels" : []\n}' >> $CONFIG_DAC
     }
     json_array_append ".channels" "${items[@]}"
 
