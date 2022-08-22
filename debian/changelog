@@ -1,4 +1,4 @@
-wb-hwconf-manager (1.52.5) stable; urgency=medium
+wb-hwconf-manager (1.52.6) stable; urgency=medium
 
   * Workaround for ERRWB730001: hide CAN and CAN-UART on broken WB rev 7.3,
      show it on other WB7 revisions
@@ -6,6 +6,12 @@ wb-hwconf-manager (1.52.5) stable; urgency=medium
      revisions
 
  -- Evgeny Boger <boger@wirenboard.com>  Thu, 04 Aug 2022 19:13:28 +0300
+
+wb-hwconf-manager (1.52.5) stable; urgency=medium
+
+* Fix generation of DAC configs
+
+ --  Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 11 Aug 2022 19:55:05 +0500
 
 wb-hwconf-manager (1.52.4) stable; urgency=medium
 
