@@ -2,48 +2,33 @@
 . /usr/lib/wb-utils/wb_env.sh
 wb_source "of"
 
+. /usr/lib/wb-hwconf-manager/functions.sh
+
 CONFFILE=/etc/wb-hardware.conf
 
-if of_machine_match "wirenboard,wirenboard-720"; then
-	BOARD_CONF="wb72"
-elif of_machine_match "contactless,imx6ul-wirenboard670"; then
-	BOARD_CONF="wb67"
-elif of_machine_match "contactless,imx6ul-wirenboard61"; then
-	BOARD_CONF="wb61"
-elif of_machine_match "contactless,imx6ul-wirenboard60"; then
-	BOARD_CONF="wb60"
-elif of_machine_match "contactless,imx28-wirenboard58"; then
-	BOARD_CONF="wb58"
-elif of_machine_match "contactless,imx28-wirenboard55"; then
-	BOARD_CONF="wb55"
-elif of_machine_match "contactless,imx28-wirenboard52"; then
-	BOARD_CONF="wb52"
-else
-	BOARD_CONF="default"
-fi
+is_live_system && [[ -s $CONFFILE ]] && {
+    CONFFILE_DIST=`get_dist_conffile`
 
-CONFFILE_DIST="/usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF"
-
-# If current config is valid, merge it with new one preserving user changes.
-jq -e '.slots' < $CONFFILE >/dev/null && {
-	tmp=$(mktemp)
-	cat $CONFFILE_DIST $CONFFILE | jq --slurp '
-	.[0].slots as $new |
-	.[1].slots as $old |
-	.[1] | .slots = ($new | map(
-		. as $new_item |
-		($old | map(select(.id == $new_item.id))) as $old_item |
-		if ($old_item | length > 0) then (
-			$old_item[0] | .compatible = $new_item.compatible |
-			del(.type)
-		) else (
-			$new_item
-		) end
-	))' > "$tmp"
-	cat "$tmp" > $CONFFILE
-	rm "$tmp"
+	# If current config is valid, merge it with new one preserving user changes.
+	jq -e '.slots' < $CONFFILE >/dev/null && {
+		tmp=$(mktemp)
+		cat $CONFFILE_DIST $CONFFILE | jq --slurp '
+		.[0].slots as $new |
+		.[1].slots as $old |
+		.[1] | .slots = ($new | map(
+			. as $new_item |
+			($old | map(select(.id == $new_item.id))) as $old_item |
+			if ($old_item | length > 0) then (
+				$old_item[0] | .compatible = $new_item.compatible |
+				.name = $new_item.name |
+				del(.type)
+			) else (
+				$new_item
+			) end
+		))' > "$tmp"
+		cat "$tmp" > $CONFFILE
+		rm "$tmp"
+	}
 }
-
-ucf --debconf-ok $CONFFILE_DIST $CONFFILE
 
 #DEBHELPER#
