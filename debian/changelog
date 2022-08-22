@@ -9,7 +9,7 @@ wb-hwconf-manager (1.52.6) stable; urgency=medium
 
 wb-hwconf-manager (1.52.5) stable; urgency=medium
 
-* Fix generation of DAC configs
+  * Fix generation of DAC configs
 
  --  Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 11 Aug 2022 19:55:05 +0500
 
