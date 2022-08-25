@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.53.0) stable; urgency=medium
+
+  * Start/stop wb-gsm service after WBC-4G v.2 configuration
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Thu, 25 Aug 2022 16:19:01 +0500
+
 wb-hwconf-manager (1.52.6) stable; urgency=medium
 
   * Workaround for ERRWB730001: hide CAN and CAN-UART on broken WB rev 7.3,
