@@ -69,7 +69,7 @@ slot_i2c_dev_sysfs() {
 # Args:
 # - service name (from /etc/init.d/)
 service_restart() {
-	[[ -z "$NO_RESTART_SERVICE" ]] && service "$1" restart
+	if [[ -z "$NO_RESTART_SERVICE" ]]; then service "$1" restart; fi
 }
 
 # Restarts given service if $NO_RESTART_SERVICE is not set,
@@ -78,11 +78,11 @@ service_restart() {
 # - service name (from /etc/init.d/)
 # - MQTT topic to delete
 service_restart_delete_retained() {
-	[[ -z "$NO_RESTART_SERVICE" ]] && {
+	if [[ -z "$NO_RESTART_SERVICE" ]]; then
 		service "$1" stop
 		mqtt-delete-retained "$2"
 		service "$1" start
-	}
+	fi
 }
 
 SYSFS_GPIO="/sys/class/gpio"
@@ -128,11 +128,11 @@ sysfs_gpio_set() {
 # - service name
 # - MQTT topic to delete
 stop_service_and_schedule_restart() {
-	[[ -z "$NO_RESTART_SERVICE" ]] && {
+	if [[ -z "$NO_RESTART_SERVICE" ]]; then
 		local act=`systemctl is-active "$1"`
-		[[ "$act" == "active" ]] &&	{
+		if [[ "$act" == "active" ]]; then
 			systemctl stop "$1"
 			hook_once_after_config_change "service_restart_delete_retained $1 $2"
-		}
-	}
+		fi
+	fi
 }

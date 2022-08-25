@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.52.7) stable; urgency=medium
+
+  * Fix WBIO-AI-DV-12 deleting when wb-mqtt-adc service is inactive
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.ru>  Thu, 25 Aug 2022 15:08:16 +0300
+
 wb-hwconf-manager (1.52.6) stable; urgency=medium
 
   * Workaround for ERRWB730001: hide CAN and CAN-UART on broken WB rev 7.3,
