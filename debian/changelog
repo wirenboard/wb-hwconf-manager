@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.53.0) stable; urgency=medium
+
+  * Start/stop wb-gsm service after WBC-4G v.2 configuration
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.ru>  Mon, 19 Sep 2022 16:00:42 +0500
+
 wb-hwconf-manager (1.52.7) stable; urgency=medium
 
   * Fix WBIO-AI-DV-12 deleting when wb-mqtt-adc service is inactive
