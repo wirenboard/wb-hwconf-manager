@@ -72,13 +72,6 @@ service_restart() {
 	[[ -z "$NO_RESTART_SERVICE" ]] && service "$1" restart
 }
 
-# Starts given service.
-# Args:
-# - service name
-service_start() {
-	systemctl start "$1" || true
-}
-
 # Restarts given service if $NO_RESTART_SERVICE is not set,
 # and also deletes retained MQTT messages with supplied topic pattern.
 # Args
