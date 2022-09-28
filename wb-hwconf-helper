@@ -1,6 +1,9 @@
 #!/bin/bash
 2>/dev/null . /usr/lib/wb-hwconf-manager/functions.sh || . ./functions.sh
 
+# Updating env cache after any hwconf-interaction
+trap ". /usr/lib/wb-utils/wb_env.sh" EXIT
+
 # This function reorders WBIO modules to make continuous sequence of plugged devices
 # in the begginning of list, moving all empty slots to the end.
 # Should be called before doing anything else with config
@@ -86,7 +89,7 @@ config_apply_changes() {
 		done <<< "$delta"
 		sort "$state" > "$old_state"
 	done
-		
+
 	rm "$old_state"
 	sort "$state" > "$CONFIG_STATE"
 	rm "$state"
@@ -155,11 +158,11 @@ case "$1" in
 		tmp=`mktemp`
 		# Remove "modules" array
 		jq 'del(.modules)' > "$tmp"
-		
+
 		# stdout+stderr must be JSON, so redirect logging to syslog
 		SYSLOG="yes"
 		catch_output config_apply_changes "$tmp"
-		
+
 		cat "$tmp"
 		rm "$tmp"
 		;;

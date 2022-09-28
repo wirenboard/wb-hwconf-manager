@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.53.1) stable; urgency=medium
+
+  * Update wb-env cache after any wb-hwconf-helper interaction
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 28 Sep 2022 10:08:16 +0500
+
 wb-hwconf-manager (1.53.0) stable; urgency=medium
 
   * Start/stop wb-gsm service after WBC-4G v.2 configuration
