@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.52.7-wb100) stable; urgency=medium
+
+  * add wbe2r-r-lora module
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 05 Oct 2022 22:51:39 +0500
+
 wb-hwconf-manager (1.52.7) stable; urgency=medium
 
   * Fix WBIO-AI-DV-12 deleting when wb-mqtt-adc service is inactive
