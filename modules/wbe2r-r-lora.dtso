@@ -1,0 +1,26 @@
+/*
+ * Copyright 2022 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2R-R-LORA: LoRa Interface";
+	compatible-slots = "wbe3-reduced";
+
+fragment@0 {
+	target = <SLOT_UART_ALIAS>;
+
+	__overlay__ {
+		status = "okay";
+		pinctrl-names = "default";
+		pinctrl-0 = <SLOT_TXRX_UART_PINCTRL SLOT_DE_GPIO_PINCTRL>;
+	};
+};
+
+};
