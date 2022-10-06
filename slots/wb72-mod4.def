@@ -20,5 +20,5 @@
 #define SLOT_UART_ALIAS	&uart3
 #define SLOT_SPI_ALIAS	&spi0
 
-#include "r40-soc.h"
 #include "wbe3.h"
+#include "r40-soc.h"
