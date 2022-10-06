@@ -14,5 +14,5 @@
 
 #define SLOT_NEED_CONTROL_JTAG_MOD
 
-#include "imx6ul-soc.h"
 #include "wbe2.h"
+#include "imx6ul-soc.h"

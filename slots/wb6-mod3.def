@@ -20,5 +20,5 @@
 #define SLOT_UART_ALIAS	&uart7
 #define SLOT_SPI_ALIAS	&ecspi1
 
-#include "imx6ul-soc.h"
 #include "wbe3.h"
+#include "imx6ul-soc.h"

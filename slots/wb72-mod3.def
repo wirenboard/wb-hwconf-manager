@@ -12,5 +12,5 @@
 
 #define SLOT_UART_ALIAS  &uart5
 
-#include "r40-soc.h"
 #include "wbe2.h"
+#include "r40-soc.h"
