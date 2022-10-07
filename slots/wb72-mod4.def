@@ -21,4 +21,4 @@
 #define SLOT_SPI_ALIAS	&spi0
 
 #include "wbe3.h"
-#include "r40-soc.h"
+#include "r40-soc.h"  // should be included after SLOT_ALL_PINS is defined
