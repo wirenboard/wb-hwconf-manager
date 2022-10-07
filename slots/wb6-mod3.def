@@ -21,4 +21,4 @@
 #define SLOT_SPI_ALIAS	&ecspi1
 
 #include "wbe3.h"
-#include "imx6ul-soc.h"
+#include "imx6ul-soc.h"  // should be included after SLOT_ALL_PINS is defined

@@ -7,6 +7,6 @@
 	SLOT_FOR_PIN(PIN1_SCL) \
 	SLOT_FOR_PIN(PIN2_SDA)
 
-#include "imx6ul-soc.h"
+#include "imx6ul-soc.h"  // should be included after SLOT_ALL_PINS is defined
 
 #include "utils.h"
