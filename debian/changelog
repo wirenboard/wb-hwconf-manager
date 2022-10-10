@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.54.0) stable; urgency=medium
+
+  * add wbe2r-r-lora module
+  * fix gpionums acquiring from slots defs
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 05 Oct 2022 22:51:39 +0500
+
 wb-hwconf-manager (1.53.0) stable; urgency=medium
 
   * Start/stop wb-gsm service after WBC-4G v.2 configuration

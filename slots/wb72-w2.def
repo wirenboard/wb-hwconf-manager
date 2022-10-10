@@ -7,5 +7,5 @@
 #define SLOT_1WIRE_ALIAS	&onewire_w2
 #define SLOT_PINCTRL &pinctrl_w2_gpio
 
-#include "r40-soc.h"
 #include "wb6-wx.h"
+#include "r40-soc.h"  // should be included after SLOT_ALL_PINS is defined
