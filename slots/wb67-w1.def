@@ -7,5 +7,5 @@
 #define SLOT_1WIRE_ALIAS	&onewire_w1
 #define SLOT_PINCTRL &pinctrl_w1_gpio
 
-#include "imx6ul-soc.h"
 #include "wb6-wx.h"
+#include "imx6ul-soc.h"  // should be included after SLOT_ALL_PINS is defined
