@@ -1,5 +1,6 @@
 [Unit]
 Description=Initialize Wiren Board Device Tree overlays
+Before=networking.service
 After=local-fs.target wb-configs.service
 
 [Service]
