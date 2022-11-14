@@ -1,0 +1,37 @@
+/*
+ * Copyright 2016 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2-DO-R3A-1: Single NO relay output extension module";
+	compatible-slots = "wbe2";
+
+	fragment@0 {
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(pinmux_dummy) {
+				compatible = "regulator-fixed";
+				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pinmux_dummy));
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_DE_GPIO_PINCTRL>;
+			};
+		};
+	};
+
+	fragment-gpio {
+		target-path = "/wirenboard/gpios";
+
+		__overlay__ {
+			WBE_OUTPUT_HIGH(OUT1, RTS, 1);
+		};
+	};
+};
