@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.52.7-wb102) stable; urgency=medium
+
+  * module WBE2-DO-R3A-1 was added
+
+ -- Dmitry Vorobjev <d.vorobjev@wirenboard.ru>  Mon, 14 Nov 2022 10:57:29 +0300
+
 wb-hwconf-manager (1.52.7-wb101) stable; urgency=medium
 
   * starting before networking.service
