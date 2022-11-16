@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.52.7-wb102) stable; urgency=medium
+
+  * add wbe2r-r-zwave module
+  * add wbe2-do-r3a-1 module
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 16 Nov 2022 13:30:34 +0500
+
 wb-hwconf-manager (1.52.7-wb101) stable; urgency=medium
 
   * starting before networking.service
