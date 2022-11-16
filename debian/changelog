@@ -1,8 +1,9 @@
 wb-hwconf-manager (1.52.7-wb102) stable; urgency=medium
 
-  * module WBE2-DO-R3A-1 was added
+  * add wbe2r-r-zwave module
+  * add wbe2-do-r3a-1 module
 
- -- Dmitry Vorobjev <d.vorobjev@wirenboard.ru>  Mon, 14 Nov 2022 10:57:29 +0300
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 16 Nov 2022 13:30:34 +0500
 
 wb-hwconf-manager (1.52.7-wb101) stable; urgency=medium
 
