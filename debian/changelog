@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.57.0) stable; urgency=medium
+
+  * add wbe2r-r-zwave module
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 16 Nov 2022 13:12:34 +0500
+
 wb-hwconf-manager (1.56.0) stable; urgency=medium
 
   * module WBE2-DO-R3A-1 was added
