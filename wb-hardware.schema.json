@@ -259,6 +259,7 @@
             "WBE2-I-1WIRE v4.0: 1-Wire bus master": "WBE2-I-1WIRE v4.0: мастер шины 1-Wire",
             "WBE2-I-1WIRE: 1-Wire bus master": "WBE2-I-1WIRE: мастер шины 1-Wire",
             "WBE2R-R-ZIGBEE: ZigBee Interface": "WBE2R-R-ZIGBEE: интерфейс ZigBee",
+            "WBE2R-R-ZWAVE-ZWAY: Z-Wave Interface": "WBE2R-R-ZWAVE-ZWAY: Интерфейс Z-Wave",
             "Expose SPI (DIY)": "Интерфейс SPI (DIY)",
             "WBE2S-R-433MHZ radio module": "WBE2S-R-433MHZ: радио модуль",
             "Expose I2C Pins (DIY)": "Интерфейс I2C (DIY)",

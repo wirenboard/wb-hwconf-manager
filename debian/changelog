@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.57.1) stable; urgency=medium
+
+  * wbe2r-r-zwave: add translation
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Wed, 16 Nov 2022 13:53:12 +0500
+
 wb-hwconf-manager (1.57.0) stable; urgency=medium
 
   * add wbe2r-r-zwave module
