@@ -1,0 +1,138 @@
+{
+    "slots": [
+        {
+            "id": "wb72-mod1",
+            "compatible": ["wbe2", "wbe3-reduced"],
+            "name": "Internal slot 1",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-mod2",
+            "compatible": ["wbe2", "wbe3-reduced"],
+            "name": "Internal slot 2",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb74-mod3",
+            "compatible": ["wbe2", "wbe3-reduced"],
+            "name": "Internal slot 3",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-mod4",
+            "compatible": ["wbe3", "wbe3-reduced"],
+            "name": "Internal slot 4",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio1",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 1",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio2",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 2",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio3",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 3",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio4",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 4",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio5",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 5",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio6",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 6",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio7",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 7",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-extio8",
+            "compatible": ["wb5-extio"],
+            "name": "External I/O module 8",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb74-rs485-1",
+            "compatible": ["wb67-rs485"],
+            "name": "RS485-1 interface config",
+            "module": "wb67-can-rs485",
+            "options": {
+                "mode": "enabled",
+                "terminatorsMode": "enabled"
+            }
+        },
+        {
+            "id": "wb74-rs485-2",
+            "compatible": ["wb67-rs485"],
+            "name": "RS485-2 interface config",
+            "module": "wb67-can-rs485",
+            "options": {
+                "mode": "enabled",
+                "terminatorsMode": "enabled"
+            }
+        },
+        {
+            "id": "wb72-wbc",
+            "compatible": ["wbc-usb"],
+            "name": "Modem slot",
+            "module": "",
+            "options": {}
+        },
+        {
+            "id": "wb72-w1",
+            "compatible": ["wb6-wx"],
+            "name": "W1 terminal mode",
+            "module": "wb6-wx-1wire",
+            "options": {}
+        },
+        {
+            "id": "wb72-w2",
+            "compatible": ["wb6-wx"],
+            "name": "W2 terminal mode",
+            "module": "wb6-wx-1wire",
+            "options": {}
+        },
+        {
+            "id": "wb72-wbmz4",
+            "name": "Backup power supply",
+            "compatible": [
+              "wb72-wbmz4-power"
+            ],
+            "module": "",
+            "options": {}
+        }
+    ]
+}

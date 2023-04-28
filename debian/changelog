@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.58.0) stable; urgency=medium
+
+  * wb74: add defines
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Fri, 28 Apr 2022 11:19:20 +0500
+
 wb-hwconf-manager (1.57.1) stable; urgency=medium
 
   * wbe2r-r-zwave: add translation
