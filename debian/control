@@ -8,7 +8,7 @@ Homepage: https://github.com/wirenboard/wb-hwconf-manager
 
 Package: wb-hwconf-manager
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ucf, wb-utils (>= 4.1.0), wb-configs (>= 1.63), perl, jq, tcc,
+Depends: ${shlibs:Depends}, ${misc:Depends}, ucf, wb-utils (>= 4.10.0~~), wb-configs (>= 1.63), perl, jq, tcc,
          device-tree-compiler (>= 1.6.0-1),
          linux-image-wb7 (>= 5.10.35-wb109~~) | linux-image-wb6 (>= 5.10.35-wb109~~) | linux-image-wb2 (>= 4.9+wb20200925234629),
          mqtt-tools (>= 1.1.1), wb-rules-system (>= 1.6.8),
