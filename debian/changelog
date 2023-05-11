@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.58.0) stable; urgency=medium
+
+  * wb-hwconf-helper: validate env cache after init/deinit/config-apply
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 11 May 2023 20:12:51 +0500
+
 wb-hwconf-manager (1.57.1) stable; urgency=medium
 
   * wbe2r-r-zwave: add translation
