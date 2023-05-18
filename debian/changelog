@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.57.2) stable; urgency=medium
+
+  * wbc-4g-usb: fix deinit hook to prevent boot stuck
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 18 May 2023 17:12:14 +0500
+
 wb-hwconf-manager (1.57.1) stable; urgency=medium
 
   * wbe2r-r-zwave: add translation
