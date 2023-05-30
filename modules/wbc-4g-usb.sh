@@ -5,8 +5,7 @@ hook_module_add() {
 }
 
 hook_module_del() {
-	[[ -z "$NO_RESTART_SERVICE" ]] && {
+	if [[ -z "$NO_RESTART_SERVICE" ]]; then
 		systemctl stop wb-gsm || true
-	}
-	:  # to prevent empty-func error
+	fi;
 }
