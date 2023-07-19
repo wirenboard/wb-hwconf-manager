@@ -578,7 +578,7 @@ is_live_system() {
 }
 
 get_dist_conffile() {
-	if of_machine_match "wirenboard,wirenboard-731"; then
+	if of_machine_match "wirenboard,wirenboard-74x"; then
 		BOARD_CONF="wb74x"
 	elif of_machine_match "wirenboard,wirenboard-731"; then
 		BOARD_CONF="wb72x-73x"
