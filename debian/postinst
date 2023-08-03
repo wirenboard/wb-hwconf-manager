@@ -1,34 +1,16 @@
 #!/bin/bash
+set -e
+
 . /usr/lib/wb-utils/wb_env.sh
 wb_source "of"
 
 . /usr/lib/wb-hwconf-manager/functions.sh
 
-CONFFILE=/etc/wb-hardware.conf
+BOARD_CONFFILE=/var/lib/wb-hwconf-manager/system.conf
 
-is_live_system && [[ -s $CONFFILE ]] && {
-    CONFFILE_DIST=`get_dist_conffile`
-
-	# If current config is valid, merge it with new one preserving user changes.
-	jq -e '.slots' < $CONFFILE >/dev/null && {
-		tmp=$(mktemp)
-		cat $CONFFILE_DIST $CONFFILE | jq --slurp '
-		.[0].slots as $new |
-		.[1].slots as $old |
-		.[1] | .slots = ($new | map(
-			. as $new_item |
-			($old | map(select(.id == $new_item.id))) as $old_item |
-			if ($old_item | length > 0) then (
-				$old_item[0] | .compatible = $new_item.compatible |
-				.name = $new_item.name |
-				del(.type)
-			) else (
-				$new_item
-			) end
-		))' > "$tmp"
-		cat "$tmp" > $CONFFILE
-		rm "$tmp"
-	}
+is_live_system && {
+    BOARD_CONFFILE_DIST=`get_dist_conffile`
+	cat "$BOARD_CONFFILE_DIST" > $BOARD_CONFFILE
 }
 
 #DEBHELPER#

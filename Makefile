@@ -17,14 +17,16 @@ install_data:
 	install -m 0644 functions.sh $(libdir)/functions.sh
 	install -m 0755 init.sh $(libdir)/init.sh
 	install -m 0755 firstboot.sh $(libdir)/firstboot.sh
+	install -m 0755 config.py $(libdir)/config.py
 	cp -rv ./slots $(datadir)/slots
 	cd $(datadir)/slots && ./gen_extio_slots.sh && rm *.sh
 	install -d -m 0755 $(datadir)/modules
 	cp modules/*.dtso modules/*.dtsi modules/*.sh $(datadir)/modules
-	cp wb-hardware.conf.* $(datadir)/
-
+	install -d -m 0755 $(datadir)/boards
+	cp -r boards $(datadir)
 
 install: install_data
+	install -d $(DESTDIR)/var/lib/wb-hwconf-manager
 	install -D -m 0755 wb-hwconf-helper $(DESTDIR)/$(prefix)/bin/wb-hwconf-helper
 	install -d -m 0755 $(DESTDIR)/usr/share/wb-mqtt-confed/schemas
 	@echo "Embedding modules from $(modules_schema_part) to schema; $(hidden_modules) (from $(hidden_modules_schema_part)) are hidden"
@@ -33,14 +35,9 @@ install: install_data
 		jq '.definitions.slot.properties.module.options.enum_hidden += $(hidden_modules)' \
 		> $(DESTDIR)/usr/share/wb-mqtt-confed/schemas/wb-hardware.schema.json
 	install -D -m 0644 wb-hwconf-manager.wbconfigs $(DESTDIR)/etc/wb-configs.d/02wb-hwconf-manager
+	install -Dm0644 wb-hardware.conf $(DESTDIR)/etc/wb-hardware.conf
 
-test_clean:
-	rm -rf $(test_tmpdir)
+test:
+	python3 -m pytest
 
-test: test_clean
-	make datadir=$(test_tmpdir) install_data
-	cd test && ./test.sh
-
-clean: test_clean
-
-.PHONY: install install_data all test test_clean clean
+.PHONY: install install_data all test

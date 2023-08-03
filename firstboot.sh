@@ -1,5 +1,5 @@
 #!/bin/bash
-CONFFILE=/etc/wb-hardware.conf
+CONFFILE=/var/lib/wb-hwconf-manager/system.conf
 
 [[ -s $CONFFILE ]] && exit 0
 

@@ -2,17 +2,29 @@ Source: wb-hwconf-manager
 Section: misc
 Priority: extra
 Maintainer: Evgeny Boger <boger@contactless.ru>
-Build-Depends: debhelper (>= 8.0.0), jq
+Build-Depends: debhelper (>= 8.0.0),
+               jq,
+               python3-all,
+               python3-pytest
 Standards-Version: 3.9.4
 Homepage: https://github.com/wirenboard/wb-hwconf-manager
 
 Package: wb-hwconf-manager
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ucf, wb-utils (>= 4.1.0), wb-configs (>= 1.63), perl, jq, tcc,
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         ucf,
+         wb-utils (>= 4.1.0),
+         wb-configs (>= 1.63),
+         perl,
+         jq,
+         tcc,
          device-tree-compiler (>= 1.6.0-1),
          linux-image-wb7 (>= 5.10.35-wb109~~) | linux-image-wb6 (>= 5.10.35-wb109~~) | linux-image-wb2 (>= 4.9+wb20200925234629),
-         mqtt-tools (>= 1.1.1), wb-rules-system (>= 1.6.8),
-         ntpstat
+         mqtt-tools (>= 1.1.1),
+         wb-rules-system (>= 1.6.8),
+         ntpstat,
+         python3 (>= 3.5)
 Breaks: wb-mqtt-confed (<< 1.0.2), wb-homa-adc (<< 2.5.0), wb-mqtt-homeui (<< 1.6.1), wb-knxd-config (<< 1.0.4~~), wb-mqtt-dac (<< 1.2.0)
 Description: Provides infrastructure for hardware re-configuration via Device Tree overlays
  This package provides Device tree overlays and scripts to

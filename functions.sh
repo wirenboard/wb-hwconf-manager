@@ -1,5 +1,4 @@
 #!/bin/bash
-CONFIG="/etc/wb-hardware.conf"
 DATADIR="/usr/share/wb-hwconf-manager"
 CONFIG_STATE="/var/lib/wirenboard/hardware.state"
 
@@ -12,7 +11,6 @@ SYSLOG_TAG="wb-hwconf-manager"
 
 VERBOSE="yes"
 2>/dev/null . /lib/lsb/init-functions
-2>/dev/null . ./wb-hwconf-manager.env
 
 . /usr/lib/wb-utils/wb_env.sh
 wb_source "of"
@@ -601,8 +599,8 @@ get_dist_conffile() {
 	elif of_machine_match "contactless,imx28-wirenboard52"; then
 		BOARD_CONF="wb52"
 	else
-		BOARD_CONF="default"
+		BOARD_CONF="wb72x-73x"
 	fi
 
-	echo "/usr/share/wb-hwconf-manager/wb-hardware.conf.$BOARD_CONF"
+	echo "/usr/share/wb-hwconf-manager/boards/$BOARD_CONF.conf"
 }
