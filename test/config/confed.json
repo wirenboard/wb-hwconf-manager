@@ -141,14 +141,14 @@
     ],
     "modules": [
         {
-            "id": "wb6-wx-1wire",
-            "description": "1-Wire master",
-            "compatible_slots": [ "wb6-wx" ]
-        },
-        {
             "id": "wb6-can-rs485",
             "description": "RS485 interface",
             "compatible_slots": [ "wb6-rs485" ]
+        },
+        {
+            "id": "wb6-wx-1wire",
+            "description": "1-Wire master",
+            "compatible_slots": [ "wb6-wx" ]
         },
         {
             "id": "wbe-di-dr-3",

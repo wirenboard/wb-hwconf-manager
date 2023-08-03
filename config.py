@@ -121,6 +121,7 @@ def make_modules_list(modules_dir: str):
                 if module.get("compatible_slots") and module.get("description"):
                     modules.append(module)
                     break
+    modules = sorted(modules, key=lambda item: item["id"])
     return modules
 
 
