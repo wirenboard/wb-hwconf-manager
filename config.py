@@ -54,6 +54,7 @@ def to_old_config(config_str: str, board_slots_path: str):
 
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
+
     for slot in board_slots["slots"]:
         slot_config = config.get(slot["slot_id"])
         if slot_config:
