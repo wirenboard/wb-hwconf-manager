@@ -592,12 +592,6 @@ get_dist_conffile() {
 		BOARD_CONF="wb61"
 	elif of_machine_match "contactless,imx6ul-wirenboard60"; then
 		BOARD_CONF="wb60"
-	elif of_machine_match "contactless,imx28-wirenboard58"; then
-		BOARD_CONF="wb58"
-	elif of_machine_match "contactless,imx28-wirenboard55"; then
-		BOARD_CONF="wb55"
-	elif of_machine_match "contactless,imx28-wirenboard52"; then
-		BOARD_CONF="wb52"
 	else
 		BOARD_CONF="wb72x-73x"
 	fi
