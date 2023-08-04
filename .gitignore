@@ -7,3 +7,4 @@ test/tmp
 *.sublime-workspace
 __pycache__
 .coverage
+.vscode
