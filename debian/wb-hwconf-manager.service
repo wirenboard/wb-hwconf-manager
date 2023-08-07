@@ -6,7 +6,6 @@ After=local-fs.target wb-configs.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStartPre=/usr/lib/wb-hwconf-manager/firstboot.sh
 ExecStart=/usr/lib/wb-hwconf-manager/init.sh
 TimeoutSec=180
 

@@ -204,6 +204,19 @@ config_module_options_hash() {
 	config_module_option "" | md5sum | cut -f1 -d' '
 }
 
+
+config_make_temporary_combined() {
+	local DEFAULT_CONFIG="/etc/wb-hardware.conf"
+	user_config=${1:-${DEFAULT_CONFIG}}
+	local combined_config=`mktemp`
+	cat "$user_config" | /usr/lib/wb-hwconf-manager/config.py -o > "$combined_config" || {
+		rm "$combined_config"
+		return 1
+	}
+	echo "$combined_config"
+	return 0
+}
+
 ################################################################################
 # Slot/module manipulation functions
 #
@@ -561,40 +574,4 @@ module_deinit() {
 
 	debug "Unloading DTBO"
 	rmdir "$t"
-}
-
-
-is_live_system() {
-	if [[ -e /proc/device-tree/compatible ]]; then
-		for compat in `tr < /proc/device-tree/compatible  '\000' '\n'`; do
-			if [[ "$compat" == wirenboard,* ]] || [[ "$compat" ==  contactless,* ]]; then
-				return 0
-			fi
-		done
-	fi
-	return 1
-}
-
-get_dist_conffile() {
-	if of_machine_match "wirenboard,wirenboard-731"; then
-		BOARD_CONF="wb72x-73x"
-	elif of_machine_match "wirenboard,wirenboard-730"; then
-		BOARD_CONF="wb730"
-	elif of_machine_match "wirenboard,wirenboard-73x"; then
-		BOARD_CONF="wb72x-73x"
-	elif of_machine_match "wirenboard,wirenboard-72x"; then
-		BOARD_CONF="wb72x-73x"
-	elif of_machine_match "wirenboard,wirenboard-720"; then
-		BOARD_CONF="wb72x-73x"
-	elif of_machine_match "contactless,imx6ul-wirenboard670"; then
-		BOARD_CONF="wb67"
-	elif of_machine_match "contactless,imx6ul-wirenboard61"; then
-		BOARD_CONF="wb61"
-	elif of_machine_match "contactless,imx6ul-wirenboard60"; then
-		BOARD_CONF="wb60"
-	else
-		BOARD_CONF="default"
-	fi
-
-	echo "/usr/share/wb-hwconf-manager/boards/$BOARD_CONF.conf"
 }

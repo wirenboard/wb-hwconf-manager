@@ -16,7 +16,6 @@ install_data:
 	install -m 0755 -d $(datadir) $(libdir)
 	install -m 0644 functions.sh $(libdir)/functions.sh
 	install -m 0755 init.sh $(libdir)/init.sh
-	install -m 0755 firstboot.sh $(libdir)/firstboot.sh
 	install -m 0755 config.py $(libdir)/config.py
 	cp -rv ./slots $(datadir)/slots
 	cd $(datadir)/slots && ./gen_extio_slots.sh && rm *.sh
@@ -26,7 +25,6 @@ install_data:
 	cp -r boards $(datadir)
 
 install: install_data
-	install -d $(DESTDIR)/var/lib/wb-hwconf-manager
 	install -D -m 0755 wb-hwconf-helper $(DESTDIR)/$(prefix)/bin/wb-hwconf-helper
 	install -d -m 0755 $(DESTDIR)/usr/share/wb-mqtt-confed/schemas
 	@echo "Embedding modules from $(modules_schema_part) to schema; $(hidden_modules) (from $(hidden_modules_schema_part)) are hidden"

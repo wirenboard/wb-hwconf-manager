@@ -6,10 +6,37 @@ import re
 import argparse
 import sys
 from pathlib import Path
+import os
+from typing import List
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
-SLOTS_PATH = "/var/lib/wb-hwconf-manager/system.conf"
 CONFIG_PATH = "/etc/wb-hardware.conf"
+
+
+def get_compatible_boards_list() -> List[str]:
+    root_node = os.readlink("/proc/device-tree")
+    with open(root_node + "/compatible", "r", encoding="utf-8") as file:
+        return file.read().split("\x00")
+
+
+def get_board_config():
+    boards = [
+        ("wirenboard,wirenboard-731", "wb72x-73x"),
+        ("wirenboard,wirenboard-730", "wb730"),
+        ("wirenboard,wirenboard-73x", "wb72x-73x"),
+        ("wirenboard,wirenboard-72x", "wb72x-73x"),
+        ("wirenboard,wirenboard-720", "wb72x-73x"),
+        ("contactless,imx6ul-wirenboard670", "wb67"),
+        ("contactless,imx6ul-wirenboard61", "wb61"),
+        ("contactless,imx6ul-wirenboard60", "wb60"),
+    ]
+    config_format = "/usr/share/wb-hwconf-manager/boards/{}.conf"
+    compatible_boards = get_compatible_boards_list()
+    for board in boards:
+        if board[0] in compatible_boards:
+            return config_format.format(board[1])
+    return config_format.format("default")
+
 
 # board config structure
 # {
@@ -184,15 +211,19 @@ def main(args=None):
     args = parser.parse_args()
 
     if args.to_json:
-        print(json.dumps(to_confed(CONFIG_PATH, SLOTS_PATH, MODULES_DIR)))
+        print(json.dumps(to_confed(CONFIG_PATH, get_board_config(), MODULES_DIR)))
         return
 
     if args.from_json:
-        print(json.dumps(from_confed(sys.stdin.read(), SLOTS_PATH), indent=4))
+        print(json.dumps(from_confed(sys.stdin.read(), get_board_config()), indent=4))
         return
 
     if args.to_combined_config:
-        print(json.dumps(to_combined_config(sys.stdin.read(), SLOTS_PATH), indent=4))
+        print(
+            json.dumps(
+                to_combined_config(sys.stdin.read(), get_board_config()), indent=4
+            )
+        )
         return
 
     parser.print_usage()

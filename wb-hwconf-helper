@@ -53,12 +53,7 @@ config_apply_changes() {
 	local state=`mktemp`
 	cp "$CONFIG_STATE" "$old_state" 2>/dev/null
 
-	local CONFIG="/etc/wb-hardware.conf"
-	CONFIG=${1:-${CONFIG}}
-	local combind_config=`mktemp`
-	cat "$CONFIG" | /usr/lib/wb-hwconf-manager/config.py -o > "$combind_config"
-	CONFIG="$combind_config"
-	config_wbio_pack
+	local CONFIG="$(config_make_temporary_combined $1)"
 	while :; do
 		cp "$old_state" "$state"
 
@@ -94,7 +89,7 @@ config_apply_changes() {
 	rm "$old_state"
 	sort "$state" > "$CONFIG_STATE"
 	rm "$state"
-	rm "$combind_config"
+	rm "$CONFIG"
 
 	local hook
 	for hook in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
@@ -139,10 +134,14 @@ case "$1" in
 		rm "$tmp"
 		;;
 	"init")
+		local CONFIG="$(config_make_temporary_combined)" || exit 1
 		module_init $2 $3
+		rm ${CONFIG}
 		;;
 	"deinit")
+		local CONFIG="$(config_make_temporary_combined)" || exit 1
 		module_deinit $2
+		rm ${CONFIG}
 		;;
 	"config-apply")
 		config_apply_changes
