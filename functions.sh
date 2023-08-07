@@ -593,7 +593,7 @@ get_dist_conffile() {
 	elif of_machine_match "contactless,imx6ul-wirenboard60"; then
 		BOARD_CONF="wb60"
 	else
-		BOARD_CONF="wb72x-73x"
+		BOARD_CONF="default"
 	fi
 
 	echo "/usr/share/wb-hwconf-manager/boards/$BOARD_CONF.conf"
