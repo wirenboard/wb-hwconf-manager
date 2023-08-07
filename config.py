@@ -11,7 +11,7 @@ MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 SLOTS_PATH = "/var/lib/wb-hwconf-manager/system.conf"
 CONFIG_PATH = "/etc/wb-hardware.conf"
 
-# board slots structure
+# board config structure
 # {
 #     "slots": [
 #         {
@@ -19,6 +19,8 @@ CONFIG_PATH = "/etc/wb-hardware.conf"
 #             "id": "wb67-mod1",
 #             "compatible": ["wbe2", "wbe3-reduced"],
 #             "name": "Internal slot 1",
+#             "module": "",
+#             "options": {}
 #         },
 #         ...,
 #         {
@@ -26,6 +28,8 @@ CONFIG_PATH = "/etc/wb-hardware.conf"
 #               "id": "wb6-extio1",
 #               "compatible": ["wb5-extio"],
 #               "name": "External I/O module 1",
+#               "module": "",
+#               "options": {}
 #         },
 #         ...
 #     ]
@@ -34,19 +38,48 @@ CONFIG_PATH = "/etc/wb-hardware.conf"
 # config structure
 # {
 #     "mod1": {
-#         "module": "MODULE_NAME",
+#         "module": "MODULE_NAME1",
 #         "options": {}
 #     },
 #     ...,
 #     "extio1": {
-#         "module": "MODULE_NAME",
-#         "options": {}
+#         "module": "MODULE_NAME2",
+#         "options": {
+#             "param": "value"
+#         }
 #     },
 #     ...
 # }
 
 
-def to_old_config(config_str: str, board_slots_path: str):
+# combined config structure
+# {
+#     "slots": [
+#         {
+#             "slot_id": "mod1",
+#             "id": "wb67-mod1",
+#             "compatible": ["wbe2", "wbe3-reduced"],
+#             "name": "Internal slot 1",
+#             "module": "MODULE_NAME1",
+#             "options": {}
+#         },
+#         ...,
+#         {
+#             "slot_id": "extio1",
+#             "id": "wb6-extio1",
+#             "compatible": ["wb5-extio"],
+#             "name": "External I/O module 1",
+#             "module": "MODULE_NAME2",
+#             "options": {
+#                 "param": "value"
+#             }
+#         },
+#         ...
+#     ]
+# }
+
+
+def to_combined_config(config_str: str, board_slots_path: str):
     config = json.loads(config_str)
     # Config has slots property, it is actually old config format, pass as is
     if "slots" in config:
@@ -66,7 +99,7 @@ def to_old_config(config_str: str, board_slots_path: str):
 
 def to_confed(config_path: str, board_slots_path: str, modules_dir: str):
     with open(config_path, "r", encoding="utf-8") as config_file:
-        config = to_old_config(config_file.read(), board_slots_path)
+        config = to_combined_config(config_file.read(), board_slots_path)
         config["modules"] = make_modules_list(modules_dir)
         return config
 
@@ -144,8 +177,8 @@ def main(args=None):
     )
     parser.add_argument(
         "-o",
-        "--to-old-config",
-        help="convert stdin to configuration file in old structure",
+        "--to-combined-config",
+        help="convert stdin to combined configuration file",
         action="store_true",
     )
     args = parser.parse_args()
@@ -158,8 +191,8 @@ def main(args=None):
         print(json.dumps(from_confed(sys.stdin.read(), SLOTS_PATH), indent=4))
         return
 
-    if args.to_old_config:
-        print(json.dumps(to_old_config(sys.stdin.read(), SLOTS_PATH), indent=4))
+    if args.to_combined_config:
+        print(json.dumps(to_combined_config(sys.stdin.read(), SLOTS_PATH), indent=4))
         return
 
     parser.print_usage()
