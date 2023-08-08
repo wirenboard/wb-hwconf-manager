@@ -57,9 +57,9 @@ log() {
 catch_output() {
 	if [[ -n "$SYSLOG" ]]; then
 		2>&1 "$@" | logger -p user.info -t "$SYSLOG_TAG"
-	else 
+	else
 		"$@"
-	fi	
+	fi
 }
 
 # Join array to string
@@ -76,7 +76,7 @@ join() {
 ################################################################################
 # JSON handling functions
 #
-# It's expected that $JSON variable will contain the name of json file 
+# It's expected that $JSON variable will contain the name of json file
 # that is to be processed
 ################################################################################
 
@@ -168,7 +168,7 @@ config_slot_add() {
 		die "Slot $SLOT already present in config"
 		return 100
 	}
-	
+
 	log "Adding slot $SLOT"
 	json_array_append ".slots" \
 		"{id: \"$1\", type: \"$2\", name: \"$3\", module: \"\"}"
@@ -185,7 +185,7 @@ config_slot_del() {
 		die "Slot $SLOT not present in config"
 		return 100
 	}
-	
+
 	local m=$(config_slot_module "$SLOT")
 	[[ -n "$m" ]] && {
 		die "Slot $SLOT is used by module $m, remove it first"
