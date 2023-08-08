@@ -32,9 +32,9 @@ def get_board_config():
     ]
     config_format = "/usr/share/wb-hwconf-manager/boards/{}.conf"
     compatible_boards = get_compatible_boards_list()
-    for board in boards:
-        if board[0] in compatible_boards:
-            return config_format.format(board[1])
+    for compatible, conf in boards:
+        if compatible in compatible_boards:
+            return config_format.format(conf)
     return config_format.format("default")
 
 
