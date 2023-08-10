@@ -1,5 +1,6 @@
-from config import make_modules_list, to_confed, from_confed
 import json
+
+from config import from_confed, make_modules_list, to_confed
 
 MODULES_DIR = "./test/config/modules"
 OLD_CONFIG_PATH = "./test/config/old_config.conf"
@@ -15,15 +16,27 @@ def test_make_modules_list():
 
 
 def test_to_confed_from_old_config():
+    config_paths = [
+        OLD_CONFIG_PATH,
+        "./test/config/old_config_unsupported_modules.conf",
+        "./test/config/old_config_unsupported_slots.conf",
+    ]
     with open(CONFED_JSON_PATH, "r", encoding="utf-8") as config_file:
         confed_json = json.load(config_file)
-    assert confed_json == to_confed(OLD_CONFIG_PATH, BOARD_CONF_PATH, MODULES_DIR)
+    for config_path in config_paths:
+        assert confed_json == to_confed(config_path, BOARD_CONF_PATH, MODULES_DIR)
 
 
 def test_to_confed_from_new_config():
+    config_paths = [
+        NEW_CONFIG_PATH,
+        "./test/config/new_config_unsupported_modules.conf",
+        "./test/config/new_config_unsupported_slots.conf",
+    ]
     with open(CONFED_JSON_PATH, "r", encoding="utf-8") as config_file:
         confed_json = json.load(config_file)
-    assert confed_json == to_confed(NEW_CONFIG_PATH, BOARD_CONF_PATH, MODULES_DIR)
+    for config_path in config_paths:
+        assert confed_json == to_confed(config_path, BOARD_CONF_PATH, MODULES_DIR)
 
 
 def test_from_confed():
@@ -31,4 +44,4 @@ def test_from_confed():
         confed_str = confed_file.read()
     with open(NEW_CONFIG_PATH, "r", encoding="utf-8") as config_file:
         new_config = json.load(config_file)
-    assert new_config == from_confed(confed_str, BOARD_CONF_PATH)
+    assert new_config == from_confed(confed_str, BOARD_CONF_PATH, MODULES_DIR)
