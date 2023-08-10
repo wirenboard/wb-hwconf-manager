@@ -5,3 +5,6 @@ debian/*.substvars
 test/tmp
 *.sublime-project
 *.sublime-workspace
+__pycache__
+.coverage
+.vscode

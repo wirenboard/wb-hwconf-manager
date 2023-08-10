@@ -53,8 +53,7 @@ config_apply_changes() {
 	local state=`mktemp`
 	cp "$CONFIG_STATE" "$old_state" 2>/dev/null
 
-	local CONFIG=${1:-${CONFIG}}
-	config_wbio_pack
+	local CONFIG="$(config_make_temporary_combined $1)"
 	while :; do
 		cp "$old_state" "$state"
 
@@ -90,6 +89,7 @@ config_apply_changes() {
 	rm "$old_state"
 	sort "$state" > "$CONFIG_STATE"
 	rm "$state"
+	rm "$CONFIG"
 
 	local hook
 	for hook in "${HOOKS_AFTER_CONFIG_CHANGE[@]}"; do
@@ -116,46 +116,16 @@ EOF
 
 case "$1" in
 	"confed-tojson")
-		# Build json description of all modules in form
-		# {
-		# 	"id": "mod-foo",
-		# 	"description": "Foo Module",
-		# 	"compatible_slots": ["bar", "baz"]
-		# }
-		# and put it to "modules" array in the config (which is read from stdin)
-		# Also, some post-processing is done afterwards to ensure all mandatory
-		# properties are present and to perform migration from older config versions
-		perl -e '
-			while (<STDIN>) {
-				print;
-			}
-			local $/ = undef;
-			foreach $f (@ARGV) {
-				$f =~ /\/([^\/.]+)\.dtso$/ and $vals{id} = "\"$1\"";
-				open F, $f or die;
-				binmode F;
-				$file = <F>;
-				close F;
-				$file =~ /compatible-slots\s*=\s*(.*?);/s and
-					$vals{compatible_slots} = "[$1]";
-				$file =~ /description\s*=\s*(.*?);/s and
-					$vals{description} = $1;
-
-				print "{", join(",", map "\"$_\": $vals{$_}", keys %vals), "}\n";
-			};
-		' $MODULES/*.dtso |
-		jq --slurp '.[0].modules = .[1:] | .[0]' |
-		jq '.slots |= map(
-			.module = (.module // "") |
-			.options = (.options // {}) |
-			.compatible = (.compatible // [.type]) |
-			del(.type))'
+		/usr/lib/wb-hwconf-manager/config.py -j
 		;;
 	"confed-fromjson")
 		tmp=`mktemp`
-		# Remove "modules" array
-		jq 'del(.modules)' > "$tmp"
-		
+		/usr/lib/wb-hwconf-manager/config.py -J > "$tmp" || {
+			rm "$tmp"
+			die "Can't convert JSON to config file"
+			exit 1
+		}
+
 		# stdout+stderr must be JSON, so redirect logging to syslog
 		SYSLOG="yes"
 		catch_output config_apply_changes "$tmp"
@@ -164,10 +134,14 @@ case "$1" in
 		rm "$tmp"
 		;;
 	"init")
+		local CONFIG="$(config_make_temporary_combined)" || exit 1
 		module_init $2 $3
+		rm ${CONFIG}
 		;;
 	"deinit")
+		local CONFIG="$(config_make_temporary_combined)" || exit 1
 		module_deinit $2
+		rm ${CONFIG}
 		;;
 	"config-apply")
 		config_apply_changes
