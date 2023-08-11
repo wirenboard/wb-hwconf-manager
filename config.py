@@ -3,6 +3,7 @@
 import argparse
 import glob
 import json
+import logging
 import os
 import re
 import sys
@@ -118,15 +119,17 @@ def merge_config_and_slots(config, board_slots):
 
 
 def has_unsupported_module(combined_slot, modules_by_id):
-    return set(combined_slot.get("compatible")).isdisjoint(
-        modules_by_id.get(combined_slot.get("module"), set())
-    )
+    module = combined_slot.get("module")
+    if module:
+        return set(combined_slot.get("compatible")).isdisjoint(modules_by_id.get(module, set()))
+    return False
 
 
 def remove_unsupported_modules(combined_config, modules):
     modules_by_id = {module["id"]: set(module.get("compatible_slots", [])) for module in modules}
     for slot in combined_config["slots"]:
         if has_unsupported_module(slot, modules_by_id):
+            logging.warning("Module %s is not supported by slot %s", slot.get("module"), slot.get("id"))
             slot["module"] = ""
             slot["options"] = {}
 
@@ -154,17 +157,21 @@ def extract_config(combined_config, board_slots, modules):
     for config_slot in combined_config["slots"]:
         board_slot = id_to_slots_id.get(config_slot["id"])
         if board_slot is None:
+            logging.warning("Slot %s is not supported by board", config_slot["id"])
             continue
         slot_id = board_slot.get("slot_id")
         if slot_id is None:
             continue
-        if module_configs_are_different(board_slot, config_slot) and (
-            not has_unsupported_module(config_slot, modules_by_id)
-        ):
-            config[slot_id] = {
-                "module": config_slot["module"],
-                "options": config_slot["options"],
-            }
+        if module_configs_are_different(board_slot, config_slot):
+            if has_unsupported_module(config_slot, modules_by_id):
+                logging.warning(
+                    "Module %s is not supported by slot %s", config_slot.get("module"), config_slot.get("id")
+                )
+            else:
+                config[slot_id] = {
+                    "module": config_slot["module"],
+                    "options": config_slot["options"],
+                }
     return config
 
 
@@ -245,6 +252,8 @@ def main(args=None):
         action="store_true",
     )
     args = parser.parse_args()
+
+    logging.basicConfig(format="%(levelname)s: %(message)s")
 
     if args.to_confed:
         print(json.dumps(to_confed(CONFIG_PATH, get_board_config_path(), MODULES_DIR)))
