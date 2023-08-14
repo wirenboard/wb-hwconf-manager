@@ -31,9 +31,9 @@
 				compatible = "simple-battery";
 
 				/* Expected 5V +/- tolerance. 4.9V will get good estimation during first charge, but won't prevent capacity from reaching 100% */
-				voltage-max-design-microvolt = <4900000>;
-				voltage-min-design-microvolt = <527500>;
-				energy-full-design-microwatt-hours = <150000>;
+				voltage-max-design-microvolt = <4600000>;
+				voltage-min-design-microvolt = <1700000>;
+				energy-full-design-microwatt-hours = <63500>;
 
 				status = "okay";
 			};
