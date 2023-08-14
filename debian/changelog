@@ -1,5 +1,11 @@
 wb-hwconf-manager (1.58.0) stable; urgency=medium
 
+  * Supercap: changed voltage thresholds and capacity for correct calculating of % and current 
+
+ -- Maxim Tomchuk <maxim.tomchuk@wirenboard.ru>  Mon, 14 Aug 2023 18:33:00 +0300
+
+wb-hwconf-manager (1.58.0) stable; urgency=medium
+
   * Move to device independent config file format 
 
  -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.com>  Thu, 03 Aug 2023 12:37:07 +0500
