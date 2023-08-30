@@ -85,7 +85,7 @@ config_apply_changes() {
 		done <<< "$delta"
 		sort "$state" > "$old_state"
 	done
-		
+
 	rm "$old_state"
 	sort "$state" > "$CONFIG_STATE"
 	rm "$state"
@@ -129,17 +129,17 @@ case "$1" in
 		# stdout+stderr must be JSON, so redirect logging to syslog
 		SYSLOG="yes"
 		catch_output config_apply_changes "$tmp"
-		
+
 		cat "$tmp"
 		rm "$tmp"
 		;;
 	"init")
-		local CONFIG="$(config_make_temporary_combined)" || exit 1
+		CONFIG="$(config_make_temporary_combined)" || exit 1
 		module_init $2 $3
 		rm ${CONFIG}
 		;;
 	"deinit")
-		local CONFIG="$(config_make_temporary_combined)" || exit 1
+		CONFIG="$(config_make_temporary_combined)" || exit 1
 		module_deinit $2
 		rm ${CONFIG}
 		;;
