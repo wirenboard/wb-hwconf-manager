@@ -109,12 +109,17 @@ def get_board_config_path() -> str:
 
 
 def merge_config_and_slots(config, board_slots):
+    merged_config_slots = []
     for slot in board_slots["slots"]:
         slot_config = config.get(slot["slot_id"])
         if slot_config:
             slot["module"] = slot_config["module"]
             slot["options"] = slot_config["options"]
+            merged_config_slots.append(slot["slot_id"])
         del slot["slot_id"]
+    for slot_id in config.keys():
+        if slot_id not in merged_config_slots:
+            logging.warning("Slot %s is not supported by board", slot_id)
     return board_slots
 
 
