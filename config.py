@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import json
-import glob
-import re
 import argparse
+import glob
+import json
+import logging
+import os
+import re
 import sys
 from pathlib import Path
-import os
 from typing import List
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
@@ -19,7 +20,7 @@ def get_compatible_boards_list() -> List[str]:
         return file.read().split("\x00")
 
 
-def get_board_config():
+def get_board_config_path() -> str:
     boards = [
         ("wirenboard,wirenboard-74x", "wb74x"),
         ("wirenboard,wirenboard-731", "wb72x-73x"),
@@ -107,64 +108,112 @@ def get_board_config():
 # }
 
 
-def to_combined_config(config_str: str, board_slots_path: str):
-    config = json.loads(config_str)
-    # Config has slots property, it is actually old config format, pass as is
-    if "slots" in config:
-        return config
-
-    with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
-        board_slots = json.load(board_slots_file)
-
+def merge_config_and_slots(config, board_slots):
+    merged_config_slots = []
     for slot in board_slots["slots"]:
         slot_config = config.get(slot["slot_id"])
         if slot_config:
             slot["module"] = slot_config["module"]
             slot["options"] = slot_config["options"]
+            merged_config_slots.append(slot["slot_id"])
         del slot["slot_id"]
+    for slot_id in config.keys():
+        if slot_id not in merged_config_slots:
+            logging.warning("Slot %s is not supported by board", slot_id)
     return board_slots
+
+
+def has_unsupported_module(combined_slot, modules_by_id):
+    module = combined_slot.get("module")
+    if module:
+        return set(combined_slot.get("compatible")).isdisjoint(modules_by_id.get(module, set()))
+    return False
+
+
+def remove_unsupported_modules(combined_config, modules):
+    modules_by_id = {module["id"]: set(module.get("compatible_slots", [])) for module in modules}
+    for slot in combined_config["slots"]:
+        if has_unsupported_module(slot, modules_by_id):
+            logging.warning("Module %s is not supported by slot %s", slot.get("module"), slot.get("id"))
+            slot["module"] = ""
+            slot["options"] = {}
+
+
+def make_combined_config(config, board_slots, modules):
+    # Config has slots property, it is an old combined config format,
+    # convert it to normal config format
+    if "slots" in config:
+        return merge_config_and_slots(extract_config(config, board_slots, modules), board_slots)
+
+    combined_config = merge_config_and_slots(config, board_slots)
+    remove_unsupported_modules(combined_config, modules)
+    return combined_config
+
+
+def module_configs_are_different(slot1, slot2):
+    return slot1.get("module") != slot2.get("module") or slot1.get("options") != slot2.get("options")
+
+
+def extract_config(combined_config, board_slots, modules):
+    config = {}
+    id_to_slots_id = {slot["id"]: slot for slot in board_slots["slots"]}
+    modules_by_id = {module["id"]: set(module.get("compatible_slots", [])) for module in modules}
+
+    for config_slot in combined_config["slots"]:
+        board_slot = id_to_slots_id.get(config_slot["id"])
+        if board_slot is None:
+            logging.warning("Slot %s is not supported by board", config_slot["id"])
+            continue
+        slot_id = board_slot.get("slot_id")
+        if slot_id is None:
+            continue
+        if module_configs_are_different(board_slot, config_slot):
+            if has_unsupported_module(config_slot, modules_by_id):
+                logging.warning(
+                    "Module %s is not supported by slot %s", config_slot.get("module"), config_slot.get("id")
+                )
+            else:
+                config[slot_id] = {
+                    "module": config_slot["module"],
+                    "options": config_slot["options"],
+                }
+    return config
 
 
 def to_confed(config_path: str, board_slots_path: str, modules_dir: str):
     with open(config_path, "r", encoding="utf-8") as config_file:
-        config = to_combined_config(config_file.read(), board_slots_path)
-        config["modules"] = make_modules_list(modules_dir)
-        return config
-
-
-def from_confed(confed_config_str: str, board_slots_path: str):
-    confed_config = json.loads(confed_config_str)
+        config = json.load(config_file)
+    modules = make_modules_list(modules_dir)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
 
-    id_to_slots_id = {slot["id"]: slot for slot in board_slots["slots"]}
-
-    new_config = {}
-
-    for config_slot in confed_config["slots"]:
-        board_slot = id_to_slots_id.get(config_slot["id"])
-        if board_slot is None:
-            continue
-        slot_id = board_slot.get("slot_id")
-        if slot_id is not None and (
-            board_slot.get("module") != config_slot.get("module", "")
-            or board_slot.get("options") != config_slot.get("options", {})
-        ):
-            new_config[slot_id] = {
-                "module": config_slot["module"],
-                "options": config_slot["options"],
-            }
-
-    return new_config
+    config = make_combined_config(config, board_slots, modules)
+    config["modules"] = modules
+    return config
 
 
-# Build json description of all modules in form
+def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str):
+    confed_config = json.loads(confed_config_str)
+    modules = make_modules_list(modules_dir)
+    with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
+        board_slots = json.load(board_slots_file)
+    return extract_config(confed_config, board_slots, modules)
+
+
+def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str):
+    config = json.loads(config_str)
+    modules = make_modules_list(modules_dir)
+    with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
+        board_slots = json.load(board_slots_file)
+    return make_combined_config(config, board_slots, modules)
+
+
+# Build list of json description of all modules in form
 # {
 # 	"id": "mod-foo",
 # 	"description": "Foo Module",
 # 	"compatible_slots": ["bar", "baz"]
 # }
-# and put it to "modules" array
 def make_modules_list(modules_dir: str):
     modules = []
     compatible_slots_pattern = re.compile(r"compatible-slots\s*=\s*\"(.*)\";")
@@ -188,18 +237,16 @@ def make_modules_list(modules_dir: str):
 
 
 def main(args=None):
-    parser = argparse.ArgumentParser(
-        description="Config generator/updater for wb-hwconf-manager"
-    )
+    parser = argparse.ArgumentParser(description="Config generator/updater for wb-hwconf-manager")
     parser.add_argument(
         "-j",
-        "--to-json",
+        "--to-confed",
         help="make JSON for wb-mqtt-confed from /etc/wb-hardware.conf",
         action="store_true",
     )
     parser.add_argument(
         "-J",
-        "--from-json",
+        "--from-confed",
         help="make /etc/wb-hardware.conf from wb-mqtt-confed output",
         action="store_true",
     )
@@ -211,19 +258,19 @@ def main(args=None):
     )
     args = parser.parse_args()
 
-    if args.to_json:
-        print(json.dumps(to_confed(CONFIG_PATH, get_board_config(), MODULES_DIR)))
+    logging.basicConfig(format="%(levelname)s: %(message)s")
+
+    if args.to_confed:
+        print(json.dumps(to_confed(CONFIG_PATH, get_board_config_path(), MODULES_DIR)))
         return
 
-    if args.from_json:
-        print(json.dumps(from_confed(sys.stdin.read(), get_board_config()), indent=4))
+    if args.from_confed:
+        print(json.dumps(from_confed(sys.stdin.read(), get_board_config_path(), MODULES_DIR), indent=4))
         return
 
     if args.to_combined_config:
         print(
-            json.dumps(
-                to_combined_config(sys.stdin.read(), get_board_config()), indent=4
-            )
+            json.dumps(to_combined_config(sys.stdin.read(), get_board_config_path(), MODULES_DIR), indent=4)
         )
         return
 

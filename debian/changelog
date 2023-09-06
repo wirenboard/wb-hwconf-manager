@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.58.3) stable; urgency=medium
+
+  * Ignore unsupported slots and modules in /etc/wb-hardware.conf 
+
+ -- Petr Krasnoshchekov <petr.krasnoshchekov@wirenboard.com>  Wed, 30 Aug 2023 11:29:35 +0500
+
 wb-hwconf-manager (1.58.2) stable; urgency=medium
 
   * wb-hwconf-helper: removed local keyword

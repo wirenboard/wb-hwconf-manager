@@ -4,10 +4,8 @@
             "id": "wb72-mod1",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 1",
-            "module": "MOD1",
-            "options": {
-                "setting": 1
-            }
+            "module": "wbe2-ao-10v-2",
+            "options": {}
         },
         {
             "id": "wb72-mod2",
@@ -55,9 +53,9 @@
             "id": "wb72-extio4",
             "compatible": ["wb5-extio"],
             "name": "External I/O module 4",
-            "module": "EXT4",
+            "module": "wbio-ai-dv-12",
             "options": {
-                "option": "test"
+                "mode": "separate"
             }
         },
         {
@@ -135,25 +133,35 @@
             "compatible": [
               "wb72-wbmz4-power"
             ],
-            "module": "WBMZ",
+            "module": "",
             "options": {}
         }
     ],
     "modules": [
-        {
-            "id": "wb6-can-rs485",
-            "description": "RS485 interface",
-            "compatible_slots": [ "wb6-rs485" ]
-        },
         {
             "id": "wb6-wx-1wire",
             "description": "1-Wire master",
             "compatible_slots": [ "wb6-wx" ]
         },
         {
+            "id": "wb67-can-rs485",
+            "description": "RS485 interface",
+            "compatible_slots": [ "wb67-rs485" ]
+        },
+        {
             "id": "wbe-di-dr-3",
             "description": "WBE-DI-DR-3: digital inputs extension module",
             "compatible_slots": [ "wb5-mod" ]
+        },
+        {
+            "id": "wbe2-ao-10v-2",
+            "description": "WBE2-AO-10V-2: Dual channel analog voltage output (0-10V) module",
+            "compatible_slots": [ "wbe2" ]
+        },
+        {
+            "id": "wbio-ai-dv-12",
+            "description": "WBIO-AI-DV-12 Analog Inputs",
+            "compatible_slots": [ "wb5-extio" ]
         }
     ]
 }
