@@ -1,0 +1,11 @@
+#define SLOT_ALIAS	w1
+#define W_SLOT_NUM 1
+
+#define SLOT_DATA	(7, 2)
+#define SLOT_PULLUP	(8, 0)
+
+#define SLOT_1WIRE_ALIAS	&onewire_w1
+#define SLOT_PINCTRL &pinctrl_w1_gpio
+
+#include "wb6-wx.h"
+#include "r40-soc.h"  // should be included after SLOT_ALL_PINS is defined
