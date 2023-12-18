@@ -3,12 +3,15 @@ local CONFIG_DAC=${CONFIG_DAC:-/var/lib/wb-mqtt-dac/conf.d/system.conf}
 local IIO_OF_NAME="${SLOT_ALIAS}_wbe2_ao_10v_2"
 
 hook_module_add() {
+    local IIO_BUS_NUM=`ls -d /sys/devices/platform/${SLOT_ALIAS}_i2c@0/*/*/iio:device* | grep -Po '(?<=iio:device)(\d+)'`
+
     local JSON=$CONFIG_DAC
     local items=()
     local chan
     for chan in 0 1; do
         items+=( "{
             id: \"MOD${SLOT_NUM}_O$((chan+1))\",
+            iio_device: ${IIO_BUS_NUM},
             iio_channel: $chan,
             iio_of_name: \"${IIO_OF_NAME}\",
             max_value_mv: 10000,
