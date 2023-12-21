@@ -36,6 +36,8 @@ hook_module_init() {
 		sysfs_gpio_direction $GPIO_CAN_EN out
 		sysfs_gpio_set $GPIO_CAN_EN 0
 	fi;
+
+	hook_once_after_config_change "service_restart wb-mqtt-mbgate"
 }
 
 hook_module_deinit() {
