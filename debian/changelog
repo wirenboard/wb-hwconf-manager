@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.58.7) stable; urgency=medium
+
+  * wbe2-ao-10v-2: fix wb-mqtt-dac config fill
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 18 Jan 2024 18:50:21 +0300
+
 wb-hwconf-manager (1.58.6) stable; urgency=medium
 
   * Add wb-mqtt-mbgate restart at rs485 init hook to reopen the port in this service
