@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.58.8) stable; urgency=medium
+
+  * add pyproject.toml & requirements.txt from codestyle repo
+  * add python3-tomli to build-deps (required by pytest)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.ru>  Thu, 14 Mar 2024 12:21:13 +0300
+
 wb-hwconf-manager (1.58.7) stable; urgency=medium
 
   * wbe2-ao-10v-2: fix wb-mqtt-dac config fill
