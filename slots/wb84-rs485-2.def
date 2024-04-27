@@ -9,5 +9,5 @@
 
 #define SLOT_UART_RS485_PINCTRL &pinctrl_rs485_2_uart_rs485
 
-#include "r40-soc.h"
+#include "t507-soc.h"
 #include "utils.h"

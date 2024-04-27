@@ -2,7 +2,7 @@
 
 #define SLOT_I2C_ALIAS	&i2c3
 
-#include "r40-soc.h"
+#include "t507-soc.h"
 
 
 #include "strutils.h"
