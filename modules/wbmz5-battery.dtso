@@ -30,7 +30,7 @@
 
 		__overlay__ {
 			status = "okay";
-			monitored-battery = <&wbmz4_battery_info>;
+			monitored-battery = <&wbmz5_battery_info>;
 
 			// it's 46C-50C high temperature limit
 			x-powers,charge-high-temp-microvolt = <499200>;
