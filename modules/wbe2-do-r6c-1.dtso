@@ -11,7 +11,7 @@
 
 / {
 	description = "WBE2-DO-R6C-1: Single SPDT relay output extension module";
-	compatible-slots = "wbe2";
+	compatible-slots = "wbe2-gpio";
 
 	fragment@0 {
 		target-path = "/";
