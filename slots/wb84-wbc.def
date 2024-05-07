@@ -1,3 +1,0 @@
-#define SLOT_ALIAS	wbc-usb
-
-#include "utils.h"
