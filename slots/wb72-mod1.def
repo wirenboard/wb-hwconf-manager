@@ -12,5 +12,7 @@
 
 #define SLOT_UART_ALIAS  &uart7
 
+#define SLOT_VDD_SUPPLY
+
 #include "wbe2.h"
 #include "r40-soc.h"  // should be included after SLOT_ALL_PINS is defined

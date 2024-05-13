@@ -12,6 +12,8 @@
 
 #define SLOT_UART_ALIAS  &uart6
 
+#define SLOT_VDD_SUPPLY
+
 #define SLOT_NEED_CONTROL_JTAG_MOD
 
 #include "wbe2.h"

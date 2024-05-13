@@ -12,5 +12,7 @@
 
 #define SLOT_UART_ALIAS  &uart3
 
+#define SLOT_VDD_SUPPLY
+
 #include "wbe2.h"
 #include "imx6ul-soc.h"  // should be included after SLOT_ALL_PINS is defined
