@@ -37,8 +37,9 @@
                 __size-cells = <0>;
 
                 SLOT_DT_ALIAS(wbe2_ao_10v_2)@60 {
-                    compatible = "mcp4728";
+                    compatible = "microchip,mcp4728", "mcp4728";
                     reg = <0x60>;
+                    vdd-supply = <SLOT_VDD_SUPPLY>;
                 };
             };
         };

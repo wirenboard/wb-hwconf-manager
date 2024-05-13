@@ -6,3 +6,8 @@
 #include "allwinner-soc.h"
 
 #endif
+
+// ao-10v-2 driver needs vdd-regulator phandle
+#ifndef SLOT_VDD_SUPPLY
+#define SLOT_VDD_SUPPLY &reg_periph_on
+#endif
