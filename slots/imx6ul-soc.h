@@ -9,3 +9,9 @@
 #include "imx-common.h"
 #include "imx6ul-pinfunc.h"
 #endif
+
+// ao-10v-2 driver needs vdd-regulator phandle
+// TODO: define, when wb6 migrates to 6.8 kernel
+#ifndef SLOT_VDD_SUPPLY
+#define SLOT_VDD_SUPPLY
+#endif

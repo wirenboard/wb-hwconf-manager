@@ -12,7 +12,5 @@
 
 #define SLOT_UART_ALIAS  &uart5
 
-#define SLOT_VDD_SUPPLY  &reg_periph_on
-
 #include "wbe2.h"
 #include "t507-soc.h"  // should be included after SLOT_ALL_PINS is defined
