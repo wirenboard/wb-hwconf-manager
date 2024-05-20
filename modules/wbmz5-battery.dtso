@@ -17,13 +17,13 @@
 		};
 	};
 
-    fragment-02-enable-pmic {
-        target = <&axp22x_wbmz5>;
+	fragment-02-enable-pmic {
+		target = <&axp22x_wbmz5>;
 
-        __overlay__ {
-            status = "okay";
-        };
-    };
+		__overlay__ {
+			status = "okay";
+		};
+	};
 
 	fragment-03-enable-battery-ps {
 		target = <&battery_power_supply>;
