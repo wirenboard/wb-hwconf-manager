@@ -1,0 +1,12 @@
+/ {
+	description = "WBMZ5-SUPERCAP";
+	compatible-slots = "wb84-wbmz5-power";
+
+	fragment-00-dummy-fragment {
+		target = <&battery_power_supply>;
+
+		__overlay__ {
+			// doing nothing; just for compatibility
+		};
+	};
+};
