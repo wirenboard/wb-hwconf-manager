@@ -1,0 +1,13 @@
+#define SLOT_RS485_FS	(3, 18)
+#define SLOT_RS485_TERM	(6, 12)
+
+#define SLOT_ALL_PINS \
+	SLOT_FOR_PIN(RS485_FS) \
+	SLOT_FOR_PIN(RS485_TERM)
+
+#define SLOT_UART_ALIAS &uart1
+
+#define SLOT_UART_RS485_PINCTRL &pinctrl_rs485_2_uart_rs485
+
+#include "t507-soc.h"
+#include "utils.h"

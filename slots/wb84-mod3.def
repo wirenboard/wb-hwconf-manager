@@ -1,0 +1,16 @@
+#define SLOT_ALIAS	mod3
+#define MOD_SLOT_NUM 3
+#define SLOT_TX		(7,	2)
+#define SLOT_RX		(7, 3)
+#define SLOT_RTS	(3, 10)
+
+#define SLOT_TXRX_GPIO_PINCTRL
+#define SLOT_TXRX_UART_PINCTRL &pinctrl_mod3_txrx_uart
+#define SLOT_I2C_EXPOSE_PINCTRL
+
+#define SLOT_DE_GPIO_PINCTRL
+
+#define SLOT_UART_ALIAS  &uart5
+
+#include "wbe2.h"
+#include "t507-soc.h"  // should be included after SLOT_ALL_PINS is defined

@@ -1,0 +1,39 @@
+/ {
+	description = "WBMZ5-BATTERY";
+	compatible-slots = "wb84-wbmz5-power";
+
+	fragment-01-declare-battery {
+		target-path = "/";
+
+		__overlay__ {
+			wbmz5_battery_info: wbmz5-battery-info {
+				compatible = "simple-battery";
+				constant-charge-current-max-microamp = <600000>;
+				voltage-min-design-microvolt = <2600000>;
+				constant-charge-voltage-max-microvolt = <4100000>;
+				charge-full-design-microamp-hours = <2600000>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment-02-enable-pmic {
+		target = <&axp22x_wbmz5>;
+
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment-03-enable-battery-ps {
+		target = <&battery_power_supply>;
+
+		__overlay__ {
+			status = "okay";
+			monitored-battery = <&wbmz5_battery_info>;
+
+			// it's 46C-50C high temperature limit
+			x-powers,charge-high-temp-microvolt = <499200>;
+		};
+	};
+};
