@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.60.1) stable; urgency=medium
+
+  * wbmz5-battery: add battery temperature
+
+ -- Nikolay Korotkiy <nikolay.korotkiy@wirenboard.com>  Wed, 17 Jul 2024 11:45:00 +0400
+
 wb-hwconf-manager (1.60.0) stable; urgency=medium
 
   * add wb8x support (on 7.4.x board)
