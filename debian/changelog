@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.60.1) stable; urgency=medium
+
+  * wbmz5: fix temperature sensor display
+
+ -- Nikita Maslov <nikita.maslov@wirenboard.com>  Thu, 25 Jul 2024 12:01:45 +0500
+
 wb-hwconf-manager (1.60.0) stable; urgency=medium
 
   * add wb8x support (on 7.4.x board)
