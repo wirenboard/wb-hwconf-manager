@@ -1,7 +1,7 @@
 wb-hwconf-manager (1.61.0) stable; urgency=medium
 
   * introduce wb85x board config
-  * uarts on mod1 & mod2 actually not supported now (because of wb-ec firmware)
+  * uarts on mod1 & mod2; wbmz actually not supported now (because of wb-ec firmware)
 
  -- Vladimir Romanov <v.romanov@wirenboard.com>  Wed, 31 Jul 2024 14:13:49 +0300
 
