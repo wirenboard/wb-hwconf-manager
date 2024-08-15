@@ -26,5 +26,5 @@
 #include "wb-extio-common.h"
 
 #ifdef FROM_SHELL
-local SLOT_I2C_DEVICE_MATCH="1c2b000.i2c"
+local SLOT_I2C_DEVICE_MATCH="5002c00.i2c"
 #endif
