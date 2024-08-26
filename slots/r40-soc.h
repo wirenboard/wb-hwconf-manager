@@ -12,3 +12,5 @@
 #ifndef SLOT_VDD_SUPPLY
 #define SLOT_VDD_SUPPLY
 #endif
+
+#define WBIO_INT_OPEN_DRAIN_OPTION microchip,irq-open-drain

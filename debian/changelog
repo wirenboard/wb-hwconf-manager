@@ -1,3 +1,10 @@
+wb-hwconf-manager (1.61.2) stable; urgency=medium
+
+  * wb8: fix wbio interrupts
+  * internals: mcp23xx use int-open-drain option from kernel mainline by default
+
+ -- Vladimir Romanov <v.romanov@wirenboard.com>  Mon, 26 Aug 2024 14:11:32 +0300
+
 wb-hwconf-manager (1.61.1) stable; urgency=medium
 
   * wb84: fix WBIO-AI-DV-12 support

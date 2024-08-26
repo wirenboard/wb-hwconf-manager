@@ -36,6 +36,8 @@
 #define SLOT_GPIO_XLATE_TYPE(x) "offset"
 #define SLOT_GPIO_PINS_PER_BANK(x) 0
 
+#define WBIO_INT_OPEN_DRAIN_OPTION microchip,irq-open-drain
+
 #include "strutils.h"
 
 #ifdef FROM_SHELL
