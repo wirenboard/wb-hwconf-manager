@@ -18,7 +18,7 @@ EXTIO_FRAGMENT_NAME {
 			__gpio-cells = <2>;
 			reg = <HEX_PREFIX(SLOT_I2C_ADDRESS)>;
 
-			microchip,irq-open-drain;
+			WBIO_INT_OPEN_DRAIN_OPTION;
 
 			interrupt-parent = <SLOT_GPIO_PORT_ALIAS(INT)>;
 			interrupts = <SLOT_GPIO_SPEC(INT) IRQ_TYPE_NONE>;

@@ -32,6 +32,8 @@
 
 #define GPIO_PORT_PIN_TO_NUM(bank, pin) $((bank * 32 + pin))
 
+#define WBIO_INT_OPEN_DRAIN_OPTION drive-open-drain
+
 #include "strutils.h"
 
 #ifdef FROM_SHELL
