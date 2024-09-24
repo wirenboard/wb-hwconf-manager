@@ -11,7 +11,7 @@
 
 / {
 	description = "WBE2-AO-10V-2: Dual channel analog voltage output (0-10V) module";
-	compatible-slots = "wbe2";
+	compatible-slots = "wbe2-i2c";
 
 	#include "wbe2-i2c.dtsi"
 

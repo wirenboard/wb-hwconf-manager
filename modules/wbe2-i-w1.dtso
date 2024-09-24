@@ -11,7 +11,7 @@
 
 / {
 	description = "WBE2-I-1WIRE: 1-Wire bus master";
-	compatible-slots = "wbe2";
+	compatible-slots = "wbe2-i2c";
 
 	#include "wbe2-i2c.dtsi"
 

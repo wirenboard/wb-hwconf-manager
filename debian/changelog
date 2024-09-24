@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.62.0) stable; urgency=medium
+
+  * wb85: add mod1 & mod2 (driven by wbec)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.com>  Tue, 24 Sep 2024 18:21:49 +0300
+
 wb-hwconf-manager (1.61.2) stable; urgency=medium
 
   * wb8: fix wbio interrupts
