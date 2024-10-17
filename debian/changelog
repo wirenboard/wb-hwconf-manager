@@ -1,8 +1,14 @@
-wb-hwconf-manager (1.62.0) stable; urgency=medium
+wb-hwconf-manager (1.63.0) stable; urgency=medium
 
   * add wb85xm board config (metall-body WB without WBIO)
 
  -- Vladimir Romanov <v.romanov@wirenboard.com>  Wed, 16 Oct 2024 14:32:28 +0300
+
+wb-hwconf-manager (1.62.0) stable; urgency=medium
+
+  * wb85: add mod1 & mod2 (driven by wbec)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.com>  Tue, 24 Sep 2024 18:21:49 +0300
 
 wb-hwconf-manager (1.61.2) stable; urgency=medium
 
