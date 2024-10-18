@@ -22,6 +22,7 @@ def get_compatible_boards_list() -> List[str]:
 
 def get_board_config_path() -> str:
     boards = [
+        ("wirenboard,wirenboard-85xm", "wb85xm"),
         ("wirenboard,wirenboard-85x", "wb85x"),
         ("wirenboard,wirenboard-84x", "wb84x"),
         ("wirenboard,wirenboard-74x", "wb74x"),
