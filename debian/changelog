@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.63.1-wb100) stable; urgency=medium
+
+  * No functional changes since v1.63.1: just satisfy our CI
+
+ -- Vladimir Romanov <v.romanov@wirenboard.com>  Wed, 27 Nov 2024 19:02:38 +0300
+
 wb-hwconf-manager (1.63.1) stable; urgency=medium
 
   * wb85: fix 1-wire discrete inputs
