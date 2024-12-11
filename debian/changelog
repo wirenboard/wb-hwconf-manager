@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.64.0) stable; urgency=medium
+
+  * wb85, wb85m: make gps module compatible to MOD1 & 2 slots (without pps signal)
+
+ -- Vladimir Romanov <v.romanov@wirenboard.com>  Wed, 11 Dec 2024 14:28:12 +0300
+
 wb-hwconf-manager (1.63.1) stable; urgency=medium
 
   * wb85: fix 1-wire discrete inputs
