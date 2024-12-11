@@ -1,0 +1,25 @@
+/*
+ * Copyright 2024 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE3-R-GPS: GPS/GLONASS Receiver (without PPS signal)";
+	compatible-slots = "wbe3-wbec-only";
+
+	fragment@0 {
+		target = <SLOT_UART_ALIAS>;
+
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <SLOT_TXRX_UART_PINCTRL>;
+			status = "okay";
+		};
+	};
+};
