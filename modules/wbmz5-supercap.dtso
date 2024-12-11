@@ -1,5 +1,5 @@
 / {
-	description = "WBMZ5-SUPERCAP";
+	description = "WBMZ4-SUPERCAP";
 	compatible-slots = "wb84-wbmz5-power";
 
 	fragment-00-dummy-fragment {
