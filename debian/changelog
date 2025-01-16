@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.65.0) stable; urgency=medium
+
+  * wb85: add module for USB-HUB
+
+ -- Anton <anton.tarasov@wirenboard.com>  Thu, 16 Jan 2025 17:35:50 +0300
+
 wb-hwconf-manager (1.64.1) stable; urgency=medium
 
   * wb84: rename supercap module

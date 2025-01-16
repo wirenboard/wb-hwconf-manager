@@ -13,7 +13,15 @@
     description = "WBC-USB-HUB";
     compatible-slots = "wbc-usb";
 
-    fragment_change_wb_env {
+    fragment_change_wbc_modem {
+        target = <&wbc_modem>;
+
+        __overlay__ {
+                peer-hub = <&usb_hub>;
+        };
+    };
+
+    fragment_add_wbc_usb_hub {
         target = <&ehci2>;
 
         __overlay__ {
@@ -22,6 +30,7 @@
                 hub-ports = <4>;
                 reg = <1>;
                 status = "okay";
+                peer-hub = <&wbc_modem>;
             };
         };
     };
