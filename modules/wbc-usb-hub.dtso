@@ -1,0 +1,28 @@
+/*
+ * Copyright 2025 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+    description = "WBC-USB-HUB";
+    compatible-slots = "wbc-usb";
+
+    fragment_change_wb_env {
+        target = <&ehci2>;
+
+        __overlay__ {
+            usb_hub: usb-hub@1 {
+                compatible = "usb424,2514";
+                hub-ports = <4>;
+                reg = <1>;
+                status = "okay";
+            };
+        };
+    };
+};
