@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.64.1-cb8ea449) stable; urgency=medium
+
+  * Up in list vendor devices
+
+ -- Ekaterina Volkova <ekaterina.volkova@wirenboard.com>  Fri, 14 Feb 2025 15:04:06 +0300
+
 wb-hwconf-manager (1.64.1) stable; urgency=medium
 
   * wb84: rename supercap module
