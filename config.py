@@ -13,6 +13,26 @@ from typing import List
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
 
+VENDOR_DEVICES = [
+    "wbe2-i-knx",
+    "wbe2-i-rs485-iso",
+    "wbe2-di-dr-3",
+    "wbio-di-wd-14",
+    "wbio-di-hvd-8",
+    "wbe2-do-r6c-1",
+    "wbio-do-ssr-8",
+    "wbio-do-r1g-16",
+    "wbio-do-r10r-4",
+    "wbio-do-r3a-8",
+    "wbmz4-battery",
+    "wbmz4-supercap",
+    "wbc-4g",
+    "wbe2-i-rs232",
+    "wbe2-do-r3a-1",
+    "wbe2-do-ssr-2",
+    "wbe2-i-w1-gpio",
+]
+
 
 def get_compatible_boards_list() -> List[str]:
     root_node = os.readlink("/proc/device-tree")
@@ -235,8 +255,17 @@ def make_modules_list(modules_dir: str):
                 if module.get("compatible_slots") and module.get("description"):
                     modules.append(module)
                     break
-    modules = sorted(modules, key=lambda item: item["id"])
-    return modules
+
+    vendor_modules = []
+    wb_modules = []
+    for module in modules:
+        if module["id"] in VENDOR_DEVICES:
+            vendor_modules.append(module)
+        else:
+            wb_modules.append(module)
+    vendor_modules.sort(key=lambda item: item["id"])
+    wb_modules.sort(key=lambda item: item["id"])
+    return vendor_modules + wb_modules
 
 
 def main(args=None):
