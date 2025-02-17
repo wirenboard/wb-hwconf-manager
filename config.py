@@ -12,7 +12,7 @@ from typing import List
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
-VENDOR_CONFIG_PATH = "usr/share/wb-hwconf-manager/vendor-modules.conf"
+VENDOR_CONFIG_PATH = "/usr/share/wb-hwconf-manager/vendor-modules.json"
 
 
 def get_compatible_boards_list() -> List[str]:
@@ -241,8 +241,8 @@ def make_modules_list(modules_dir: str, vendor_config_path: str):
                     modules.append(module)
                     break
 
+    modules.sort(key=lambda item: item["id"])
     if not os.path.exists(vendor_config_path):
-        modules.sort(key=lambda item: item["id"])
         return modules
 
     with open(vendor_config_path, "r", encoding="utf-8") as vendor_config_file:
@@ -256,8 +256,6 @@ def make_modules_list(modules_dir: str, vendor_config_path: str):
             else:
                 wb_modules.append(module)
 
-        vendor_modules.sort(key=lambda item: item["id"])
-        wb_modules.sort(key=lambda item: item["id"])
         return vendor_modules + wb_modules
 
 
