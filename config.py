@@ -12,6 +12,7 @@ from typing import List
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
+VENDOR_CONFIG_PATH = "/usr/share/wb-hwconf-manager/vendor-modules.json"
 
 
 def get_compatible_boards_list() -> List[str]:
@@ -183,10 +184,10 @@ def extract_config(combined_config, board_slots, modules):
     return config
 
 
-def to_confed(config_path: str, board_slots_path: str, modules_dir: str):
+def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str):
     with open(config_path, "r", encoding="utf-8") as config_file:
         config = json.load(config_file)
-    modules = make_modules_list(modules_dir)
+    modules = make_modules_list(modules_dir, vendor_config_path)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
 
@@ -195,17 +196,17 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str):
     return config
 
 
-def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str):
+def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str):
     confed_config = json.loads(confed_config_str)
-    modules = make_modules_list(modules_dir)
+    modules = make_modules_list(modules_dir, vendor_config_path)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
     return extract_config(confed_config, board_slots, modules)
 
 
-def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str):
+def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str):
     config = json.loads(config_str)
-    modules = make_modules_list(modules_dir)
+    modules = make_modules_list(modules_dir, vendor_config_path)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
     return make_combined_config(config, board_slots, modules)
@@ -217,7 +218,11 @@ def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str)
 # 	"description": "Foo Module",
 # 	"compatible_slots": ["bar", "baz"]
 # }
-def make_modules_list(modules_dir: str):
+# Vendor config looks like
+# {
+# 	"mod-foo":"vendor_description"
+# }
+def make_modules_list(modules_dir: str, vendor_config_path: str):
     modules = []
     compatible_slots_pattern = re.compile(r"compatible-slots\s*=\s*\"(.*)\";")
     description_pattern = re.compile(r"description\s*=\s*\"(.*)\";")
@@ -235,8 +240,23 @@ def make_modules_list(modules_dir: str):
                 if module.get("compatible_slots") and module.get("description"):
                     modules.append(module)
                     break
-    modules = sorted(modules, key=lambda item: item["id"])
-    return modules
+
+    modules.sort(key=lambda item: item["id"])
+    if not os.path.exists(vendor_config_path):
+        return modules
+
+    with open(vendor_config_path, "r", encoding="utf-8") as vendor_config_file:
+        vendor_config = json.load(vendor_config_file)
+        vendor_modules = []
+        wb_modules = []
+        for module in modules:
+            if module["id"] in vendor_config:
+                module["description"] = vendor_config[module["id"]]
+                vendor_modules.append(module)
+            else:
+                wb_modules.append(module)
+
+        return vendor_modules + wb_modules
 
 
 def main(args=None):
@@ -264,16 +284,26 @@ def main(args=None):
     logging.basicConfig(format="%(levelname)s: %(message)s")
 
     if args.to_confed:
-        print(json.dumps(to_confed(CONFIG_PATH, get_board_config_path(), MODULES_DIR)))
+        print(json.dumps(to_confed(CONFIG_PATH, get_board_config_path(), MODULES_DIR, VENDOR_CONFIG_PATH)))
         return
 
     if args.from_confed:
-        print(json.dumps(from_confed(sys.stdin.read(), get_board_config_path(), MODULES_DIR), indent=4))
+        print(
+            json.dumps(
+                from_confed(sys.stdin.read(), get_board_config_path(), MODULES_DIR, VENDOR_CONFIG_PATH),
+                indent=4,
+            )
+        )
         return
 
     if args.to_combined_config:
         print(
-            json.dumps(to_combined_config(sys.stdin.read(), get_board_config_path(), MODULES_DIR), indent=4)
+            json.dumps(
+                to_combined_config(
+                    sys.stdin.read(), get_board_config_path(), MODULES_DIR, VENDOR_CONFIG_PATH
+                ),
+                indent=4,
+            )
         )
         return
 

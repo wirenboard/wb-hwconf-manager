@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.66.0) stable; urgency=medium
+
+  * Add vendor customization
+
+ -- Ekaterina Volkova <ekaterina.volkova@wirenboard.com>  Mon, 17 Feb 2025 22:34:28 +0300
+
 wb-hwconf-manager (1.65.0) stable; urgency=medium
 
   * wb85: add module for USB-HUB
