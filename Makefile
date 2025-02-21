@@ -9,6 +9,8 @@ modules_schema_part = modules/*.schema.json
 hidden_modules_schema_part = modules/hidden_modules.json
 hidden_modules = $(shell jq -cM '.hidden_from_webui' $(hidden_modules_schema_part))
 
+processed_pybuild_test_args = $(shell echo $(PYBUILD_TEST_ARGS) | sed -E "s|--cov-config=[^ ]+|--cov-config=coveragerc|")
+
 all:
 	@echo "Nothing to do"
 
@@ -36,6 +38,6 @@ install: install_data
 	install -Dm0644 wb-hardware.conf $(DESTDIR)/etc/wb-hardware.conf
 
 test:
-	python3 -m pytest -vv $(PYBUILD_TEST_ARGS)
+	python3 -m pytest -vv $(processed_pybuild_test_args)
 
 .PHONY: install install_data all test
