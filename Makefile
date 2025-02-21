@@ -36,6 +36,6 @@ install: install_data
 	install -Dm0644 wb-hardware.conf $(DESTDIR)/etc/wb-hardware.conf
 
 test:
-	python3 -m pytest -vv
+	python3 -m pytest -vv $(PYBUILD_TEST_ARGS)
 
 .PHONY: install install_data all test
