@@ -1,0 +1,39 @@
+/*
+ * Copyright 2025 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2I-S-MT: magnetic field strength sensor";
+	compatible-slots = "wbe3-reduced";
+
+	#include "wbe2-i2c.dtsi"
+
+	fragment {
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(i2c) {
+				compatible = "i2c-gpio";
+				gpios = <SLOT_GPIO(TX)
+						 SLOT_GPIO(RX)
+						>;
+				i2c-gpio,delay-us = <20>;       /* ~100 kHz */
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_I2C_EXPOSE_PINCTRL>;
+
+				status = "okay";
+
+				__address-cells = <1>;
+				__size-cells = <0>;
+			};
+		};
+	};
+};
