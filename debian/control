@@ -24,7 +24,6 @@ Depends: ${shlibs:Depends},
          linux-image-wb8 (>= 6.8.0-wb111~~) | linux-image-wb7 (>= 5.10.35-wb109~~) | linux-image-wb6 (>= 5.10.35-wb109~~) | linux-image-wb2 (>= 4.9+wb20200925234629),
          mqtt-tools (>= 1.1.1),
          wb-rules-system (>= 1.6.8),
-         wb-mqtt-tlv493 (>= 1.0.0~~),
          ntpstat,
          python3 (>= 3.5)
 Breaks: wb-mqtt-confed (<< 1.0.2), wb-homa-adc (<< 2.5.0), wb-mqtt-homeui (<< 1.6.1), wb-knxd-config (<< 1.0.4~~), wb-mqtt-dac (<< 1.2.0)
