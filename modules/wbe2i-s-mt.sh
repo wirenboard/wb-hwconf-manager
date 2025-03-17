@@ -2,6 +2,10 @@ source "$DATADIR/modules/utils.sh"
 
 service_name="wb-mqtt-tlv493"
 
+# restarting $service_name from hwconf hooks during boot may cause bootloop
+# possibly because of busy i2c bus on dtso unload
+# => using is-active wb-hwconf-manager hack to determine, is system running or booting
+
 hook_module_init() {
 	systemctl is-active wb-hwconf-manager && systemctl stop $service_name || true
 	bus_num=$(readlink -f /dev/i2c-mod${SLOT_NUM} | sed -r 's/^\/dev\/i2c-//')
