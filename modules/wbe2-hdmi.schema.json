@@ -1,0 +1,60 @@
+{
+  "module_wbe2-hdmi": {
+    "title": "WBE2-HDMI module configuration",
+    "type": "object",
+    "properties": {
+      "mode": {
+        "type": "string",
+        "title": "Mode",
+        "enum": ["separate"],
+        "default": "separate",
+        "options": {
+          "hidden": true
+        },
+        "propertyOrder": 1
+      },
+      "channels": {
+        "type": "array",
+        "title": "Channels",
+        "minItems": 12,
+        "maxItems": 12,
+        "_format": "tabs",
+        "items": {
+          "type": "object",
+          "title": "Channel options",
+          "headerTemplate": "Channel A{{i1}}",
+          "options": {
+            "disable_collapse": true
+          },
+          "properties": {
+            "mode": {
+              "type": "string",
+              "title": "Mode",
+              "minLength": 1,
+              "enumSource": [{
+                "source": [
+                  { "value": "voltage", "title": "Voltage, 0-2.5 V" },
+                  { "value": "voltage_pm50", "title": "Voltage +/-50V" },
+                  { "value": "current_20ma", "title": "Current 0-20mA" }
+                ],
+                "value": "{{item.value}}",
+                "title": "{{item.title}}"
+              }],
+              "default": "voltage_pm50",
+              "propertyOrder": 1
+            }
+          },
+          "required": ["mode"]
+        },
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 2
+      }
+    },
+    "required": ["mode", "channels"]
+  }
+}
