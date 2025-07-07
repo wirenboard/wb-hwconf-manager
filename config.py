@@ -16,12 +16,24 @@ VENDOR_CONFIG_PATH = "/usr/share/wb-hwconf-manager/vendor-modules.json"
 
 
 def get_compatible_boards_list() -> List[str]:
+    """
+    Returns a list of compatible board identifiers from the device tree.
+
+    Returns:
+        List[str]: A list of compatible board names (strings).
+    """
     root_node = os.readlink("/proc/device-tree")
     with open(root_node + "/compatible", "r", encoding="utf-8") as file:
         return file.read().split("\x00")
 
 
 def get_board_config_path() -> str:
+    """
+    Determines the board configuration file path based on the detected hardware.
+
+    Returns:
+        str: Path to the appropriate board configuration file.
+    """
     boards = [
         ("wirenboard,wirenboard-85xm", "wb85xm"),
         ("wirenboard,wirenboard-85x", "wb85x"),
@@ -112,7 +124,17 @@ def get_board_config_path() -> str:
 # }
 
 
-def merge_config_and_slots(config, board_slots):
+def merge_config_and_slots(config: dict, board_slots: dict) -> dict:
+    """
+    Merges user-defined configuration with board slot definitions.
+
+    Args:
+        config (dict): The user-defined configuration.
+        board_slots (dict): The board slot definitions.
+
+    Returns:
+        dict: Combined configuration with modules and options set.
+    """
     merged_config_slots = []
     for slot in board_slots["slots"]:
         slot_config = config.get(slot["slot_id"])
@@ -127,14 +149,31 @@ def merge_config_and_slots(config, board_slots):
     return board_slots
 
 
-def has_unsupported_module(combined_slot, modules_by_id):
+def has_unsupported_module(combined_slot: dict, modules_by_id: dict) -> bool:
+    """
+    Checks whether a module is unsupported in a given slot.
+
+    Args:
+        combined_slot (dict): The slot configuration including module.
+        modules_by_id (dict): Mapping of module IDs to compatible slots.
+
+    Returns:
+        bool: True if the module is unsupported in the slot, False otherwise.
+    """
     module = combined_slot.get("module")
     if module:
-        return set(combined_slot.get("compatible")).isdisjoint(modules_by_id.get(module, set()))
+        return set(combined_slot.get("compatible", [])).isdisjoint(modules_by_id.get(module, set()))
     return False
 
 
-def remove_unsupported_modules(combined_config, modules):
+def remove_unsupported_modules(combined_config: dict, modules: List[dict]) -> None:
+    """
+    Removes unsupported modules from a combined configuration.
+
+    Args:
+        combined_config (dict): The combined configuration object (with slots).
+        modules (List[dict]): List of all available module descriptions.
+    """
     modules_by_id = {module["id"]: set(module.get("compatible_slots", [])) for module in modules}
     for slot in combined_config["slots"]:
         if has_unsupported_module(slot, modules_by_id):
@@ -143,7 +182,18 @@ def remove_unsupported_modules(combined_config, modules):
             slot["options"] = {}
 
 
-def make_combined_config(config, board_slots, modules):
+def make_combined_config(config: dict, board_slots: dict, modules: List[dict]) -> dict:
+    """
+    Creates a combined configuration by merging slots and removing unsupported modules.
+
+    Args:
+        config (dict): User-defined configuration or combined config.
+        board_slots (dict): Board slot definitions.
+        modules (List[dict]): Available modules with compatibility info.
+
+    Returns:
+        dict: Final combined configuration with valid modules.
+    """
     # Config has slots property, it is an old combined config format,
     # convert it to normal config format
     if "slots" in config:
@@ -154,11 +204,32 @@ def make_combined_config(config, board_slots, modules):
     return combined_config
 
 
-def module_configs_are_different(slot1, slot2):
+def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
+    """
+    Compares two slot configurations to determine if they differ.
+
+    Args:
+        slot1 (dict): First slot configuration.
+        slot2 (dict): Second slot configuration.
+
+    Returns:
+        bool: True if configurations differ, False otherwise.
+    """
     return slot1.get("module") != slot2.get("module") or slot1.get("options") != slot2.get("options")
 
 
-def extract_config(combined_config, board_slots, modules):
+def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]) -> dict:
+    """
+    Extracts a simple hardware config from a combined config structure.
+
+    Args:
+        combined_config (dict): Combined slot configuration.
+        board_slots (dict): Board slot definitions.
+        modules (List[dict]): List of module info with compatibility data.
+
+    Returns:
+        dict: Simplified config structure keyed by slot_id.
+    """
     config = {}
     id_to_slots_id = {slot["id"]: slot for slot in board_slots["slots"]}
     modules_by_id = {module["id"]: set(module.get("compatible_slots", [])) for module in modules}
@@ -184,7 +255,19 @@ def extract_config(combined_config, board_slots, modules):
     return config
 
 
-def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str):
+def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+    """
+    Converts the current hardware configuration to a format compatible with wb-mqtt-confed.
+
+    Args:
+        config_path (str): Path to the hardware configuration file.
+        board_slots_path (str): Path to the board slot definitions.
+        modules_dir (str): Directory containing module .dtso files.
+        vendor_config_path (str): Path to vendor module descriptions.
+
+    Returns:
+        dict: Configuration formatted for wb-mqtt-confed.
+    """
     with open(config_path, "r", encoding="utf-8") as config_file:
         config = json.load(config_file)
     modules = make_modules_list(modules_dir, vendor_config_path)
@@ -196,7 +279,19 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     return config
 
 
-def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str):
+def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+    """
+    Converts a wb-mqtt-confed-style JSON config back to the simplified hardware config.
+
+    Args:
+        confed_config_str (str): Confed JSON string from stdin.
+        board_slots_path (str): Path to board slot definitions.
+        modules_dir (str): Directory containing module .dtso files.
+        vendor_config_path (str): Path to vendor module descriptions.
+
+    Returns:
+        dict: Simplified configuration.
+    """
     confed_config = json.loads(confed_config_str)
     modules = make_modules_list(modules_dir, vendor_config_path)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
@@ -204,7 +299,19 @@ def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str,
     return extract_config(confed_config, board_slots, modules)
 
 
-def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str):
+def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+    """
+    Converts a simplified config JSON string to a full combined configuration.
+
+    Args:
+        config_str (str): JSON string of the simplified config.
+        board_slots_path (str): Path to board slot definitions.
+        modules_dir (str): Directory containing module .dtso files.
+        vendor_config_path (str): Path to vendor module descriptions.
+
+    Returns:
+        dict: Combined slot-based configuration.
+    """
     config = json.loads(config_str)
     modules = make_modules_list(modules_dir, vendor_config_path)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
@@ -222,7 +329,17 @@ def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str,
 # {
 # 	"mod-foo":"vendor_description"
 # }
-def make_modules_list(modules_dir: str, vendor_config_path: str):
+def make_modules_list(modules_dir: str, vendor_config_path: str) -> List[dict]:
+    """
+    Builds a list of available modules from .dtso files and vendor descriptions.
+
+    Args:
+        modules_dir (str): Directory with .dtso files describing modules.
+        vendor_config_path (str): Path to vendor descriptions JSON.
+
+    Returns:
+        List[dict]: List of module definitions with ID, description, and compatible slots.
+    """
     modules = []
     compatible_slots_pattern = re.compile(r"compatible-slots\s*=\s*\"(.*)\";")
     description_pattern = re.compile(r"description\s*=\s*\"(.*)\";")
