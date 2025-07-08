@@ -5,47 +5,46 @@
     "properties": {
       "mode": {
         "type": "string",
-        "title": "Mode",
-        "enum": ["separate"],
-        "default": "separate",
+        "title": "Resolution",
+        "minLength": 1,
+        "watch": { "available_hdmi_modes": "available_hdmi_modes" },
+        "enumSource": [
+          {
+            "source": [{ "title": "AUTO from EDID", "value": "auto" }],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          },
+          {
+            "source": "available_hdmi_modes",
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "auto",
         "options": {
-          "hidden": true
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
         },
         "propertyOrder": 1
       },
-      "channels": {
-        "type": "array",
-        "title": "Channels",
-        "minItems": 12,
-        "maxItems": 12,
-        "_format": "tabs",
-        "items": {
-          "type": "object",
-          "title": "Channel options",
-          "headerTemplate": "Channel A{{i1}}",
-          "options": {
-            "disable_collapse": true
-          },
-          "properties": {
-            "mode": {
-              "type": "string",
-              "title": "Mode",
-              "minLength": 1,
-              "enumSource": [{
-                "source": [
-                  { "value": "voltage", "title": "Voltage, 0-2.5 V" },
-                  { "value": "voltage_pm50", "title": "Voltage +/-50V" },
-                  { "value": "current_20ma", "title": "Current 0-20mA" }
-                ],
-                "value": "{{item.value}}",
-                "title": "{{item.title}}"
-              }],
-              "default": "voltage_pm50",
-              "propertyOrder": 1
-            }
-          },
-          "required": ["mode"]
-        },
+      "rotate": {
+        "type": "string",
+        "title": "Rotate",
+        "enumSource": [
+          {
+            "source": [
+              { "title": "0°", "value": "0" },
+              { "title": "90°", "value": "90" },
+              { "title": "180°", "value": "180" },
+              { "title": "270°", "value": "270" }
+            ],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "0",
         "options": {
           "disable_collapse": true,
           "disable_array_add": true,
@@ -53,8 +52,16 @@
           "disable_array_reorder": true
         },
         "propertyOrder": 2
+      },
+      "url": {
+        "type": "string",
+        "title": "Autoloaded URL from FireFox",
+        "minLength": 10,
+        "default": "http://localhost",
+        "format": "uri",
+        "propertyOrder": 3
       }
     },
-    "required": ["mode", "channels"]
+    "required": ["mode", "rotate", "url"]
   }
 }

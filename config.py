@@ -274,7 +274,49 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
 
+
+    available_hdmi_modes = []
+    hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
+    if os.path.exists(hdmi_modes_path):
+        try:
+            with open("/sys/class/drm/card0-HDMI-A-1/modes", "r", encoding="utf-8") as f:
+                progressive_modes = set()
+                interlaced_modes = set()
+
+                for line in f:
+                    mode = line.strip()
+                    if not mode:
+                        continue
+                    if mode.endswith("i"):
+                        interlaced_modes.add(mode)
+                    else:
+                        progressive_modes.add(mode)
+
+                # удаляем interlaced, если есть прогрессив с такой же базой:
+                filtered_interlaced = {
+                    m for m in interlaced_modes if m[:-1] not in progressive_modes
+                }
+
+                all_modes = progressive_modes.union(filtered_interlaced)
+
+                def sort_key(res):
+                    try:
+                        res_clean = res.replace("i", "")
+                        w, h = map(int, res_clean.split("x"))
+                        return (w, h)
+                    except:
+                        return (float('inf'), float('inf'))
+
+                sorted_modes = sorted(all_modes, key=sort_key)
+
+                for mode in sorted_modes:
+                    available_hdmi_modes.append({"value": mode, "title": mode})
+        except:
+            pass
+
     config = make_combined_config(config, board_slots, modules)
+
+    config["available_hdmi_modes"] = available_hdmi_modes
     config["modules"] = modules
     return config
 
