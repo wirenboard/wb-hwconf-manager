@@ -1,70 +1,61 @@
+#!/bin/bash
 source "$DATADIR/modules/utils.sh"
 
-local CONFIG_ADC=${CONFIG_ADC:-/etc/wb-mqtt-adc.conf}
-local I2C_ADDR=48
-
 hook_module_add() {
-	local JSON=$CONFIG_ADC
-	local items=()
-	local chan mul max_voltage
-	for chan in 0 1; do
-		local gain="$(config_module_option ".channels[$chan].gain // 1")"
-		case "$(config_module_option ".channels[$chan].mode // \"voltage\"")" in
-			voltage)
-				mul=1
-				;;
-			voltage_x10)
-				mul=10
-				;;
-			current)
-				mul=0.02004
-				;;
-		esac
-		items+=( "{
-			id: \"MOD${SLOT_NUM}_A$((chan+1))\",
-			averaging_window: 1,
-			match_iio: \"mod${SLOT_NUM}_i2c\",
-			channel_number: $chan,
-			voltage_multiplier: (${mul}*${gain}),
-			decimal_places: 3,
-			max_voltage: 3.3
-		}" )
-		shift 3
-	done
-	json_array_append ".iio_channels" "${items[@]}"
+	local XORG_CONFIG_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
+	local URL_CONFIG_PATH="/root/url"
 
-	hook_once_after_config_change "service_restart_delete_retained wb-mqtt-adc /devices/wb-adc/#"
+	# Извлечение параметров через jq
+	local mode="$(config_module_option ".mode")"
+	local rotate="$(config_module_option ".rotate")"
+	local url="$(config_module_option ".url")"
+	logger -p user.err -t "HWCONF MODE" "$mode"
+
+	# Преобразуем rotate в формат X11 (допустимые значения: normal, left, right, inverted)
+	case "$rotate" in
+		90) xrotate="right" ;;
+		180) xrotate="inverted" ;;
+		270) xrotate="left" ;;
+		*) xrotate="normal" ;;
+	esac
+
+	# Генерация xorg.conf.d/10-monitor.conf
+	mkdir -p "$(dirname "$XORG_CONFIG_PATH")"
+	{
+		echo 'Section "Monitor"'
+		echo '    Identifier "HDMI-1"'
+		if [[ "$mode" != "auto" && -n "$mode" ]]; then
+			echo "    Option \"PreferredMode\" \"$mode\""
+		fi
+		echo "    Option \"Rotate\" \"$xrotate\""
+		echo 'EndSection'
+	} > "$XORG_CONFIG_PATH"
+
+	if [[ -n "$url" ]]; then
+		echo "$url" > "$URL_CONFIG_PATH"
+	else
+		rm "$URL_CONFIG_PATH"
+	fi
+
+	# Обновляем xrandr настройки или запускаем xinit
+	if pgrep -x xinit > /dev/null; then
+		echo "Xinit is running. Applying xrandr settings..."
+		export DISPLAY=:0
+
+		cmd=(xrandr --output HDMI-1)
+
+		if [[ "$mode" != "auto" && -n "$mode" ]]; then
+			cmd+=("--mode" "$mode")
+		fi
+
+		cmd+=("--rotate" "$xrotate")
+
+		# Выполнить команду
+		"${cmd[@]}"
+
+	else
+		systemctl start xinit.service
+	fi
+
 }
 
-hook_module_del() {
-	local JSON=$CONFIG_ADC
-	json_array_delete ".iio_channels" \
-		". as \$chan | ([\"MOD${SLOT_NUM}_A1\", \"MOD${SLOT_NUM}_A2\"] | map(. == \$chan.id) | any)"
-	hook_once_after_config_change "service_restart_delete_retained wb-mqtt-adc /devices/wb-adc/#"
-}
-
-hook_module_init() {
-	local bus=$(slot_i2c_bus_sysfs)
-	[[ -d "$bus" ]] || {
-		log "Unable to find i2c bus for slot $SLOT (sysfs: $bus)"
-		return 1
-	}
-	echo "ads1015 0x${I2C_ADDR}" > $bus/new_device
-
-	local dev=$(slot_i2c_dev_sysfs $I2C_ADDR)
-	wait_for_path "$dev"
-
-	local chan
-	for chan in 0 1; do
-		config_module_option ".channels[$chan].gain // 1" > $(echo "$dev/iio:device"*"/in_voltage${chan}_scale")
-	done
-}
-
-hook_module_deinit() {
-	local bus=$(slot_i2c_bus_sysfs)
-	[[ -d "$bus" ]] || {
-		log "Unable to find i2c bus for slot $SLOT (sysfs: $bus)"
-		return 1
-	}
-	echo "0x${I2C_ADDR}" > $bus/delete_device
-}
