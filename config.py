@@ -288,12 +288,9 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
             all_modes = progressive_modes.union(filtered_interlaced)
 
             def sort_key(res):
-                try:
-                    res_clean = res.replace("i", "")
-                    w, h = map(int, res_clean.split("x"))
-                    return (w, h)
-                except:
-                    return (float("inf"), float("inf"))
+                res_clean = res.replace("i", "")
+                w, h = map(int, res_clean.split("x"))
+                return (w, h)
 
             sorted_modes = sorted(all_modes, key=sort_key)
 
