@@ -339,6 +339,7 @@ def from_confed(
         board_slots = json.load(board_slots_file)
     return extract_config(confed_config, board_slots, modules)
 
+
 def to_combined_config(
     config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str
 ) -> dict:
