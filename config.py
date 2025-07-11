@@ -8,7 +8,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
