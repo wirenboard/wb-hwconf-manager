@@ -269,39 +269,36 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
     if os.path.exists(hdmi_modes_path):
-        try:
-            with open(hdmi_modes_path, "r", encoding="utf-8") as f:
-                progressive_modes = set()
-                interlaced_modes = set()
+        with open(hdmi_modes_path, "r", encoding="utf-8") as f:
+            progressive_modes = set()
+            interlaced_modes = set()
 
-                for line in f:
-                    mode = line.strip()
-                    if not mode:
-                        continue
-                    if mode.endswith("i"):
-                        interlaced_modes.add(mode)
-                    else:
-                        progressive_modes.add(mode)
+            for line in f:
+                mode = line.strip()
+                if not mode:
+                    continue
+                if mode.endswith("i"):
+                    interlaced_modes.add(mode)
+                else:
+                    progressive_modes.add(mode)
 
-                # удаляем interlaced, если есть прогрессив с такой же базой:
-                filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
+            # удаляем interlaced, если есть прогрессив с такой же базой:
+            filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
 
-                all_modes = progressive_modes.union(filtered_interlaced)
+            all_modes = progressive_modes.union(filtered_interlaced)
 
-                def sort_key(res):
-                    try:
-                        res_clean = res.replace("i", "")
-                        w, h = map(int, res_clean.split("x"))
-                        return (w, h)
-                    except:
-                        return (float("inf"), float("inf"))
+            def sort_key(res):
+                try:
+                    res_clean = res.replace("i", "")
+                    w, h = map(int, res_clean.split("x"))
+                    return (w, h)
+                except:
+                    return (float("inf"), float("inf"))
 
-                sorted_modes = sorted(all_modes, key=sort_key)
+            sorted_modes = sorted(all_modes, key=sort_key)
 
-                for mode in sorted_modes:
-                    available_hdmi_modes.append({"value": mode, "title": mode})
-        except Exception:
-            pass
+            for mode in sorted_modes:
+                available_hdmi_modes.append({"value": mode, "title": mode})
 
     return available_hdmi_modes
 
