@@ -8,7 +8,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
@@ -254,31 +254,22 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                 }
     return config
 
-
-def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+def get_hdmi_modes() -> List[Dict[str, str]]:
     """
-    Converts the current hardware configuration to a format compatible with wb-mqtt-confed.
+    Reads available HDMI display modes from the system and returns a sorted list of supported resolutions.
 
-    Args:
-        config_path (str): Path to the hardware configuration file.
-        board_slots_path (str): Path to the board slot definitions.
-        modules_dir (str): Directory containing module .dtso files.
-        vendor_config_path (str): Path to vendor module descriptions.
+    Interlaced modes are filtered out if a progressive mode with the same resolution base exists.
+    The resulting list is sorted in ascending order by width and height.
 
     Returns:
-        dict: Configuration formatted for wb-mqtt-confed.
+        List[Dict[str, str]]: A list of available HDMI modes, where each mode is represented as a
+        dictionary with "value" and "title" keys.
     """
-    with open(config_path, "r", encoding="utf-8") as config_file:
-        config = json.load(config_file)
-    modules = make_modules_list(modules_dir, vendor_config_path)
-    with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
-        board_slots = json.load(board_slots_file)
-
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
     if os.path.exists(hdmi_modes_path):
         try:
-            with open("/sys/class/drm/card0-HDMI-A-1/modes", "r", encoding="utf-8") as f:
+            with open(hdmi_modes_path, "r", encoding="utf-8") as f:
                 progressive_modes = set()
                 interlaced_modes = set()
 
@@ -308,12 +299,35 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
 
                 for mode in sorted_modes:
                     available_hdmi_modes.append({"value": mode, "title": mode})
-        except:
+        except Exception:
             pass
+
+    return available_hdmi_modes
+
+
+def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+    """
+    Converts the current hardware configuration to a format compatible with wb-mqtt-confed.
+
+    Args:
+        config_path (str): Path to the hardware configuration file.
+        board_slots_path (str): Path to the board slot definitions.
+        modules_dir (str): Directory containing module .dtso files.
+        vendor_config_path (str): Path to vendor module descriptions.
+
+    Returns:
+        dict: Configuration formatted for wb-mqtt-confed.
+    """
+    with open(config_path, "r", encoding="utf-8") as config_file:
+        config = json.load(config_file)
+    modules = make_modules_list(modules_dir, vendor_config_path)
+    with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
+        board_slots = json.load(board_slots_file)
+
 
     config = make_combined_config(config, board_slots, modules)
 
-    config["available_hdmi_modes"] = available_hdmi_modes
+    config["available_hdmi_modes"] = get_hdmi_modes()
     config["modules"] = modules
     return config
 
