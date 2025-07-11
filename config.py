@@ -317,6 +317,7 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     config["modules"] = modules
     return config
 
+
 def from_confed(
     confed_config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str
 ) -> dict:
