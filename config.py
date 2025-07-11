@@ -274,7 +274,6 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
 
-
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
     if os.path.exists(hdmi_modes_path):
@@ -293,9 +292,7 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
                         progressive_modes.add(mode)
 
                 # удаляем interlaced, если есть прогрессив с такой же базой:
-                filtered_interlaced = {
-                    m for m in interlaced_modes if m[:-1] not in progressive_modes
-                }
+                filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
 
                 all_modes = progressive_modes.union(filtered_interlaced)
 
@@ -305,7 +302,7 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
                         w, h = map(int, res_clean.split("x"))
                         return (w, h)
                     except:
-                        return (float('inf'), float('inf'))
+                        return (float("inf"), float("inf"))
 
                 sorted_modes = sorted(all_modes, key=sort_key)
 
@@ -320,8 +317,9 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     config["modules"] = modules
     return config
 
-
-def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+def from_confed(
+    confed_config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str
+) -> dict:
     """
     Converts a wb-mqtt-confed-style JSON config back to the simplified hardware config.
 
@@ -340,8 +338,9 @@ def from_confed(confed_config_str: str, board_slots_path: str, modules_dir: str,
         board_slots = json.load(board_slots_file)
     return extract_config(confed_config, board_slots, modules)
 
-
-def to_combined_config(config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
+def to_combined_config(
+    config_str: str, board_slots_path: str, modules_dir: str, vendor_config_path: str
+) -> dict:
     """
     Converts a simplified config JSON string to a full combined configuration.
 
