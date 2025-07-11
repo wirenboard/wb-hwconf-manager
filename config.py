@@ -254,6 +254,7 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                 }
     return config
 
+
 def get_hdmi_modes() -> List[Dict[str, str]]:
     """
     Reads available HDMI display modes from the system and returns a sorted list of supported resolutions.
@@ -323,7 +324,6 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     modules = make_modules_list(modules_dir, vendor_config_path)
     with open(board_slots_path, "r", encoding="utf-8") as board_slots_file:
         board_slots = json.load(board_slots_file)
-
 
     config = make_combined_config(config, board_slots, modules)
 
