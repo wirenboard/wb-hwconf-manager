@@ -8,7 +8,8 @@ modules_schema_part = modules/*.schema.json
 hidden_modules_schema_part = modules/hidden_modules.json
 hidden_modules = $(shell jq -cM '.hidden_from_webui' $(hidden_modules_schema_part))
 
-processed_pybuild_test_args = $(shell echo $(PYBUILD_TEST_ARGS) | sed -E "s|--cov-config=[^ ]+|--cov-config=coveragerc|")
+processed_pybuild_test_args = $(shell echo $(PYBUILD_TEST_ARGS) | sed -E "s|--cov-config=[^ ]+|--cov-config=coveragerc|" \
+	| sed -E "s|--cov-report=xml:[^ ]+|--cov-report=xml:../coverage.xml|")
 
 all:
 	@echo "Nothing to do"
