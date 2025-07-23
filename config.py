@@ -268,7 +268,7 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
     """
 
     # Maximum resolution in pixels (1.3 megapixels = 1,300,000 pixels)
-    MAX_RESOLUTION = 1300000
+    max_resolution = 1300000
 
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
@@ -286,7 +286,7 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
                 res_clean = mode.replace("i", "")
                 w, h = map(int, res_clean.split("x"))
 
-                if w * h > MAX_RESOLUTION:
+                if w * h > max_resolution:
                     continue  # Skip this mode if it's too large
 
                 if mode.endswith("i"):
