@@ -266,6 +266,10 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
         List[Dict[str, str]]: A list of available HDMI modes, where each mode is represented as a
         dictionary with "value" and "title" keys.
     """
+
+    # Maximum resolution in pixels (1.3 megapixels = 1,300,000 pixels)
+    MAX_RESOLUTION = 1300000
+
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
     if os.path.exists(hdmi_modes_path):
@@ -277,12 +281,20 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
                 mode = line.strip()
                 if not mode:
                     continue
+
+                # Extract width and height
+                res_clean = mode.replace("i", "")
+                w, h = map(int, res_clean.split("x"))
+
+                if w * h > MAX_RESOLUTION:
+                    continue  # Skip this mode if it's too large
+
                 if mode.endswith("i"):
                     interlaced_modes.add(mode)
                 else:
                     progressive_modes.add(mode)
 
-            # удаляем interlaced, если есть прогрессив с такой же базой:
+            # remove interlaced if there is a progressive with the same base:
             filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
 
             all_modes = progressive_modes.union(filtered_interlaced)
