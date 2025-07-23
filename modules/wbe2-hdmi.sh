@@ -60,15 +60,11 @@ hook_module_add() {
 }
 
 hook_module_init() {
-    dts_load "/usr/share/wb-hwconf-manager/modules/wbe2-hdmi.dtso"
-
 	systemctl enable xinit.service
-    systemctl start xinit.service
+	systemctl start xinit.service
 }
 
 hook_module_deinit() {
-    systemctl stop xinit.service
+	systemctl stop xinit.service
 	systemctl disable xinit.service
-
-    dts_load "/usr/share/wb-hwconf-manager/modules/wbe2-hdmi-deinit.dtso"
 }
