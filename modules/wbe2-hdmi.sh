@@ -67,3 +67,4 @@ hook_module_deinit() {
 	systemctl stop xinit.service
 	systemctl disable xinit.service
 }
+
