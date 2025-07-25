@@ -9,7 +9,6 @@ hook_module_add() {
 	local mode="$(config_module_option ".mode")"
 	local rotate="$(config_module_option ".rotate")"
 	local url="$(config_module_option ".url")"
-	logger -p user.err -t "HWCONF MODE" "$mode"
 
 	# Преобразуем rotate в формат X11 (допустимые значения: normal, left, right, inverted)
 	case "$rotate" in
