@@ -31,7 +31,7 @@
       },
       "rotate": {
         "type": "string",
-        "title": "Rotate",
+        "title": "Screen rotate",
         "enumSource": [
           {
             "source": [
@@ -53,6 +53,28 @@
         },
         "propertyOrder": 2
       },
+      "mouse": {
+        "type": "string",
+        "title": "Mouse cursor",
+        "enumSource": [
+          {
+            "source": [
+              { "title": "Hide", "value": "hide" },
+              { "title": "Show", "value": "show" }
+            ],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "hide",
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 2
+      },
       "url": {
         "type": "string",
         "title": "Autoloaded URL from FireFox",
@@ -62,6 +84,6 @@
         "propertyOrder": 3
       }
     },
-    "required": ["mode", "rotate", "url"]
+    "required": ["mode", "rotate", "url", "mouse"]
   }
 }
