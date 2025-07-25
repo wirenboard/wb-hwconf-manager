@@ -272,42 +272,44 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
 
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
-    if os.path.exists(hdmi_modes_path):
-        with open(hdmi_modes_path, "r", encoding="utf-8") as f:
-            progressive_modes = set()
-            interlaced_modes = set()
+    if not os.path.exists(hdmi_modes_path):
+        return available_hdmi_modes
 
-            for line in f:
-                mode = line.strip()
-                if not mode:
-                    continue
+    with open(hdmi_modes_path, "r", encoding="utf-8") as f:
+        progressive_modes = set()
+        interlaced_modes = set()
 
-                # Extract width and height
-                res_clean = mode.replace("i", "")
-                w, h = map(int, res_clean.split("x"))
+        for line in f:
+            mode = line.strip()
+            if not mode:
+                continue
 
-                if w * h > max_resolution:
-                    continue  # Skip this mode if it's too large
+            # Extract width and height
+            res_clean = mode.replace("i", "")
+            w, h = map(int, res_clean.split("x"))
 
-                if mode.endswith("i"):
-                    interlaced_modes.add(mode)
-                else:
-                    progressive_modes.add(mode)
+            if w * h > max_resolution:
+                continue  # Skip this mode if it's too large
 
-            # remove interlaced if there is a progressive with the same base:
-            filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
+            if mode.endswith("i"):
+                interlaced_modes.add(mode)
+            else:
+                progressive_modes.add(mode)
 
-            all_modes = progressive_modes.union(filtered_interlaced)
+        # remove interlaced if there is a progressive with the same base:
+        filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
 
-            def sort_key(res):
-                res_clean = res.replace("i", "")
-                w, h = map(int, res_clean.split("x"))
-                return (w, h)
+        all_modes = progressive_modes.union(filtered_interlaced)
 
-            sorted_modes = sorted(all_modes, key=sort_key)
+        def sort_key(res):
+            res_clean = res.replace("i", "")
+            w, h = map(int, res_clean.split("x"))
+            return (w, h)
 
-            for mode in sorted_modes:
-                available_hdmi_modes.append({"value": mode, "title": mode})
+        sorted_modes = sorted(all_modes, key=sort_key)
+
+        for mode in sorted_modes:
+            available_hdmi_modes.append({"value": mode, "title": mode})
 
     return available_hdmi_modes
 
