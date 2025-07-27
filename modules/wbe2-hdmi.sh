@@ -60,11 +60,11 @@ hook_module_add() {
 
 hook_module_init() {
 	systemctl enable xinit.service
-	systemctl start xinit.service
+	systemctl start xinit.service &
 }
 
 hook_module_deinit() {
-	systemctl stop xinit.service
+	systemctl stop xinit.service &
 	systemctl disable xinit.service
 }
 
