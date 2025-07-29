@@ -289,7 +289,17 @@
             "Channel A{{i1}}": "Канал А{{i1}}",
             "Voltage, 0-2.5 V": "Напряжение 0-2.5В",
             "Voltage +/-50V": "Напряжение +/-50В",
-            "Current 0-20mA": "Ток 0-20мА"
+            "Current 0-20mA": "Ток 0-20мА",
+            "WBE2-HDMI module configuration": "WBE2-HDMI настройки модуля",
+            "WBE2-HDMI: HDMI interface": "WBE2-HDMI: интерфес HDMI",
+            "Screen resolution": "Разрешение экрана",
+            "Screen rotate": "Поворот экрана",
+            "AUTO from EDID": "Автоматически из EDID",
+            "Mouse cursor": "Курсор мыши",
+            "Hide": "Скрыт",
+            "Show": "Показан",
+            "Autoloaded URL from FireFox": "URL автоматически загружаемый в FireFox"
+
         }
     }
 }

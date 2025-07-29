@@ -10,7 +10,7 @@
  */
 
 / {
-    description = "WBE2-HDMI: HDMI output";
+    description = "WBE2-HDMI: HDMI interface";
     compatible-slots = "wbe2-hdmi";
 
     fragment@0 {

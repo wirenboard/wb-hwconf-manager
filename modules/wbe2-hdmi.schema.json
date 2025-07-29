@@ -5,7 +5,7 @@
     "properties": {
       "mode": {
         "type": "string",
-        "title": "Resolution",
+        "title": "Screen resolution",
         "minLength": 1,
         "watch": { "available_hdmi_modes": "available_hdmi_modes" },
         "enumSource": [
