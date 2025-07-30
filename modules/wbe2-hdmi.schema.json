@@ -1,0 +1,89 @@
+{
+  "module_wbe2-hdmi": {
+    "title": "WBE2-HDMI module configuration",
+    "type": "object",
+    "properties": {
+      "mode": {
+        "type": "string",
+        "title": "Screen resolution",
+        "minLength": 1,
+        "watch": { "available_hdmi_modes": "available_hdmi_modes" },
+        "enumSource": [
+          {
+            "source": [{ "title": "AUTO from EDID", "value": "auto" }],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          },
+          {
+            "source": "available_hdmi_modes",
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "auto",
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 1
+      },
+      "rotate": {
+        "type": "string",
+        "title": "Screen rotate",
+        "enumSource": [
+          {
+            "source": [
+              { "title": "0°", "value": "0" },
+              { "title": "90°", "value": "90" },
+              { "title": "180°", "value": "180" },
+              { "title": "270°", "value": "270" }
+            ],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "0",
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 2
+      },
+      "mouse": {
+        "type": "string",
+        "title": "Mouse cursor",
+        "enumSource": [
+          {
+            "source": [
+              { "title": "Hide", "value": "hide" },
+              { "title": "Show", "value": "show" }
+            ],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "hide",
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 2
+      },
+      "url": {
+        "type": "string",
+        "title": "Autoloaded URL from FireFox",
+        "minLength": 10,
+        "default": "http://localhost",
+        "format": "uri",
+        "propertyOrder": 3
+      }
+    },
+    "required": ["mode", "rotate", "url", "mouse"]
+  }
+}

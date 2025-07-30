@@ -1,0 +1,30 @@
+/*
+ * Copyright (c) 2025 Contactless Devices, LLC (Wiren Board)
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+    description = "WBE2-HDMI: HDMI interface";
+    compatible-slots = "wbe2-hdmi";
+
+    fragment@0 {
+        target = <&de>;
+        __overlay__ {
+            status = "okay";
+        };
+    };
+
+    fragment@1 {
+        target = <&hdmi>;
+        __overlay__ {
+            status = "okay";
+        };
+    };
+};
+
