@@ -267,8 +267,9 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
         dictionary with "value" and "title" keys.
     """
 
-    # Maximum resolution in pixels (1.3 megapixels = 1,300,000 pixels)
-    max_resolution_px = 1300000
+    # Maximum resolution in pixels
+    # (2.1 megapixels = 2,100,000 pixels for FullHD 1920x1080):
+    max_resolution_px = 2100000
 
     available_hdmi_modes = []
     hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"

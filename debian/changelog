@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.68.1) stable; urgency=medium
+
+  * Add FullHD resolutin for HDMI
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Mon, 11 Aug 2025 11:07:02 +0300
+
 wb-hwconf-manager (1.68.0) stable; urgency=medium
 
   * Add HDMI configuration support to hardware config
