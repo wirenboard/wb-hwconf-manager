@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.68.2) stable; urgency=medium
+
+  * modules/wbe2-hdmi.dtso: switch to dummy overlay; HDMI enabled statically
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Fri, 15 Aug 2025 09:57:40 +0300
+
 wb-hwconf-manager (1.68.1) stable; urgency=medium
 
   * Add FullHD resolutin for HDMI
