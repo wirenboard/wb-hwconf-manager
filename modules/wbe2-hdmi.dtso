@@ -14,16 +14,12 @@
     compatible-slots = "wbe2-hdmi";
 
     fragment@0 {
-        target = <&de>;
+        target-path = "/";
         __overlay__ {
-            status = "okay";
-        };
-    };
-
-    fragment@1 {
-        target = <&hdmi>;
-        __overlay__ {
-            status = "okay";
+            wb-overlay-meta {
+                status = "okay";
+                overlay-id = "wbe2-hdmi";
+            };
         };
     };
 };
