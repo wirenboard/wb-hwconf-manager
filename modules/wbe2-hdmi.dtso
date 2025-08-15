@@ -13,12 +13,14 @@
     description = "WBE2-HDMI: HDMI interface";
     compatible-slots = "wbe2-hdmi";
 
+    /* HDMI is enabled statically in the base DTS; this .dtso is a dummy overlay for UI metadata. */
+    /* The wb-overlay-meta node under "/" creates a non-empty changeset and prevents WARNs on overlay removal. */
     fragment@0 {
         target-path = "/";
         __overlay__ {
-            wb-overlay-meta {
+            wb-hdmi-overlay-dummy {
                 status = "okay";
-                overlay-id = "wbe2-hdmi";
+                overlay-id = "wbe2-hdmi-dummy";
             };
         };
     };
