@@ -8,7 +8,9 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
+import hdmi
+from typing import Dict, List, Optional
+import subprocess
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
@@ -206,16 +208,17 @@ def make_combined_config(config: dict, board_slots: dict, modules: List[dict]) -
 
 def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
     """
-    Compares two slot configurations to determine if they differ.
-
-    Args:
-        slot1 (dict): First slot configuration.
-        slot2 (dict): Second slot configuration.
-
-    Returns:
-        bool: True if configurations differ, False otherwise.
+    Compare two slot configurations, ignoring UI-only helper fields.
     """
-    return slot1.get("module") != slot2.get("module") or slot1.get("options") != slot2.get("options")
+
+    def clean_options(opts: dict) -> dict:
+        if not isinstance(opts, dict):
+            return {}
+        return {k: v for k, v in opts.items() if k not in {"available_hdmi_modes"}}
+
+    return slot1.get("module") != slot2.get("module") or clean_options(slot1.get("options")) != clean_options(
+        slot2.get("options")
+    )
 
 
 def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]) -> dict:
@@ -235,6 +238,9 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
     modules_by_id = {module["id"]: set(module.get("compatible_slots", [])) for module in modules}
 
     for config_slot in combined_config["slots"]:
+        # Map info-only HDMI UI pseudo-module back to real id
+        if config_slot.get("module") == "wbe2-hdmi-missing":
+            config_slot["module"] = "wbe2-hdmi"
         board_slot = id_to_slots_id.get(config_slot["id"])
         if board_slot is None:
             logging.warning("Slot %s is not supported by board", config_slot["id"])
@@ -248,71 +254,73 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                     "Module %s is not supported by slot %s", config_slot.get("module"), config_slot.get("id")
                 )
             else:
+                # Strip UI-only helper fields from options
+                filtered_options = {
+                    k: v for k, v in config_slot["options"].items() if k not in {"available_hdmi_modes"}
+                }
                 config[slot_id] = {
                     "module": config_slot["module"],
-                    "options": config_slot["options"],
+                    "options": filtered_options,
                 }
     return config
 
 
+def _parse_edid_dtd_block(block: bytes) -> List[Dict[str, int]]:
+    """Parse detailed timing descriptors (DTDs) from a 128-byte EDID block.
+
+    Returns a list of dicts with width, height, refresh, interlaced.
+    """
+    modes: List[Dict[str, int]] = []
+    # DTDs are 18-byte descriptors. For base block: 4 DTDs at 0x36..0x7D.
+    # For CTA extensions: DTDs start at offset given in byte 2.
+    for i in range(0, len(block) - 17, 18):
+        dtd = block[i : i + 18]
+        # Pixel clock in 10 kHz units, 0 means descriptor is not a timing (e.g., monitor range)
+        pclk = int.from_bytes(dtd[0:2], byteorder="little")
+        if pclk == 0:
+            continue
+        # Horizontal active/blanks
+        h_active_lo = dtd[2]
+        h_blank_lo = dtd[3]
+        h_hi = dtd[4]
+        v_active_lo = dtd[5]
+        v_blank_lo = dtd[6]
+        v_hi = dtd[7]
+
+        h_active = h_active_lo | ((h_hi & 0xF0) << 4)
+        h_blank = h_blank_lo | ((h_hi & 0x0F) << 8)
+        v_active = v_active_lo | ((v_hi & 0xF0) << 4)
+        v_blank = v_blank_lo | ((v_hi & 0x0F) << 8)
+
+        if h_active == 0 or v_active == 0:
+            continue
+
+        h_total = h_active + h_blank
+        v_total = v_active + v_blank
+        if h_total == 0 or v_total == 0:
+            continue
+
+        interlaced = 1 if (dtd[17] & 0x80) else 0
+        # Pixel clock is in 10 kHz
+        pixel_clock_hz = pclk * 10000
+        # EDID DTD gives field timings for interlaced modes; convert to frame timings
+        if interlaced:
+            v_active *= 2
+            v_total *= 2
+        # Use integer Hz, rounding typical video rates to nearest integer:
+        # 59.94 -> 60, 29.97 -> 30, 23.976 -> 24, 60.32 -> 60
+        refresh_f = pixel_clock_hz / (h_total * v_total)
+        refresh = round(refresh_f)
+        # For interlaced, commonly 59.94/60 field rate -> 30 fps; rounding above handles it
+        modes.append({"w": h_active, "h": v_active, "r": refresh, "i": interlaced})
+
+    return modes
+
+
+
 def get_hdmi_modes() -> List[Dict[str, str]]:
-    """
-    Reads available HDMI display modes from the system and returns a sorted list of supported resolutions.
-
-    Interlaced modes are filtered out if a progressive mode with the same resolution base exists.
-    The resulting list is sorted in ascending order by width and height.
-
-    Returns:
-        List[Dict[str, str]]: A list of available HDMI modes, where each mode is represented as a
-        dictionary with "value" and "title" keys.
-    """
-
-    # Maximum resolution in pixels
-    # (2.1 megapixels = 2,100,000 pixels for FullHD 1920x1080):
-    max_resolution_px = 2100000
-
-    available_hdmi_modes = []
-    hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
-    if not os.path.exists(hdmi_modes_path):
-        return available_hdmi_modes
-
-    with open(hdmi_modes_path, "r", encoding="utf-8") as f:
-        progressive_modes = set()
-        interlaced_modes = set()
-
-        for line in f:
-            mode = line.strip()
-            if not mode:
-                continue
-
-            # Extract width and height
-            res_clean = mode.replace("i", "")
-            w, h = map(int, res_clean.split("x"))
-
-            if w * h > max_resolution_px:
-                continue  # Skip this mode if it's too large
-
-            if mode.endswith("i"):
-                interlaced_modes.add(mode)
-            else:
-                progressive_modes.add(mode)
-
-        # remove interlaced if there is a progressive with the same base:
-        filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
-
-        all_modes = progressive_modes.union(filtered_interlaced)
-
-        def sort_key(res):
-            res_clean = res.replace("i", "")
-            w, h = map(int, res_clean.split("x"))
-            return (w, h)
-
-        sorted_modes = sorted(all_modes, key=sort_key)
-
-        for mode in sorted_modes:
-            available_hdmi_modes.append({"value": mode, "title": mode})
-
-    return available_hdmi_modes
+    """Delegate to hdmi.get_hdmi_modes() for EDID-based mode discovery."""
+    return hdmi.get_hdmi_modes()
 
 
 def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
@@ -336,8 +344,30 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
 
     config = make_combined_config(config, board_slots, modules)
 
+    # Provide HDMI modes at the root for UI consumption (schema hides it)
     if "wbe2-hdmi" in {slot.get("module") for slot in config["slots"]}:
-        config["available_hdmi_modes"] = get_hdmi_modes()
+        def _pkg_installed(name: str) -> bool:
+            try:
+                out = subprocess.check_output(["dpkg-query", "-W", "-f=${Status}", name], text=True)
+                return "install ok installed" in out
+            except Exception:
+                return False
+
+        if not _pkg_installed("wb-hdmi"):
+            # Replace the HDMI module UI with info-only schema by remapping the module id
+            for slot in config["slots"]:
+                if slot.get("module") == "wbe2-hdmi":
+                    slot["module"] = "wbe2-hdmi-missing"
+                    slot["options"] = {}
+            # Also expose a single message in case any UI watches available_hdmi_modes
+            msg = (
+                "Для корректной работы модуля, "
+                "пожалуйста установите пакет wb-hdmi: apt install wb-hdmi"
+            )
+            config["available_hdmi_modes"] = [{"value": "", "title": msg}]
+            config["wb_hdmi_missing"] = True
+        else:
+            config["available_hdmi_modes"] = get_hdmi_modes()
 
     config["modules"] = modules
     return config
@@ -491,8 +521,15 @@ def main(args=None):
             )
         )
         return
-
+    
     parser.print_usage()
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

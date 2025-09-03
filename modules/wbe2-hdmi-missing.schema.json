@@ -1,0 +1,17 @@
+{
+  "module_wbe2-hdmi-missing": {
+    "title": "WBE2-HDMI module configuration",
+    "type": "object",
+    "properties": {
+      "notice": {
+        "type": "string",
+        "title": "",
+        "default": "Для корректной работы модуля и продолжения его настройки, пожалуйста установите пакет wb-hdmi: apt install wb-hdmi",
+        "readOnly": true,
+        "options": { "inputAttributes": { "readonly": true } },
+        "propertyOrder": 1
+      }
+    },
+    "required": []
+  }
+}
