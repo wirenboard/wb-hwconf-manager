@@ -1,6 +1,6 @@
 source "$DATADIR/modules/utils.sh"
 
-GPIO_USB_POWER=$(gpiofind "GSM ON" 2>/dev/null | awk '{print $2}') || GPIO_USB_POWER=132
+GPIO_USB_POWER=$(gpioinfo "GSM ON" 2>/dev/null | awk '{print $2}') || GPIO_USB_POWER=132
 
 hook_module_init() {
     systemctl stop wb-gsm || true
