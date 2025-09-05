@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.68.3) stable; urgency=medium
+
+  * HDMI: Increase supported resolution limit to 4K and frequency selection
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Fri, 05 Sep 2025 10:51:07 +0300
+
 wb-hwconf-manager (1.68.2) stable; urgency=medium
 
   * modules/wbe2-hdmi.dtso: switch to dummy overlay; HDMI enabled statically
