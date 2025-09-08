@@ -113,7 +113,7 @@ def _cvt_modeline(res: str, refresh: str) -> str:
     for line in out.splitlines():
         line = line.strip()
         if line.startswith("Modeline "):
-            return line[len("Modeline "):]
+            return line[len("Modeline ") :]
     return ""
 
 
@@ -159,7 +159,7 @@ def _parse_xrandr_modes(output_name: str = "HDMI-1") -> Dict[str, List[str]]:
             rt = tok.strip()
             if "x" in rt:
                 break
-            while rt and (not (rt[-1].isdigit() or rt[-1] == '.')):
+            while rt and (not (rt[-1].isdigit() or rt[-1] == ".")):
                 rt = rt[:-1]
             if not rt or not (rt[0].isdigit()):
                 continue
@@ -202,6 +202,7 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
 
     # xrandr resolutions (no rates), sorted desc
     xr = _parse_xrandr_modes("HDMI-1")
+
     def res_key(res: str) -> Tuple[int, int]:
         try:
             w, h = map(int, res.split("x"))
@@ -223,11 +224,20 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
             continue
         name = f"{m['res']}-{m['refresh']}"
         if name not in grouped:
-            grouped[name] = {"w": w, "h": h, "r": float(m["refresh"]), "edids": [], "res": m["res"], "refresh": str(m["refresh"]) }
-        grouped[name]["edids"].append({
-            "payload": _modeline_from_mode(m),
-            "pclk_khz": int(m["pclk_khz"]),
-        })
+            grouped[name] = {
+                "w": w,
+                "h": h,
+                "r": float(m["refresh"]),
+                "edids": [],
+                "res": m["res"],
+                "refresh": str(m["refresh"]),
+            }
+        grouped[name]["edids"].append(
+            {
+                "payload": _modeline_from_mode(m),
+                "pclk_khz": int(m["pclk_khz"]),
+            }
+        )
 
     detail: List[Dict[str, object]] = []
     for name, info in grouped.items():
@@ -240,17 +250,19 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
             edid_payload = e["payload"]
             edid_tail = _strip_name_from_modeline_payload(edid_payload)
             edid_tails.add(edid_tail)
-            edid_mhz_str = f"{(e['pclk_khz']/1000.0):.2f}".rstrip('0').rstrip('.')
-            detail.append({
-                "kind": "edid",
-                "value": f"{name}|EDID:{e['pclk_khz']}",
-                "title": f"{name} (EDID - {edid_mhz_str}Mhz)",
-                "payload": edid_payload,
-                "name": name,
-                "w": w,
-                "h": h,
-                "r": rr,
-            })
+            edid_mhz_str = f"{(e['pclk_khz']/1000.0):.2f}".rstrip("0").rstrip(".")
+            detail.append(
+                {
+                    "kind": "edid",
+                    "value": f"{name}|EDID:{e['pclk_khz']}",
+                    "title": f"{name} (EDID - {edid_mhz_str}Mhz)",
+                    "payload": edid_payload,
+                    "name": name,
+                    "w": w,
+                    "h": h,
+                    "r": rr,
+                }
+            )
         # One CVT per name, if unique vs EDID tails
         cvt_tail = _strip_name_from_modeline_payload(_cvt_modeline(info["res"], info["refresh"]))
         if cvt_tail and cvt_tail not in edid_tails:
@@ -259,16 +271,18 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
                 cvt_khz = int(round(float(cvt_pclk_mhz) * 1000))
             except Exception:
                 cvt_khz = 0
-            detail.append({
-                "kind": "cvt",
-                "value": f"{name}|CVT:{cvt_khz}",
-                "title": f"{name} (VESA CVT - {cvt_pclk_mhz}Mhz)",
-                "payload": f'"{name}" {cvt_tail}',
-                "name": name,
-                "w": w,
-                "h": h,
-                "r": rr,
-            })
+            detail.append(
+                {
+                    "kind": "cvt",
+                    "value": f"{name}|CVT:{cvt_khz}",
+                    "title": f"{name} (VESA CVT - {cvt_pclk_mhz}Mhz)",
+                    "payload": f'"{name}" {cvt_tail}',
+                    "name": name,
+                    "w": w,
+                    "h": h,
+                    "r": rr,
+                }
+            )
     detail.sort(key=lambda e: (e["w"], e["h"], e["r"]), reverse=True)
     entries.extend(detail)
     return entries
@@ -281,12 +295,30 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
     unique values (value suffix encodes the timing source and pixel clock).
     Auto entry is intentionally excluded; the schema supplies it.
     """
-    entries = _build_grouped_entries()
+    installed = False
+    try:
+        out = subprocess.check_output(["dpkg-query", "-W", "-f=${Status}", "wb-hdmi"], text=True)
+        installed = "install ok installed" in out
+    except subprocess.CalledProcessError:
+        # dpkg-query returned a non-zero exit status (package not found, etc.)
+        installed = False
+    except FileNotFoundError:
+        # The dpkg-query utility is not available on this system
+        installed = False
+
     out: List[Dict[str, str]] = []
-    for e in entries:
-        if e.get("kind") == "auto":
-            continue
-        out.append({"value": str(e["value"]), "title": str(e["title"])})
+
+    if installed:
+        entries = _build_grouped_entries()
+        for e in entries:
+            if e.get("kind") == "auto":
+                continue
+            out.append({"value": str(e["value"]), "title": str(e["title"])})
+    else:
+        # Expose a single message in case any UI watches available_hdmi_modes
+        msg = "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi: apt install wb-hdmi"
+        out.append({"value": "auto", "title": msg})
+
     return out
 
 

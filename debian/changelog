@@ -1,4 +1,4 @@
-wb-hwconf-manager (1.68.3) stable; urgency=medium
+wb-hwconf-manager (1.69.0) stable; urgency=medium
 
   * HDMI: Increase supported resolution limit to 4K and frequency selection
 
