@@ -2,7 +2,6 @@ import importlib
 import sys
 from typing import List
 
-
 XRANDR_SAMPLE = """
 HDMI-1 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 160mm x 90mm
    3840x2160     60.00*+ 50.00 30.00
