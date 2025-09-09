@@ -378,7 +378,7 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
 
     Includes XRANDR resolutions (no rate) and detailed >2K EDID/CVT entries with
     unique values (value suffix encodes the timing source and pixel clock).
-    Auto entry is intentionally excluded; the schema supplies it.
+    May include the Auto entry depending on upstream grouping logic.
     """
     installed = False
     try:
