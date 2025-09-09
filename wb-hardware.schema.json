@@ -311,7 +311,8 @@
             "Mouse cursor": "Курсор мыши",
             "Hide": "Скрыт",
             "Show": "Показан",
-            "Autoloaded URL from FireFox": "URL автоматически загружаемый в FireFox"
+            "Autoloaded URL from FireFox": "URL автоматически загружаемый в FireFox",
+            "To use the graphical interface, you need to install the wb-hdmi package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi: apt install wb-hdmi"
 
         }
     }
