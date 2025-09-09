@@ -280,8 +280,7 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
     config = make_combined_config(config, board_slots, modules)
 
     # Provide HDMI modes at the root for UI consumption (schema hides it)
-    if "wbe2-hdmi" in {slot.get("module") for slot in config["slots"]}:
-        config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
+    config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
 
     config["modules"] = modules
     return config
