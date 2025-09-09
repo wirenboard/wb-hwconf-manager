@@ -141,8 +141,8 @@ def merge_config_and_slots(config: dict, board_slots: dict) -> dict:
     for slot in board_slots["slots"]:
         slot_config = config.get(slot["slot_id"])
         if slot_config:
-            slot["module"] = slot_config["module"]
-            slot["options"] = slot_config["options"]
+            slot["module"] = slot_config.get("module", "")
+            slot["options"] = slot_config.get("options", {})
             merged_config_slots.append(slot["slot_id"])
         del slot["slot_id"]
     for slot_id in config.keys():
@@ -252,8 +252,8 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                 )
             else:
                 config[slot_id] = {
-                    "module": config_slot["module"],
-                    "options": config_slot["options"],
+                    "module": config_slot.get("module", ""),
+                    "options": config_slot.get("options", {}),
                 }
     return config
 
