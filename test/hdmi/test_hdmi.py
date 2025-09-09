@@ -25,6 +25,7 @@ index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot)
 
 def test_parse_xrandr_modes_basic(monkeypatch):
     """Parses xrandr --query output into a resolution->rates mapping."""
+
     def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
         if args[:2] == ["xrandr", "--query"]:
             return XRANDR_SAMPLE
@@ -40,6 +41,7 @@ def test_parse_xrandr_modes_basic(monkeypatch):
 
 def test_parse_xrandr_modes_fallback_to_modetest(monkeypatch):
     """Falls back to EDID-derived resolutions when xrandr is unavailable."""
+
     def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
         if args[:2] == ["xrandr", "--query"]:
             raise FileNotFoundError
@@ -90,10 +92,7 @@ def test_main_listing_format(monkeypatch, capsys):
     assert not any(line.startswith("2)") or line.startswith("3)") for line in out)
     # Next lines are a flat sequence of titles from entries
     assert any("1920x1080" in line for line in out)
-    assert any(
-        ("3840x2160-60.00 (EDID" in line) or ("VESA CVT" in line)
-        for line in out
-    )
+    assert any(("3840x2160-60.00 (EDID" in line) or ("VESA CVT" in line) for line in out)
 
 
 def test_apply_by_index_xrandr(monkeypatch):
@@ -122,8 +121,7 @@ def test_apply_by_index_xrandr(monkeypatch):
     assert rc == 0
     # Should invoke xrandr --mode for the resolution
     assert any(
-        cmd[:3] == ["xrandr", "--output", "HDMI-1"] and cmd[3:5] == ["--mode", "1920x1080"]
-        for cmd in calls
+        cmd[:3] == ["xrandr", "--output", "HDMI-1"] and cmd[3:5] == ["--mode", "1920x1080"] for cmd in calls
     )
 
 
@@ -388,7 +386,9 @@ def test_build_grouped_entries_aggregates(monkeypatch):
         "_parse_xrandr_modes",
         lambda _o: {"1920x1080": ["60.00"], "3840x2160": ["60.00"]},
     )  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi, "_parse_modetest_modes", lambda: modetest_modes)  # pylint: disable=protected-access
+    monkeypatch.setattr(
+        hdmi, "_parse_modetest_modes", lambda: modetest_modes
+    )  # pylint: disable=protected-access
     # Ensure CVT is unique so it is added
     monkeypatch.setattr(
         hdmi,
