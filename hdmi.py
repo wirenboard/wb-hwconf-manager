@@ -330,7 +330,7 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
             {
                 "kind": "auto",
                 "value": "auto",
-                "title": "Auto from EDID",
+                "title": "AUTO from EDID",
                 "name": f"{preferred['res']}-{preferred['refresh']}",
                 "payload": _modeline_from_mode(preferred),
             }
@@ -340,7 +340,7 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
             {
                 "kind": "auto",
                 "value": "auto",
-                "title": "Auto from EDID",
+                "title": "AUTO from EDID",
                 "name": "",
                 "payload": "",
             }
@@ -392,12 +392,10 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
     if installed:
         entries = _build_grouped_entries()
         for e in entries:
-            if e.get("kind") == "auto":
-                continue
             out.append({"value": str(e["value"]), "title": str(e["title"])})
     else:
         # Expose a single message in case any UI watches available_hdmi_modes
-        msg = "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi: apt install wb-hdmi"
+        msg = "To use the graphical interface, you need to install the wb-hdmi package: apt install wb-hdmi"
         out.append({"value": "auto", "title": msg})
 
     return out
