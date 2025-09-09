@@ -3,7 +3,7 @@ import os
 import re
 import subprocess
 import sys
-from typing import List, Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 
 def _run_modetest() -> str:
