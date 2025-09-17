@@ -8,7 +8,9 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import List
+
+import hdmi
 
 MODULES_DIR = "/usr/share/wb-hwconf-manager/modules"
 CONFIG_PATH = "/etc/wb-hardware.conf"
@@ -139,8 +141,8 @@ def merge_config_and_slots(config: dict, board_slots: dict) -> dict:
     for slot in board_slots["slots"]:
         slot_config = config.get(slot["slot_id"])
         if slot_config:
-            slot["module"] = slot_config["module"]
-            slot["options"] = slot_config["options"]
+            slot["module"] = slot_config.get("module", "")
+            slot["options"] = slot_config.get("options", {})
             merged_config_slots.append(slot["slot_id"])
         del slot["slot_id"]
     for slot_id in config.keys():
@@ -215,6 +217,7 @@ def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
     Returns:
         bool: True if configurations differ, False otherwise.
     """
+
     return slot1.get("module") != slot2.get("module") or slot1.get("options") != slot2.get("options")
 
 
@@ -249,70 +252,10 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                 )
             else:
                 config[slot_id] = {
-                    "module": config_slot["module"],
-                    "options": config_slot["options"],
+                    "module": config_slot.get("module", ""),
+                    "options": config_slot.get("options", {}),
                 }
     return config
-
-
-def get_hdmi_modes() -> List[Dict[str, str]]:
-    """
-    Reads available HDMI display modes from the system and returns a sorted list of supported resolutions.
-
-    Interlaced modes are filtered out if a progressive mode with the same resolution base exists.
-    The resulting list is sorted in ascending order by width and height.
-
-    Returns:
-        List[Dict[str, str]]: A list of available HDMI modes, where each mode is represented as a
-        dictionary with "value" and "title" keys.
-    """
-
-    # Maximum resolution in pixels
-    # (2.1 megapixels = 2,100,000 pixels for FullHD 1920x1080):
-    max_resolution_px = 2100000
-
-    available_hdmi_modes = []
-    hdmi_modes_path = "/sys/class/drm/card0-HDMI-A-1/modes"
-    if not os.path.exists(hdmi_modes_path):
-        return available_hdmi_modes
-
-    with open(hdmi_modes_path, "r", encoding="utf-8") as f:
-        progressive_modes = set()
-        interlaced_modes = set()
-
-        for line in f:
-            mode = line.strip()
-            if not mode:
-                continue
-
-            # Extract width and height
-            res_clean = mode.replace("i", "")
-            w, h = map(int, res_clean.split("x"))
-
-            if w * h > max_resolution_px:
-                continue  # Skip this mode if it's too large
-
-            if mode.endswith("i"):
-                interlaced_modes.add(mode)
-            else:
-                progressive_modes.add(mode)
-
-        # remove interlaced if there is a progressive with the same base:
-        filtered_interlaced = {m for m in interlaced_modes if m[:-1] not in progressive_modes}
-
-        all_modes = progressive_modes.union(filtered_interlaced)
-
-        def sort_key(res):
-            res_clean = res.replace("i", "")
-            w, h = map(int, res_clean.split("x"))
-            return (w, h)
-
-        sorted_modes = sorted(all_modes, key=sort_key)
-
-        for mode in sorted_modes:
-            available_hdmi_modes.append({"value": mode, "title": mode})
-
-    return available_hdmi_modes
 
 
 def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_config_path: str) -> dict:
@@ -336,8 +279,9 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
 
     config = make_combined_config(config, board_slots, modules)
 
+    # Provide HDMI modes only when HDMI module is present
     if "wbe2-hdmi" in {slot.get("module") for slot in config["slots"]}:
-        config["available_hdmi_modes"] = get_hdmi_modes()
+        config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
 
     config["modules"] = modules
     return config

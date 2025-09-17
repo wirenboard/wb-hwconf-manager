@@ -10,11 +10,6 @@
         "watch": { "available_hdmi_modes": "available_hdmi_modes" },
         "enumSource": [
           {
-            "source": [{ "title": "AUTO from EDID", "value": "auto" }],
-            "title": "{{item.title}}",
-            "value": "{{item.value}}"
-          },
-          {
             "source": "available_hdmi_modes",
             "title": "{{item.title}}",
             "value": "{{item.value}}"
