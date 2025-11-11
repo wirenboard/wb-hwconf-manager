@@ -1,3 +1,12 @@
+wb-hwconf-manager (1.70.0) stable; urgency=medium
+
+  * HDMI:
+    - add display connected monitor info in confed UI
+    - add Firefox launch mode option
+    - add volume control for HDMI audio
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Tue, 11 Nov 2025 14:36:15 +0300
+
 wb-hwconf-manager (1.69.0) stable; urgency=medium
 
   * HDMI: Increase supported resolution limit to 4K and frequency selection
