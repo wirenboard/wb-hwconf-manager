@@ -105,6 +105,86 @@ def _parse_modetest_modes() -> List[Dict[str, object]]:
     return modes
 
 
+def _clean_monitor_field(text: str) -> str:
+    """Trim whitespace/quotes from EDID-decoded strings."""
+    return text.replace("'", "").strip()
+
+
+def _read_monitor_name(edid_path: str = "/sys/class/drm/card0-HDMI-A-1/edid") -> str:
+    """Return monitor name parsed from EDID via edid-decode."""
+    if not os.path.exists(edid_path):
+        return ""
+    try:
+        out = subprocess.check_output(["edid-decode", edid_path], text=True, stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return ""
+
+    name = ""
+    manufacturer = ""
+    model = ""
+
+    for raw_line in out.splitlines():
+        line = raw_line.strip()
+        if line.startswith("Display Product Name:"):
+            _, _, value = line.partition(":")
+            candidate = _clean_monitor_field(value)
+            if candidate:
+                name = candidate
+                break
+        if line.startswith("Monitor name:") and not name:
+            _, _, value = line.partition(":")
+            candidate = _clean_monitor_field(value)
+            if candidate:
+                name = candidate
+        if line.startswith("Manufacturer:"):
+            _, _, value = line.partition(":")
+            manufacturer = _clean_monitor_field(value)
+        if line.startswith("Model:"):
+            _, _, value = line.partition(":")
+            model = _clean_monitor_field(value)
+
+    if name:
+        return name
+
+    fallback = f"{manufacturer} {model}".strip()
+    return fallback
+
+
+def _max_resolution_from_modes(modes: List[Dict[str, object]]) -> str:
+    """Return resolution string with the largest pixel area (ties resolved by refresh)."""
+    best_res = ""
+    best_pixels = -1
+
+    for mode in modes:
+        res = str(mode.get("res", ""))
+        if "x" not in res:
+            continue
+        try:
+            width_str, height_str = res.split("x")
+            width = int(width_str)
+            height = int(height_str)
+        except (ValueError, TypeError):
+            continue
+        pixels = width * height
+        if pixels > best_pixels:
+            best_pixels = pixels
+            best_res = res
+
+    return best_res
+
+
+def get_monitor_info() -> Dict[str, str]:
+    """Return basic info about the connected monitor for display in the UI."""
+    modes = _parse_modetest_modes()
+    max_res = _max_resolution_from_modes(modes)
+    name = _read_monitor_name()
+
+    if name:
+        return f"{name} (max: {max_res})"
+
+    return "No monitor detected"
+
+
 def _cvt_modeline(res: str, refresh: str) -> str:
     """Generate a VESA CVT Modeline for given resolution and refresh via `cvt`.
 

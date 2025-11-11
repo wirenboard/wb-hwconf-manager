@@ -3,6 +3,13 @@
     "title": "WBE2-HDMI module configuration",
     "type": "object",
     "properties": {
+      "monitor_info": {
+        "type": "string",
+        "title": "Connected monitor",
+        "default": "",
+        "readOnly": true,
+        "propertyOrder": 1
+      },
       "mode": {
         "type": "string",
         "title": "Screen resolution",
@@ -22,7 +29,7 @@
           "disable_array_delete": true,
           "disable_array_reorder": true
         },
-        "propertyOrder": 1
+        "propertyOrder": 2
       },
       "rotate": {
         "type": "string",
@@ -46,7 +53,7 @@
           "disable_array_delete": true,
           "disable_array_reorder": true
         },
-        "propertyOrder": 2
+        "propertyOrder": 3
       },
       "mouse": {
         "type": "string",
@@ -68,7 +75,7 @@
           "disable_array_delete": true,
           "disable_array_reorder": true
         },
-        "propertyOrder": 2
+        "propertyOrder": 4
       },
       "volume": {
         "type": "integer",
@@ -117,7 +124,7 @@
         "minLength": 10,
         "default": "http://localhost",
         "format": "uri",
-        "propertyOrder": 4
+        "propertyOrder": 5
       },
       "ff_mode": {
         "type": "string",
@@ -139,7 +146,7 @@
           "disable_array_delete": true,
           "disable_array_reorder": true
         },
-        "propertyOrder": 5
+        "propertyOrder": 6
       }
     },
     "required": ["mode", "rotate", "url", "mouse", "volume", "ff_mode"]
