@@ -307,6 +307,7 @@
             "WBE2-HDMI: HDMI interface": "WBE2-HDMI: интерфейс HDMI",
             "Screen resolution": "Разрешение экрана",
             "Screen rotate": "Поворот экрана",
+            "Audio volume": "Громкость аудио",
             "AUTO from EDID": "Автоматически из EDID",
             "Mouse cursor": "Курсор мыши",
             "Hide": "Скрыт",
