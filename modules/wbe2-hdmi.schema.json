@@ -118,8 +118,30 @@
         "default": "http://localhost",
         "format": "uri",
         "propertyOrder": 4
+      },
+      "ff_mode": {
+        "type": "string",
+        "title": "Browser launch mode",
+        "enumSource": [
+          {
+            "source": [
+              { "title": "Kiosk mode", "value": "kiosk" },
+              { "title": "Window mode", "value": "window" }
+            ],
+            "title": "{{item.title}}",
+            "value": "{{item.value}}"
+          }
+        ],
+        "default": "kiosk",
+        "options": {
+          "disable_collapse": true,
+          "disable_array_add": true,
+          "disable_array_delete": true,
+          "disable_array_reorder": true
+        },
+        "propertyOrder": 5
       }
     },
-    "required": ["mode", "rotate", "url", "mouse", "volume"]
+    "required": ["mode", "rotate", "url", "mouse", "volume", "ff_mode"]
   }
 }
