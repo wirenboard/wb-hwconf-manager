@@ -448,3 +448,62 @@ def test_build_grouped_entries_no_tools(monkeypatch):
 
 
 # test_get_hdmi_modes_installed_only_auto was removed: Auto may be present in UI list
+
+
+def test_clean_monitor_field():
+    hdmi = importlib.import_module("hdmi")
+    assert hdmi._clean_monitor_field("  'Panel 123'  ") == "Panel 123"  # pylint: disable=protected-access
+
+
+def test_read_monitor_name_prefers_display_product_name(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    edid_output = """
+Display Product Name: 'Preferred Name'
+Monitor name: 'Fallback'
+Manufacturer: 'ACM'
+Model: '1234'
+""".strip()
+
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: True)
+    monkeypatch.setattr(hdmi.subprocess, "check_output", lambda *a, **k: edid_output)
+
+    name = hdmi._read_monitor_name("/tmp/edid")  # pylint: disable=protected-access
+    assert name == "Preferred Name"
+
+
+def test_read_monitor_name_fallback_to_vendor(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    edid_output = """
+Manufacturer: 'ACME'
+Model: 'ZX-1'
+"""
+
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: True)
+    monkeypatch.setattr(hdmi.subprocess, "check_output", lambda *a, **k: edid_output)
+
+    name = hdmi._read_monitor_name("/tmp/edid")  # pylint: disable=protected-access
+    assert name == "ACME ZX-1"
+
+
+def test_max_resolution_from_modes():
+    hdmi = importlib.import_module("hdmi")
+    modes = [{"res": "1280x720"}, {"res": "3840x2160"}, {"res": "1920x1080"}]
+    assert hdmi._max_resolution_from_modes(modes) == "3840x2160"  # pylint: disable=protected-access
+
+
+def test_get_monitor_info(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi, "_parse_modetest_modes", lambda: [{"res": "3840x2160"}])  # pylint: disable=protected-access
+    monkeypatch.setattr(hdmi, "_read_monitor_name", lambda _p=None: "Demo Panel")  # pylint: disable=protected-access
+
+    info = hdmi.get_monitor_info()
+    assert info == "Demo Panel (max: 3840x2160)"
+
+
+def test_get_monitor_info_no_monitor(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi, "_parse_modetest_modes", lambda: [])  # pylint: disable=protected-access
+    monkeypatch.setattr(hdmi, "_read_monitor_name", lambda _p=None: "")  # pylint: disable=protected-access
+
+    info = hdmi.get_monitor_info()
+    assert info == "No monitor detected"
