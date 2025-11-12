@@ -507,3 +507,27 @@ def test_get_monitor_info_no_monitor(monkeypatch):
 
     info = hdmi.get_monitor_info()
     assert info == "No monitor detected"
+
+
+def test_read_monitor_name_missing_file(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: False)
+
+    assert hdmi._read_monitor_name("/does/not/exist") == ""  # pylint: disable=protected-access
+
+
+def test_read_monitor_name_decode_failure(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: True)
+
+    def fake_decode(*_a, **_k):
+        raise FileNotFoundError
+
+    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_decode)
+    assert hdmi._read_monitor_name("/tmp/edid") == ""  # pylint: disable=protected-access
+
+
+def test_max_resolution_handles_invalid_entries():
+    hdmi = importlib.import_module("hdmi")
+    modes = [{"res": "bad"}, {"res": "640xa"}, {}]
+    assert hdmi._max_resolution_from_modes(modes) == ""  # pylint: disable=protected-access
