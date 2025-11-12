@@ -78,7 +78,10 @@ def test_to_confed_adds_monitor_info(monkeypatch, tmp_path):
 def test_to_confed_preserves_existing_options(monkeypatch, tmp_path):
     """Existing options should remain while monitor info is appended."""
     config_path = tmp_path / "hdmi-config.json"
-    config_path.write_text(json.dumps({"mod4": {"module": "wbe2-hdmi", "options": {"url": "http://"}}}), encoding="utf-8")
+    config_path.write_text(
+        json.dumps({"mod4": {"module": "wbe2-hdmi", "options": {"url": "http://"}}}),
+        encoding="utf-8",
+    )
 
     monkeypatch.setattr(config_module.hdmi, "get_hdmi_modes", lambda: [{"value": "auto"}])
     monkeypatch.setattr(config_module.hdmi, "get_monitor_info", lambda: "Panel")
@@ -92,7 +95,10 @@ def test_to_confed_preserves_existing_options(monkeypatch, tmp_path):
 def test_to_confed_without_hdmi_does_not_add_modes(tmp_path):
     """Ensure available_hdmi_modes key absent when module missing."""
     config_path = tmp_path / "no-hdmi.json"
-    config_path.write_text(json.dumps({"mod1": {"module": "wbe2-ao-10v-2", "options": {}}}), encoding="utf-8")
+    config_path.write_text(
+        json.dumps({"mod1": {"module": "wbe2-ao-10v-2", "options": {}}}),
+        encoding="utf-8",
+    )
 
     result = to_confed(str(config_path), WB85_BOARD_PATH, MODULES_DIR_REAL, "")
     assert "available_hdmi_modes" not in result

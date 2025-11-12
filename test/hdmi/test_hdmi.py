@@ -493,8 +493,12 @@ def test_max_resolution_from_modes():
 
 def test_get_monitor_info(monkeypatch):
     hdmi = importlib.import_module("hdmi")
-    monkeypatch.setattr(hdmi, "_parse_modetest_modes", lambda: [{"res": "3840x2160"}])  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi, "_read_monitor_name", lambda _p=None: "Demo Panel")  # pylint: disable=protected-access
+    monkeypatch.setattr(
+        hdmi, "_parse_modetest_modes", lambda: [{"res": "3840x2160"}]
+    )  # pylint: disable=protected-access
+    monkeypatch.setattr(
+        hdmi, "_read_monitor_name", lambda _p=None: "Demo Panel"
+    )  # pylint: disable=protected-access
 
     info = hdmi.get_monitor_info()
     assert info == "Demo Panel (max: 3840x2160)"
