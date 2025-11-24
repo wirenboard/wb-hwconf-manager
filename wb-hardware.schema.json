@@ -190,11 +190,11 @@
     "options": {
         "disable_collapse": true
     },
-    "translations": {
-        "ru": {
-            "Hardware Modules Configuration": "Модули расширения и порты",
-            "List of extension slots": "Список слотов расширения",
-            "Module type": "Тип модуля",
+        "translations": {
+            "ru": {
+                "Hardware Modules Configuration": "Модули расширения и порты",
+                "List of extension slots": "Список слотов расширения",
+                "Module type": "Тип модуля",
             "Type of the module plugged to the slot": "Тип модуля, установленного в слоте",
             "None": "Не установлен",
             "Internal slot 1": "Внутренний слот 1",
@@ -305,13 +305,19 @@
             "Current 0-20mA": "Ток 0-20мА",
             "WBE2-HDMI module configuration": "WBE2-HDMI настройки модуля",
             "WBE2-HDMI: HDMI interface": "WBE2-HDMI: интерфейс HDMI",
+            "Connected monitor": "Подключенный монитор",
+            "No monitor detected": "Монитор не обнаружен",
             "Screen resolution": "Разрешение экрана",
             "Screen rotate": "Поворот экрана",
+            "Audio volume": "Громкость аудио",
             "AUTO from EDID": "Автоматически из EDID",
             "Mouse cursor": "Курсор мыши",
             "Hide": "Скрыт",
             "Show": "Показан",
             "Autoloaded URL from FireFox": "URL автоматически загружаемый в FireFox",
+            "Browser launch mode": "Режим запуска браузера",
+            "Kiosk mode": "Режим киоска",
+            "Window mode": "Оконный режим",
             "To use the graphical interface, you need to install the wb-hdmi package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi: apt install wb-hdmi"
 
         }
