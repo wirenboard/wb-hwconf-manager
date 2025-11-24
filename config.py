@@ -284,8 +284,7 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
         config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
         slot_with_hdmi = next((slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"), None)
         if slot_with_hdmi is not None:
-            slot_with_hdmi.setdefault("options", {})
-            slot_with_hdmi["options"]["monitor_info"] = hdmi.get_monitor_info()
+            slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
 
     config["modules"] = modules
     return config
