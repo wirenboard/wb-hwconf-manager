@@ -1,0 +1,30 @@
+{
+	"module_wb8-can": {
+		"type": "object",
+		"properties": {
+			"terminatorsMode": {
+				"title": "120 Ohm termination resistor",
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
+				],
+				"default": "disabled",
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				}
+			}
+		},
+		"required": [
+			"terminatorsMode"
+		],
+		"options": {
+			"wb": {
+				"disable_title": true
+			}
+		}
+	}
+}
