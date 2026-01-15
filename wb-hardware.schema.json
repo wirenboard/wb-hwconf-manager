@@ -268,6 +268,7 @@
             "WBE2-I-OPENTHERM: OpenTherm Boiler Interface": "WBE2-I-OPENTHERM: интерфейс OpenTherm для котлов",
             "WBE2-I-RS232: RS-232 interface module": "WBE2-I-RS232: модуль с интерфейсом RS-232",
             "WBE2-I-RS485-ISO: Isolated RS-485 interface module": "WBE2-I-RS485-ISO: модуль с изолированным интерфейсом RS-485",
+            "WBE2-I-CAN-ISO: Isolated CAN interface module": "WBE2-I-CAN-ISO: модуль с изолированным CAN интерфейсом",
             "WBE2-I-UARTCAN-ISO: Isolated UART-CAN interface module": "WBE2-I-UARTCAN-ISO: модуль с изолированным интерфейсом UART-CAN",
             "WBE2-I-1WIRE v4.0: 1-Wire bus master": "WBE2-I-1WIRE v4.0: мастер шины 1-Wire",
             "WBE2-I-1WIRE: 1-Wire bus master": "WBE2-I-1WIRE: мастер шины 1-Wire",

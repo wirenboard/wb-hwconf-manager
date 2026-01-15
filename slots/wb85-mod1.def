@@ -12,6 +12,6 @@
 
 #define SLOT_UART_ALIAS  &wbec_uart_mod1
 
+#include "t507-soc.h"  // include before wbe2.h: WBEC pins use 1-arg form; FROM_SHELL expansion in allwinner-soc.h expects 2 args
 #include "wbe2.h"
-#include "t507-soc.h"  // should be included after SLOT_ALL_PINS is defined
 #include "wbec-wbe-gpio.h"

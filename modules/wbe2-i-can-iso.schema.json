@@ -1,9 +1,9 @@
 {
-	"module_wb8-can": {
+	"module_wbe2-i-can-iso": {
 		"type": "object",
 		"properties": {
 			"terminatorsMode": {
-				"title": "120 Ohm termination resistor",
+				"title": "120Ω termination resistor",
 				"type": "string",
 				"enum": [
 					"enabled",

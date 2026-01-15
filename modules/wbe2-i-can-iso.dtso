@@ -10,8 +10,8 @@
  */
 
 / {
-	description = "WB8-CAN: HT42B416 UART-CAN interface module";
-	compatible-slots = "wb8-can";
+	description = "WBE2-I-CAN-ISO: Isolated CAN interface module";
+	compatible-slots = "wbe2-i-can-iso";
 
 	fragment@0 {
 		target = <SLOT_UART_ALIAS>;
