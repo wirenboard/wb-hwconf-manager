@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.71.0) stable; urgency=medium
+
+  *  wbe2-i-can: add support for CAN-module based on Holtek ht42b41
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Fri, 16 Jan 2026 11:01:26 +0300
+
 wb-hwconf-manager (1.70.0) stable; urgency=medium
 
   * HDMI:
