@@ -137,6 +137,54 @@ slot_can_rename() {
 	done
 }
 
+slot_can_nm_unmanage() {
+	command -v nmcli >/dev/null 2>&1 || return 0
+
+	local iface
+	for iface in $(slot_can_ifaces); do
+		nmcli dev set "$iface" managed no >/dev/null 2>&1 || true
+	done
+}
+
+slot_can_apply_settings() {
+	command -v ip >/dev/null 2>&1 || return 0
+
+	local auto_up
+	auto_up="$(config_module_option ".autoUp // false")"
+	[[ "$auto_up" == "true" ]] || return 0
+
+	local bitrate
+	bitrate="$(config_module_option ".bitrate // 125000")"
+	local listen_only
+	listen_only="$(config_module_option ".listenOnly // false")"
+	local loopback
+	loopback="$(config_module_option ".loopback // false")"
+	local restart_ms
+	restart_ms="$(config_module_option ".restartMs // 0")"
+
+	local args=(type can bitrate "$bitrate")
+	if [[ "$listen_only" == "true" ]]; then
+		args+=(listen-only on)
+	else
+		args+=(listen-only off)
+	fi
+	if [[ "$loopback" == "true" ]]; then
+		args+=(loopback on)
+	else
+		args+=(loopback off)
+	fi
+	if [[ "$restart_ms" =~ ^[0-9]+$ ]]; then
+		args+=(restart-ms "$restart_ms")
+	fi
+
+	local iface
+	for iface in $(slot_can_ifaces); do
+		ip link set "$iface" down >/dev/null 2>&1 || true
+		ip link set "$iface" "${args[@]}" >/dev/null 2>&1 || true
+		ip link set "$iface" up >/dev/null 2>&1 || true
+	done
+}
+
 hook_module_init() {
 	local rts_gpio
 	rts_gpio="$(resolve_rts_gpio "$GPIO_RTS")" || {
@@ -158,6 +206,8 @@ hook_module_init() {
 	fi
 
 	slot_can_rename
+	slot_can_nm_unmanage
+	slot_can_apply_settings
 }
 
 hook_module_deinit() {

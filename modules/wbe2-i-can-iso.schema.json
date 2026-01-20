@@ -1,7 +1,72 @@
 {
 	"module_wbe2-i-can-iso": {
+		"title": "WBE2-I-CAN-ISO module configuration",
 		"type": "object",
 		"properties": {
+			"ifaceName": {
+				"title": "CAN interface name",
+				"type": "string",
+				"default": "",
+				"readOnly": true,
+				"propertyOrder": 0
+			},
+			"autoUp": {
+				"title": "Auto bring up CAN interface",
+				"type": "boolean",
+				"default": false,
+				"propertyOrder": 1
+			},
+			"bitrate": {
+				"title": "Bitrate",
+				"type": "integer",
+				"enum": [
+					5000,
+					10000,
+					20000,
+					50000,
+					100000,
+					125000,
+					250000,
+					500000,
+					800000,
+					1000000
+				],
+				"default": 125000,
+				"options": {
+					"enum_titles": [
+						"5000",
+						"10000",
+						"20000",
+						"50000",
+						"100000",
+						"125000",
+						"250000",
+						"500000",
+						"800000",
+						"1000000"
+					]
+				},
+				"propertyOrder": 2
+			},
+			"listenOnly": {
+				"title": "Listen-only mode",
+				"type": "boolean",
+				"default": false,
+				"propertyOrder": 3
+			},
+			"loopback": {
+				"title": "Loopback mode",
+				"type": "boolean",
+				"default": false,
+				"propertyOrder": 4
+			},
+			"restartMs": {
+				"title": "Auto-restart after bus-off (ms)",
+				"type": "integer",
+				"minimum": 0,
+				"default": 0,
+				"propertyOrder": 5
+			},
 			"terminatorsMode": {
 				"title": "120Ω termination resistor",
 				"type": "string",
@@ -15,7 +80,8 @@
 						"Enabled",
 						"Disabled"
 					]
-				}
+				},
+				"propertyOrder": 6
 			}
 		},
 		"required": [

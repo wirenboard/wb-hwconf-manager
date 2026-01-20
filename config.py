@@ -251,9 +251,12 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                     "Module %s is not supported by slot %s", config_slot.get("module"), config_slot.get("id")
                 )
             else:
+                options = config_slot.get("options", {})
+                if isinstance(options, dict) and "ifaceName" in options:
+                    options = {k: v for k, v in options.items() if k != "ifaceName"}
                 config[slot_id] = {
                     "module": config_slot.get("module", ""),
-                    "options": config_slot.get("options", {}),
+                    "options": options,
                 }
     return config
 
@@ -285,6 +288,14 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
         slot_with_hdmi = next((slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"), None)
         if slot_with_hdmi is not None:
             slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
+
+    for slot in config["slots"]:
+        slot_id = slot.get("id", "")
+        mod_suffix = slot_id.split("-")[-1]
+        if not (mod_suffix.startswith("mod") and mod_suffix[3:].isdigit()):
+            continue
+        iface_name = f"canMOD{mod_suffix[3:]}"
+        slot.setdefault("options", {})["ifaceName"] = iface_name
 
     config["modules"] = modules
     return config
