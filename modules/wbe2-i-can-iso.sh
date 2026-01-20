@@ -106,6 +106,37 @@ slot_can_wait_detach() {
 	done
 }
 
+slot_can_target_name() {
+	local slot_suffix="${SLOT##*-}"
+	case "$slot_suffix" in
+		mod[1-4])
+			echo "canMOD${slot_suffix#mod}"
+			;;
+		*)
+			return 1
+			;;
+	esac
+}
+
+slot_can_rename() {
+	command -v ip >/dev/null 2>&1 || return 0
+
+	local target
+	target="$(slot_can_target_name)" || return 0
+
+	local iface
+	local i
+	for ((i=0; i<10; i++)); do
+		for iface in $(slot_can_ifaces); do
+			[[ "$iface" == "$target" ]] && return 0
+			ip link set "$iface" down >/dev/null 2>&1 || true
+			ip link set "$iface" name "$target" >/dev/null 2>&1 || true
+			return 0
+		done
+		sleep 0.2
+	done
+}
+
 hook_module_init() {
 	local rts_gpio
 	rts_gpio="$(resolve_rts_gpio "$GPIO_RTS")" || {
@@ -125,6 +156,8 @@ hook_module_init() {
 		echo "terminators are enabled"
 		sysfs_gpio_set $rts_gpio 1
 	fi
+
+	slot_can_rename
 }
 
 hook_module_deinit() {
