@@ -290,11 +290,14 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
             slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
 
     for slot in config["slots"]:
+        if slot.get("module") != "wbe2-i-can-iso":
+            continue
         slot_id = slot.get("id", "")
         mod_suffix = slot_id.split("-")[-1]
-        if not (mod_suffix.startswith("mod") and mod_suffix[3:].isdigit()):
-            continue
-        iface_name = f"canMOD{mod_suffix[3:]}"
+        if mod_suffix.startswith("mod") and mod_suffix[3:].isdigit():
+            iface_name = f"canMOD{mod_suffix[3:]}"
+        else:
+            iface_name = "canMODx"
         slot.setdefault("options", {})["ifaceName"] = iface_name
 
     config["modules"] = modules
