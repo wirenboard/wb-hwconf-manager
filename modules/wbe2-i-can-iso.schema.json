@@ -13,7 +13,17 @@
 			"autoUp": {
 				"title": "Auto bring up CAN interface",
 				"type": "boolean",
-				"default": false,
+				"enum": [
+					true,
+					false
+				],
+				"default": true,
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
 				"propertyOrder": 1
 			},
 			"bitrate": {

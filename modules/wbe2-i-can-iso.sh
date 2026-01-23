@@ -150,7 +150,7 @@ slot_can_apply_settings() {
 	command -v ip >/dev/null 2>&1 || return 0
 
 	local auto_up
-	auto_up="$(config_module_option ".autoUp // false")"
+	auto_up="$(config_module_option ".autoUp // true")"
 	[[ "$auto_up" == "true" ]] || return 0
 
 	local bitrate
