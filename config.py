@@ -8,7 +8,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import List
+from typing import Any, List, Optional
 
 import hdmi
 
@@ -206,6 +206,43 @@ def make_combined_config(config: dict, board_slots: dict, modules: List[dict]) -
     return combined_config
 
 
+def add_hdmi_info(config: dict) -> None:
+    if "wbe2-hdmi" not in {slot.get("module") for slot in config["slots"]}:
+        return
+    config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
+    slot_with_hdmi = next(
+        (slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"),
+        None,
+    )
+    if slot_with_hdmi is not None:
+        slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
+
+
+def normalize_can_flag(value: Any) -> Optional[str]:
+    if isinstance(value, bool):
+        return "enabled" if value else "disabled"
+    if value == "true":
+        return "enabled"
+    if value == "false":
+        return "disabled"
+    return None
+
+
+def add_can_iface_name(slot: dict) -> None:
+    slot_id = slot.get("id", "")
+    mod_suffix = slot_id.split("-")[-1]
+    if not (mod_suffix.startswith("mod") and mod_suffix[3:].isdigit()):
+        return
+    iface_name = f"canMOD{mod_suffix[3:]}"
+    options = slot.setdefault("options", {})
+    options["ifaceName"] = iface_name
+    if slot.get("module") == "wbe2-i-can-iso":
+        for key in ("autoUp", "listenOnly", "loopback"):
+            normalized = normalize_can_flag(options.get(key))
+            if normalized is not None:
+                options[key] = normalized
+
+
 def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
     """
     Compares two slot configurations to determine if they differ.
@@ -289,30 +326,9 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
 
     config = make_combined_config(config, board_slots, modules)
 
-    # Provide HDMI modes only when HDMI module is present
-    if "wbe2-hdmi" in {slot.get("module") for slot in config["slots"]}:
-        config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
-        slot_with_hdmi = next((slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"), None)
-        if slot_with_hdmi is not None:
-            slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
-
+    add_hdmi_info(config)
     for slot in config["slots"]:
-        slot_id = slot.get("id", "")
-        mod_suffix = slot_id.split("-")[-1]
-        if not (mod_suffix.startswith("mod") and mod_suffix[3:].isdigit()):
-            continue
-        iface_name = f"canMOD{mod_suffix[3:]}"
-        options = slot.setdefault("options", {})
-        options["ifaceName"] = iface_name
-        if slot.get("module") == "wbe2-i-can-iso":
-            for key in ("autoUp", "listenOnly", "loopback"):
-                value = options.get(key)
-                if isinstance(value, bool):
-                    options[key] = "enabled" if value else "disabled"
-                elif value == "true":
-                    options[key] = "enabled"
-                elif value == "false":
-                    options[key] = "disabled"
+        add_can_iface_name(slot)
 
     config["modules"] = modules
     return config
