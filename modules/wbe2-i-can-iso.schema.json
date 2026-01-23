@@ -61,13 +61,33 @@
 			"listenOnly": {
 				"title": "Listen-only mode",
 				"type": "boolean",
+				"enum": [
+					true,
+					false
+				],
 				"default": false,
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
 				"propertyOrder": 3
 			},
 			"loopback": {
 				"title": "Loopback mode",
 				"type": "boolean",
+				"enum": [
+					true,
+					false
+				],
 				"default": false,
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
 				"propertyOrder": 4
 			},
 			"restartMs": {
