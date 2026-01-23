@@ -223,9 +223,9 @@ def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
             return {k: v for k, v in options.items() if k != "ifaceName"}
         return options
 
-    return slot1.get("module") != slot2.get("module") or normalize_options(slot1.get("options")) != normalize_options(
-        slot2.get("options")
-    )
+    return slot1.get("module") != slot2.get("module") or normalize_options(
+        slot1.get("options")
+    ) != normalize_options(slot2.get("options"))
 
 
 def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]) -> dict:
