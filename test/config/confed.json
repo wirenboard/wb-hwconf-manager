@@ -5,28 +5,36 @@
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 1",
             "module": "wbe2-ao-10v-2",
-            "options": {}
+            "options": {
+                "ifaceName": "canMOD1"
+            }
         },
         {
             "id": "wb72-mod2",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 2",
             "module": "",
-            "options": {}
+            "options": {
+                "ifaceName": "canMOD2"
+            }
         },
         {
             "id": "wb72-mod3",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 3",
             "module": "",
-            "options": {}
+            "options": {
+                "ifaceName": "canMOD3"
+            }
         },
         {
             "id": "wb72-mod4",
             "compatible": ["wbe3", "wbe3-reduced"],
             "name": "Internal slot 4",
             "module": "",
-            "options": {}
+            "options": {
+                "ifaceName": "canMOD4"
+            }
         },
         {
             "id": "wb72-extio1",
@@ -131,7 +139,7 @@
             "id": "wb72-wbmz4",
             "name": "Backup power supply",
             "compatible": [
-              "wb72-wbmz4-power"
+                "wb72-wbmz4-power"
             ],
             "module": "",
             "options": {}
@@ -141,7 +149,7 @@
         {
             "id": "wb6-wx-1wire",
             "description": "1-Wire master",
-            "compatible_slots": [ "wb6-wx" ]
+            "compatible_slots": [ "b6-wx" ]
         },
         {
             "id": "wb67-can-rs485",
