@@ -146,29 +146,40 @@ slot_can_nm_unmanage() {
 	done
 }
 
+is_enabled() {
+	case "$1" in
+		enabled|true|1|yes|on)
+			return 0
+			;;
+		*)
+			return 1
+			;;
+	esac
+}
+
 slot_can_apply_settings() {
 	command -v ip >/dev/null 2>&1 || return 0
 
 	local auto_up
-	auto_up="$(config_module_option ".autoUp // true")"
-	[[ "$auto_up" == "true" ]] || return 0
+	auto_up="$(config_module_option ".autoUp // \"enabled\"")"
+	is_enabled "$auto_up" || return 0
 
 	local bitrate
 	bitrate="$(config_module_option ".bitrate // 125000")"
 	local listen_only
-	listen_only="$(config_module_option ".listenOnly // false")"
+	listen_only="$(config_module_option ".listenOnly // \"disabled\"")"
 	local loopback
-	loopback="$(config_module_option ".loopback // false")"
+	loopback="$(config_module_option ".loopback // \"disabled\"")"
 	local restart_ms
 	restart_ms="$(config_module_option ".restartMs // 0")"
 
 	local args=(type can bitrate "$bitrate")
-	if [[ "$listen_only" == "true" ]]; then
+	if is_enabled "$listen_only"; then
 		args+=(listen-only on)
 	else
 		args+=(listen-only off)
 	fi
-	if [[ "$loopback" == "true" ]]; then
+	if is_enabled "$loopback"; then
 		args+=(loopback on)
 	else
 		args+=(loopback off)

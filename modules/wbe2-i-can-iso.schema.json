@@ -12,12 +12,12 @@
 			},
 			"autoUp": {
 				"title": "Auto bring up CAN interface",
-				"type": "boolean",
+				"type": "string",
 				"enum": [
-					true,
-					false
+					"enabled",
+					"disabled"
 				],
-				"default": true,
+				"default": "enabled",
 				"options": {
 					"enum_titles": [
 						"Enabled",
@@ -60,12 +60,12 @@
 			},
 			"listenOnly": {
 				"title": "Listen-only mode",
-				"type": "boolean",
+				"type": "string",
 				"enum": [
-					true,
-					false
+					"enabled",
+					"disabled"
 				],
-				"default": false,
+				"default": "disabled",
 				"options": {
 					"enum_titles": [
 						"Enabled",
@@ -76,12 +76,12 @@
 			},
 			"loopback": {
 				"title": "Loopback mode",
-				"type": "boolean",
+				"type": "string",
 				"enum": [
-					true,
-					false
+					"enabled",
+					"disabled"
 				],
-				"default": false,
+				"default": "disabled",
 				"options": {
 					"enum_titles": [
 						"Enabled",
@@ -115,6 +115,11 @@
 			}
 		},
 		"required": [
+			"autoUp",
+			"bitrate",
+			"listenOnly",
+			"loopback",
+			"restartMs",
 			"terminatorsMode"
 		],
 		"options": {

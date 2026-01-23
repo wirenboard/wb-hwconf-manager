@@ -302,7 +302,17 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
         if not (mod_suffix.startswith("mod") and mod_suffix[3:].isdigit()):
             continue
         iface_name = f"canMOD{mod_suffix[3:]}"
-        slot.setdefault("options", {})["ifaceName"] = iface_name
+        options = slot.setdefault("options", {})
+        options["ifaceName"] = iface_name
+        if slot.get("module") == "wbe2-i-can-iso":
+            for key in ("autoUp", "listenOnly", "loopback"):
+                value = options.get(key)
+                if isinstance(value, bool):
+                    options[key] = "enabled" if value else "disabled"
+                elif value == "true":
+                    options[key] = "enabled"
+                elif value == "false":
+                    options[key] = "disabled"
 
     config["modules"] = modules
     return config
