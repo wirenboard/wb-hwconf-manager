@@ -206,18 +206,6 @@ def make_combined_config(config: dict, board_slots: dict, modules: List[dict]) -
     return combined_config
 
 
-def add_hdmi_info(config: dict) -> None:
-    if "wbe2-hdmi" not in {slot.get("module") for slot in config["slots"]}:
-        return
-    config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
-    slot_with_hdmi = next(
-        (slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"),
-        None,
-    )
-    if slot_with_hdmi is not None:
-        slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
-
-
 def normalize_can_flag(value: Any) -> Optional[str]:
     if isinstance(value, bool):
         return "enabled" if value else "disabled"
@@ -313,7 +301,13 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
 
     config = make_combined_config(config, board_slots, modules)
 
-    add_hdmi_info(config)
+    # Provide HDMI modes only when HDMI module is present
+    if "wbe2-hdmi" in {slot.get("module") for slot in config["slots"]}:
+        config["available_hdmi_modes"] = hdmi.get_hdmi_modes()
+        slot_with_hdmi = next((slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"), None)
+        if slot_with_hdmi is not None:
+            slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
+
     for slot in config["slots"]:
         normalize_can_options(slot)
 
