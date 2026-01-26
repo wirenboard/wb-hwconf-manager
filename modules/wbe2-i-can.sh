@@ -206,7 +206,8 @@ hook_module_init() {
 	sysfs_gpio_export $rts_gpio
 	sysfs_gpio_direction $rts_gpio out
 
-	local term_mode="$(config_module_option ".terminatorsMode")"
+	local term_mode
+	term_mode="$(config_module_option ".terminator // .terminatorsMode // \"disabled\"")"
 	if [ "$term_mode" = "disabled" ]
 	then
 		echo "terminators are disabled"
