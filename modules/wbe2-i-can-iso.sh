@@ -171,7 +171,7 @@ slot_can_apply_settings() {
 	local loopback
 	loopback="$(config_module_option ".loopback // \"disabled\"")"
 	local restart_ms
-	restart_ms="$(config_module_option ".restartMs // 0")"
+	restart_ms="$(config_module_option ".restartMs // 1000")"
 
 	local args=(type can bitrate "$bitrate")
 	if is_enabled "$listen_only"; then

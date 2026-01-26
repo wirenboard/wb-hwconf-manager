@@ -285,7 +285,7 @@
             "Bitrate": "Битрейт",
             "Listen-only mode": "Только прослушивание",
             "Loopback mode": "Петля (loopback)",
-            "Auto-restart after bus-off (ms)": "Автовосстановление после bus-off (мс)",
+            "Auto-restart after bus-off (ms) (0 - disables auto-restart)": "Автовосстановление после bus-off (мс) (при 0 - автовосстановление отключено)",
             "WBIO-AI-DV-12 Analog Inputs": "WBIO-AI-DV-12: аналоговые входы",
             "2nd Ethernet option for WB5": "Второй Ethernet порт для WB5",
             "WBMZ-DIO-TTL-16: TTL GPIO mezonine extension module": "WBMZ-DIO-TTL-16: мезонинный модуль расширения TTL GPIO",
