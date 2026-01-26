@@ -206,28 +206,6 @@ def make_combined_config(config: dict, board_slots: dict, modules: List[dict]) -
     return combined_config
 
 
-def normalize_can_flag(value: Any) -> Optional[str]:
-    if isinstance(value, bool):
-        return "enabled" if value else "disabled"
-    if value == "true":
-        return "enabled"
-    if value == "false":
-        return "disabled"
-    return None
-
-
-def normalize_can_options(slot: dict) -> None:
-    if slot.get("module") != "wbe2-i-can":
-        return
-    options = slot.get("options")
-    if not isinstance(options, dict):
-        return
-    for key in ("autoUp", "listenOnly", "loopback"):
-        normalized = normalize_can_flag(options.get(key))
-        if normalized is not None:
-            options[key] = normalized
-
-
 def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
     """
     Compares two slot configurations to determine if they differ.
@@ -307,9 +285,6 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
         slot_with_hdmi = next((slot for slot in config["slots"] if slot.get("module") == "wbe2-hdmi"), None)
         if slot_with_hdmi is not None:
             slot_with_hdmi.setdefault("options", {})["monitor_info"] = hdmi.get_monitor_info()
-
-    for slot in config["slots"]:
-        normalize_can_options(slot)
 
     config["modules"] = modules
     return config
