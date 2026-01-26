@@ -1,6 +1,6 @@
 {
-	"module_wbe2-i-can-iso": {
-		"title": "WBE2-I-CAN-ISO module configuration",
+	"module_wbe2-i-can": {
+		"title": "WBE2-I-CAN module configuration",
 		"type": "object",
 		"properties": {
 			"autoUp": {

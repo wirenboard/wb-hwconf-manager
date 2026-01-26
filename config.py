@@ -229,7 +229,7 @@ def normalize_can_flag(value: Any) -> Optional[str]:
 
 
 def normalize_can_options(slot: dict) -> None:
-    if slot.get("module") != "wbe2-i-can-iso":
+    if slot.get("module") != "wbe2-i-can":
         return
     options = slot.get("options")
     if not isinstance(options, dict):

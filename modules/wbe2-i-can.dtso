@@ -10,8 +10,8 @@
  */
 
 / {
-	description = "WBE2-I-CAN-ISO: Isolated CAN interface module";
-	compatible-slots = "wbe2-i-can-iso";
+	description = "WBE2-I-CAN: Isolated CAN interface module";
+	compatible-slots = "wbe2-i-can";
 
 	fragment@0 {
 		target = <SLOT_UART_ALIAS>;
