@@ -228,19 +228,16 @@ def normalize_can_flag(value: Any) -> Optional[str]:
     return None
 
 
-def add_can_iface_name(slot: dict) -> None:
-    slot_id = slot.get("id", "")
-    mod_suffix = slot_id.split("-")[-1]
-    if not (mod_suffix.startswith("mod") and mod_suffix[3:].isdigit()):
+def normalize_can_options(slot: dict) -> None:
+    if slot.get("module") != "wbe2-i-can-iso":
         return
-    iface_name = f"canMOD{mod_suffix[3:]}"
-    options = slot.setdefault("options", {})
-    options["ifaceName"] = iface_name
-    if slot.get("module") == "wbe2-i-can-iso":
-        for key in ("autoUp", "listenOnly", "loopback"):
-            normalized = normalize_can_flag(options.get(key))
-            if normalized is not None:
-                options[key] = normalized
+    options = slot.get("options")
+    if not isinstance(options, dict):
+        return
+    for key in ("autoUp", "listenOnly", "loopback"):
+        normalized = normalize_can_flag(options.get(key))
+        if normalized is not None:
+            options[key] = normalized
 
 
 def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
@@ -255,14 +252,7 @@ def module_configs_are_different(slot1: dict, slot2: dict) -> bool:
         bool: True if configurations differ, False otherwise.
     """
 
-    def normalize_options(options):
-        if isinstance(options, dict) and "ifaceName" in options:
-            return {k: v for k, v in options.items() if k != "ifaceName"}
-        return options
-
-    return slot1.get("module") != slot2.get("module") or normalize_options(
-        slot1.get("options")
-    ) != normalize_options(slot2.get("options"))
+    return slot1.get("module") != slot2.get("module") or slot1.get("options") != slot2.get("options")
 
 
 def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]) -> dict:
@@ -295,12 +285,9 @@ def extract_config(combined_config: dict, board_slots: dict, modules: List[dict]
                     "Module %s is not supported by slot %s", config_slot.get("module"), config_slot.get("id")
                 )
             else:
-                options = config_slot.get("options", {})
-                if isinstance(options, dict) and "ifaceName" in options:
-                    options = {k: v for k, v in options.items() if k != "ifaceName"}
                 config[slot_id] = {
                     "module": config_slot.get("module", ""),
-                    "options": options,
+                    "options": config_slot.get("options", {}),
                 }
     return config
 
@@ -328,7 +315,7 @@ def to_confed(config_path: str, board_slots_path: str, modules_dir: str, vendor_
 
     add_hdmi_info(config)
     for slot in config["slots"]:
-        add_can_iface_name(slot)
+        normalize_can_options(slot)
 
     config["modules"] = modules
     return config

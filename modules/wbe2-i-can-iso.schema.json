@@ -3,13 +3,6 @@
 		"title": "WBE2-I-CAN-ISO module configuration",
 		"type": "object",
 		"properties": {
-			"ifaceName": {
-				"title": "CAN interface name",
-				"type": "string",
-				"default": "",
-				"readOnly": true,
-				"propertyOrder": 0
-			},
 			"autoUp": {
 				"title": "Auto bring up CAN interface",
 				"type": "string",

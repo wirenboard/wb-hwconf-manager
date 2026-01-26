@@ -5,28 +5,28 @@
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 1",
             "module": "wbe2-ao-10v-2",
-            "options": {"ifaceName": "canMOD1"}
+            "options": {}
         },
         {
             "id": "wb72-mod2",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 2",
             "module": "",
-            "options": {"ifaceName": "canMOD2"}
+            "options": {}
         },
         {
             "id": "wb72-mod3",
             "compatible": ["wbe2", "wbe3-reduced"],
             "name": "Internal slot 3",
             "module": "",
-            "options": {"ifaceName": "canMOD3"}
+            "options": {}
         },
         {
             "id": "wb72-mod4",
             "compatible": ["wbe3", "wbe3-reduced"],
             "name": "Internal slot 4",
             "module": "",
-            "options": {"ifaceName": "canMOD4"}
+            "options": {}
         },
         {
             "id": "wb72-extio1",

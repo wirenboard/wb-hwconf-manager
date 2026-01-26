@@ -282,7 +282,6 @@
             "WBE3-MICROSD: microSD module": "WBE3-MICROSD: модуль microSD",
             "WBE3-R-GPS: GPS/GLONASS Receiver": "WBE3-R-GPS: приёмник GPS/ГЛОНАСС",
             "Auto bring up CAN interface": "Автоматически поднимать интерфейс CAN",
-            "CAN interface name": "Имя интерфейса CAN",
             "Bitrate": "Битрейт",
             "Listen-only mode": "Только прослушивание",
             "Loopback mode": "Петля (loopback)",
