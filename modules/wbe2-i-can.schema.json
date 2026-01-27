@@ -97,7 +97,7 @@
 					"enabled",
 					"disabled"
 				],
-				"default": "disabled",
+				"default": "enabled",
 				"options": {
 					"enum_titles": [
 						"Enabled",
