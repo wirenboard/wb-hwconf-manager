@@ -19,23 +19,27 @@ wbec_gpio_base() {
 
 resolve_rts_gpio() {
 	local offset="$1"
-	local slot_suffix="${SLOT##*-}"
+
+	local slot_def
+	local alias
 
 	if [[ -z "$offset" ]]; then
 		echo "ERROR: GPIO_RTS is not defined for slot $SLOT"
 		return 1
 	fi
 
-	case "$slot_suffix" in
-		mod1|mod2)
-			local base
-			base="$(wbec_gpio_base)" || return 1
-			echo $((base + offset))
-			;;
-		*)
-			echo "$offset"
-			;;
-	esac
+	slot_def="$(slot_get_filename "$SLOT")" || return 1
+	alias="$(awk '/^[[:space:]]*#define[[:space:]]+SLOT_UART_ALIAS[[:space:]]+/ {print $3; exit}' "$slot_def")"
+	alias="${alias#&}"
+
+	if [[ "$alias" == wbec_* ]]; then
+		local base
+		base="$(wbec_gpio_base)" || return 1
+		echo $((base + offset))
+		return 0
+	fi
+
+	echo "$offset"
 }
 
 slot_can_dt_path() {
