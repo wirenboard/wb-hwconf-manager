@@ -1,0 +1,28 @@
+/*
+ * Copyright 2025 Contactless Devices, LLC.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/ {
+	description = "WBE2-I-CAN: Isolated CAN interface module";
+	compatible-slots = "wbe2-i-can";
+
+	fragment@0 {
+		target = <SLOT_UART_ALIAS>;
+
+		__overlay__ {
+			status = "okay";
+
+			can@0 {
+				compatible = "holtek,ht42b416";
+				current-speed = <115200>;
+			};
+		};
+	};
+};

@@ -1,0 +1,124 @@
+{
+	"module_wbe2-i-can": {
+		"title": "WBE2-I-CAN module configuration",
+		"type": "object",
+		"properties": {
+			"autoUp": {
+				"title": "Auto bring up CAN interface",
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
+				],
+				"default": "enabled",
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
+				"propertyOrder": 1
+			},
+			"bitrate": {
+				"title": "Bitrate",
+				"type": "integer",
+				"enum": [
+					5000,
+					10000,
+					20000,
+					50000,
+					100000,
+					125000,
+					250000,
+					500000,
+					800000,
+					1000000
+				],
+				"default": 125000,
+				"options": {
+					"enum_titles": [
+						"5000",
+						"10000",
+						"20000",
+						"50000",
+						"100000",
+						"125000",
+						"250000",
+						"500000",
+						"800000",
+						"1000000"
+					]
+				},
+				"propertyOrder": 2
+			},
+			"listenOnly": {
+				"title": "Listen-only mode",
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
+				],
+				"default": "disabled",
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
+				"propertyOrder": 3
+			},
+			"loopback": {
+				"title": "Loopback mode",
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
+				],
+				"default": "disabled",
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
+				"propertyOrder": 4
+			},
+			"restartMs": {
+				"title": "Auto-restart after bus-off (ms) (0 - disables auto-restart)",
+				"type": "integer",
+				"minimum": 0,
+				"default": 1000,
+				"propertyOrder": 5
+			},
+			"terminator": {
+				"title": "120Ω termination resistor",
+				"type": "string",
+				"enum": [
+					"enabled",
+					"disabled"
+				],
+				"default": "enabled",
+				"options": {
+					"enum_titles": [
+						"Enabled",
+						"Disabled"
+					]
+				},
+				"propertyOrder": 6
+			}
+		},
+		"required": [
+			"autoUp",
+			"bitrate",
+			"listenOnly",
+			"loopback",
+			"restartMs",
+			"terminator"
+		],
+		"options": {
+			"wb": {
+				"disable_title": true
+			}
+		}
+	}
+}
