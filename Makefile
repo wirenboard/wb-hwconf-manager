@@ -7,6 +7,7 @@ test_tmpdir = ./test/tmp
 modules_schema_part = modules/*.schema.json
 hidden_modules_schema_part = modules/hidden_modules.json
 hidden_modules = $(shell jq -cM '.hidden_from_webui' $(hidden_modules_schema_part))
+vendor_modules_config = vendor-modules.json
 
 processed_pybuild_test_args = $(shell echo $(PYBUILD_TEST_ARGS) | sed -E "s|--cov-config=[^ ]+|--cov-config=coveragerc|")
 
@@ -18,6 +19,7 @@ install_data:
 	install -m 0644 functions.sh $(libdir)/functions.sh
 	install -m 0755 init.sh $(libdir)/init.sh
 	install -m 0755 config.py $(libdir)/config.py
+	install -m 0644 $(vendor_modules_config) $(datadir)/vendor-modules.json
 	cp -rv ./slots $(datadir)/slots
 	cd $(datadir)/slots && ./gen_extio_slots.sh && rm *.sh
 	install -d -m 0755 $(datadir)/modules
