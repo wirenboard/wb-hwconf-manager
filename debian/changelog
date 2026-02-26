@@ -1,4 +1,4 @@
-wb-hwconf-manager (1.67.1-cb8ea449-wb8) stable; urgency=medium
+wb-hwconf-manager (1.67.1-cb8ea449-wb8-3) stable; urgency=medium
 
   * Move changes for vendor from custom-script
   * Physically remove explicit wb8 non-vendor module overlays from package sources
