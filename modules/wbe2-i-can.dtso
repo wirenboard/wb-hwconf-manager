@@ -25,4 +25,28 @@
 			};
 		};
 	};
+
+	fragment-pinctrl {
+		target-path = "/";
+
+		__overlay__ {
+			SLOT_DT_ALIAS(pinmux_dummy) {
+				compatible = "regulator-fixed";
+				regulator-name = EXPAND_AND_QUOTE(SLOT_DT_ALIAS(pinmux_dummy));
+
+				pinctrl-names = "default";
+				pinctrl-0 = <SLOT_DE_GPIO_PINCTRL>;
+			};
+		};
+	};
+
+	fragment-gpio { // new dummy gpios node to keep wb-mqtt-gpio calm
+		target-path = "/wirenboard";
+
+		__overlay__ {
+			gpios-__cat(mod, MOD_SLOT_NUM) {
+				WBE_OUTPUT_HIGH(OUT1, RTS, 1);
+			};
+		};
+	};
 };
