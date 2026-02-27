@@ -1,46 +1,6 @@
 source "$DATADIR/modules/utils.sh"
 
-wbec_gpio_base() {
-	local chip
-	for chip in /sys/class/gpio/gpiochip*; do
-		if [[ -r "$chip/device/of_node/compatible" ]]; then
-			if tr '\000' '\n' < "$chip/device/of_node/compatible" | grep -qx "wirenboard,wbec-gpio"; then
-				cat "$chip/base"
-				return 0
-			fi
-		fi
-		if [[ -r "$chip/label" ]] && [[ "$(cat "$chip/label")" = "wbec-gpio" ]]; then
-			cat "$chip/base"
-			return 0
-		fi
-	done
-	return 1
-}
-
-resolve_rts_gpio() {
-	local offset="$1"
-
-	local slot_def
-	local alias
-
-	if [[ -z "$offset" ]]; then
-		echo "ERROR: GPIO_RTS is not defined for slot $SLOT"
-		return 1
-	fi
-
-	slot_def="$(slot_get_filename "$SLOT")" || return 1
-	alias="$(awk '/^[[:space:]]*#define[[:space:]]+SLOT_UART_ALIAS[[:space:]]+/ {print $3; exit}' "$slot_def")"
-	alias="${alias#&}"
-
-	if [[ "$alias" == wbec_* ]]; then
-		local base
-		base="$(wbec_gpio_base)" || return 1
-		echo $((base + offset))
-		return 0
-	fi
-
-	echo "$offset"
-}
+wb_source "of"
 
 slot_can_dt_path() {
 	local slot_def
@@ -201,12 +161,8 @@ slot_can_apply_settings() {
 }
 
 hook_module_init() {
-	local rts_gpio
-	rts_gpio="$(resolve_rts_gpio "$GPIO_RTS")" || {
-		echo "ERROR: wbec gpiochip not found"
-		return 1
-	}
-
+	local rts_gpio=$(of_get_prop_gpionum wirenboard/gpios-mod${SLOT_NUM}/MOD${SLOT_NUM}_OUT1/ io-gpios)
+	sysfs_gpio_unexport $rts_gpio
 	sysfs_gpio_export $rts_gpio
 	sysfs_gpio_direction $rts_gpio out
 
@@ -227,17 +183,10 @@ hook_module_init() {
 }
 
 hook_module_deinit() {
-	local rts_gpio
-	rts_gpio="$(resolve_rts_gpio "$GPIO_RTS")" || return 0
-
 	slot_can_down
 	slot_can_unbind
 	slot_can_wait_detach
 
-	if [[ ! -e "${SYSFS_GPIO}/gpio${rts_gpio}" ]]; then
-		return 0
-	fi
-
-	sysfs_gpio_direction $rts_gpio in
+	local rts_gpio=$(of_get_prop_gpionum wirenboard/gpios-mod${SLOT_NUM}/MOD${SLOT_NUM}_OUT1/ io-gpios)
 	sysfs_gpio_unexport $rts_gpio
 }
