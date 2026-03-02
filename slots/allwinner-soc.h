@@ -3,9 +3,7 @@
 
 /* Pattern-matching accessors for pins declarations */
 #define __gpio_bank __arg1
-#ifndef __gpio_pin
 #define __gpio_pin __arg2
-#endif
 #define __pin_attr(x, attr) __pass(__##attr __cat3(SLOT, _, x))
 
 
@@ -42,11 +40,7 @@
 
 
 #ifdef SLOT_ALL_PINS
-#ifdef SLOT_GPIO_ONE_ARG
-#define SLOT_FOR_PIN(x) local GPIO_##x=SLOT_GPIO_PIN(x);
-#else
 #define SLOT_FOR_PIN(x) local GPIO_##x=GPIO_PORT_PIN_TO_NUM(SLOT_GPIO_BANK(x), SLOT_GPIO_PIN(x));
-#endif
 SLOT_ALL_PINS
 #undef SLOT_FOR_PIN
 #endif

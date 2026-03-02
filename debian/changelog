@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.71.1) stable; urgency=medium
+
+  * wb85x: fix wrong gpio numbers resolving in mod1 & mod2 slots
+
+ -- Vladimir Romanov <v.romanov@wirenboard.com>  Thu, 26 Feb 2026 12:19:22 +0300
+
 wb-hwconf-manager (1.71.0) stable; urgency=medium
 
   * wbe2-i-can: add support for CAN-module based on Holtek ht42b41 for wb8.4-8.5
