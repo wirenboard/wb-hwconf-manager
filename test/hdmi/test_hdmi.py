@@ -32,6 +32,7 @@ id	fb	pos	size
 51	55	(0,0)	(1280x720)
 """.strip()
 
+
 def test_build_basic_entries_from_modetest(monkeypatch):
     """Builds flat unique resolutions from modetest data."""
     hdmi = importlib.import_module("hdmi")
@@ -449,7 +450,9 @@ def test_get_monitor_info(monkeypatch):
     monkeypatch.setattr(
         hdmi, "_read_monitor_name", lambda _p=None: "Demo Panel"
     )  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi, "_read_current_resolution", lambda: "1920x1080")  # pylint: disable=protected-access
+    monkeypatch.setattr(
+        hdmi, "_read_current_resolution", lambda: "1920x1080"
+    )  # pylint: disable=protected-access
 
     info = hdmi.get_monitor_info()
     assert info == "Demo Panel (max: 3840x2160, current: 1920x1080)"
@@ -466,7 +469,9 @@ def test_get_monitor_info_no_monitor(monkeypatch):
 
 def test_read_current_resolution(monkeypatch):
     hdmi = importlib.import_module("hdmi")
-    monkeypatch.setattr(hdmi, "_run_modetest_full", lambda: MODETEST_WITH_CRTC_SAMPLE)  # pylint: disable=protected-access
+    monkeypatch.setattr(
+        hdmi, "_run_modetest_full", lambda: MODETEST_WITH_CRTC_SAMPLE
+    )  # pylint: disable=protected-access
 
     assert hdmi._read_current_resolution() == "1280x720"  # pylint: disable=protected-access
 
