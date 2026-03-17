@@ -55,12 +55,6 @@ def test_main_listing_format(monkeypatch, capsys):
             "name": "3840x2160-60.00",
             "payload": '"3840x2160-60.00" 594 3840 4016 4104 4400 2160 2168 2178 2250 +hsync +vsync',
         },
-        {
-            "kind": "cvt",
-            "title": "3840x2160-60.00 (VESA CVT - 712.75MHz)",
-            "name": "3840x2160-60.00",
-            "payload": '"3840x2160-60.00" 712.75 3840 4016 4104 4400 2160 2168 2178 2250 +hsync +vsync',
-        },
     ]
 
     hdmi = importlib.import_module("hdmi")
@@ -77,7 +71,7 @@ def test_main_listing_format(monkeypatch, capsys):
     assert not any(line.startswith("2)") or line.startswith("3)") for line in out)
     # Next lines are a flat sequence of titles from entries
     assert any("1920x1080" in line for line in out)
-    assert any(("3840x2160-60.00 (EDID" in line) or ("VESA CVT" in line) for line in out)
+    assert any("3840x2160-60.00 (EDID" in line for line in out)
 
 
 def test_apply_by_index_flat_mode(monkeypatch, capsys):
@@ -153,11 +147,6 @@ def test_get_hdmi_modes_installed(monkeypatch):
             "value": "1920x1080-60.00|EDID:148500",
             "title": "1920x1080-60.00 (EDID - 148.50MHz)",
         },
-        {
-            "kind": "cvt",
-            "value": "1920x1080-60.00|CVT:173000",
-            "title": "1920x1080-60.00 (VESA CVT - 173.00MHz)",
-        },
     ]
 
     monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
@@ -170,7 +159,6 @@ def test_get_hdmi_modes_installed(monkeypatch):
     # Includes flat modes and detailed entries
     assert "1920x1080" in values
     assert "1920x1080-60.00|EDID:148500" in values
-    assert "1920x1080-60.00|CVT:173000" in values
 
 
 def test_get_hdmi_modes_legacy_package_installed(monkeypatch):
@@ -196,34 +184,6 @@ def test_get_hdmi_modes_legacy_package_installed(monkeypatch):
     assert out == [{"value": "auto", "title": "Auto from EDID"}]
 
 
-def test_cvt_modeline_parsing(monkeypatch):
-    """Parses cvt output and returns the Modeline payload (without the word 'Modeline')."""
-    hdmi = importlib.import_module("hdmi")
-
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args and args[0] == "cvt":
-            return 'Modeline "3840x2160_60.00" 533.25 3840 4016 4104 4400 2160 2168 2178 2250 +hsync +vsync\n'
-        raise AssertionError("unexpected command")
-
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
-    payload = hdmi._cvt_modeline("3840x2160", "60.00")  # pylint: disable=protected-access
-    assert payload.startswith('"3840x2160_60.00" 533.25')
-
-
-def test_cvt_modeline_no_cvt(monkeypatch):
-    """Returns empty payload when the 'cvt' tool is missing or fails."""
-    hdmi = importlib.import_module("hdmi")
-
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args and args[0] == "cvt":
-            raise FileNotFoundError
-        return ""
-
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
-    payload = hdmi._cvt_modeline("3840x2160", "60.00")  # pylint: disable=protected-access
-    assert payload == ""
-
-
 def test_apply_by_index_auto(monkeypatch, capsys):
     """Index 0 prints the Auto Modeline payload."""
     hdmi = importlib.import_module("hdmi")
@@ -243,7 +203,7 @@ def test_apply_by_index_auto(monkeypatch, capsys):
 
 
 def test_build_grouped_entries_aggregates(monkeypatch):
-    """Aggregates Auto, flat modetest resolutions, and detailed EDID/CVT entries."""
+    """Aggregates Auto, flat modetest resolutions, and detailed EDID entries."""
     hdmi = importlib.import_module("hdmi")
 
     # Provide modetest modes: include >=2.5K widths and one below threshold
@@ -301,12 +261,6 @@ def test_build_grouped_entries_aggregates(monkeypatch):
     monkeypatch.setattr(
         hdmi, "_parse_modetest_modes", lambda: modetest_modes
     )  # pylint: disable=protected-access
-    # Ensure CVT is unique so it is added
-    monkeypatch.setattr(
-        hdmi,
-        "_cvt_modeline",
-        lambda res, r: f'"{res}-{r}" 700.00 10 20 30 40 50 60 70 80 +hsync +vsync',  # pylint: disable=protected-access
-    )
 
     entries = hdmi._build_grouped_entries()  # pylint: disable=protected-access
     assert entries, "Expected non-empty entries"
@@ -319,17 +273,12 @@ def test_build_grouped_entries_aggregates(monkeypatch):
     basic_values = {e["value"] for e in basic}
     assert {"3840x2160", "2560x1440", "1920x1080"}.issubset(basic_values)
 
-    # Detailed entries include EDID and CVT for >=2560 widths
-    det = [e for e in entries if e.get("kind") in {"edid", "cvt"}]
+    # Detailed entries include EDID for >=2560 widths
+    det = [e for e in entries if e.get("kind") == "edid"]
     names = {e["name"] for e in det}
     assert "3840x2160-60.00" in names
     assert "2560x1440-59.95" in names
-    kinds_per_name = {}
-    for e in det:
-        kinds_per_name.setdefault(e["name"], set()).add(e["kind"])
-    # Each name should have at least EDID, and CVT added due to unique tail
-    assert "edid" in kinds_per_name["3840x2160-60.00"] and "cvt" in kinds_per_name["3840x2160-60.00"]
-    assert "edid" in kinds_per_name["2560x1440-59.95"] and "cvt" in kinds_per_name["2560x1440-59.95"]
+    assert {e["name"] for e in det} == {"3840x2160-60.00", "2560x1440-59.95"}
 
 
 def test_build_grouped_entries_no_tools(monkeypatch):

@@ -300,32 +300,6 @@ def get_monitor_info() -> str:
     return "No monitor detected"
 
 
-def _cvt_modeline(res: str, refresh: str) -> str:
-    """Generate a VESA CVT Modeline for given resolution and refresh via `cvt`.
-
-    Args:
-        res: Resolution in the form "WxH" (e.g., "3840x2160").
-        refresh: Refresh rate string (e.g., "60.00").
-
-    Returns:
-        Modeline payload without the leading word "Modeline", or an empty string
-        when generation fails or `cvt` is not available.
-    """
-    try:
-        w, h = res.split("x")
-    except ValueError:
-        return ""
-    try:
-        out = subprocess.check_output(["cvt", w, h, refresh], text=True, stderr=subprocess.DEVNULL)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return ""
-    for line in out.splitlines():
-        line = line.strip()
-        if line.startswith("Modeline "):
-            return line[len("Modeline ") :]
-    return ""
-
-
 def _strip_name_from_modeline_payload(payload: str) -> str:
     """Remove the leading quoted mode name from a Modeline payload string."""
     if not payload:
@@ -394,29 +368,8 @@ def _make_edid_entry(name: str, info: Dict[str, object], e: Dict[str, object]) -
     }
 
 
-def _make_cvt_entry(name: str, info: Dict[str, object], tail: str) -> Dict[str, object]:
-    """Format one CVT entry."""
-    try:
-        cvt_khz = int(round(float(tail.split()[0]) * 1000))
-    except ValueError:
-        cvt_khz = 0
-    w = int(info["w"])
-    h = int(info["h"])
-    rr = float(info["r"])
-    return {
-        "kind": "cvt",
-        "value": f"{name}|CVT:{cvt_khz}",
-        "title": f"{name} (VESA CVT - {tail.split()[0]}MHz)",
-        "payload": f'"{name}" {tail}',
-        "name": name,
-        "w": w,
-        "h": h,
-        "r": rr,
-    }
-
-
 def _build_detailed_entries(modes: List[Dict[str, object]]) -> List[Dict[str, object]]:
-    """Build detailed EDID/CVT entries for modes with width >= 2560."""
+    """Build detailed EDID entries for modes with width >= 2560."""
     grouped: Dict[str, Dict[str, object]] = {}
     for m in modes:
         try:
@@ -440,14 +393,8 @@ def _build_detailed_entries(modes: List[Dict[str, object]]) -> List[Dict[str, ob
     detail: List[Dict[str, object]] = []
     for name, info in grouped.items():
         edids = sorted(info["edids"], key=lambda e: e["pclk_khz"])
-        edid_tails = set()
         for e in edids:
-            entry = _make_edid_entry(name, info, e)
-            detail.append(entry)
-            edid_tails.add(_strip_name_from_modeline_payload(e["payload"]))
-        cvt_tail = _strip_name_from_modeline_payload(_cvt_modeline(info["res"], info["refresh"]))
-        if cvt_tail and cvt_tail not in edid_tails:
-            detail.append(_make_cvt_entry(name, info, cvt_tail))
+            detail.append(_make_edid_entry(name, info, e))
     detail.sort(key=lambda e: (e["w"], e["h"], e["r"]), reverse=True)
     return detail
 
@@ -458,7 +405,7 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
     Groups consist of:
       - one Auto entry (preferred EDID)
       - flat resolutions from modetest
-      - detailed EDID/CVT for resolutions >= 2560px width
+      - detailed EDID entries for resolutions >= 2560px width
     """
     entries: List[Dict[str, object]] = []
     modes = _parse_modetest_modes()
@@ -488,7 +435,7 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
 
     entries.extend(_build_basic_entries(modes))
 
-    # Detailed EDID/CVT entries
+    # Detailed EDID entries
     entries.extend(_build_detailed_entries(modes))
 
     return entries
@@ -497,7 +444,7 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
 def get_hdmi_modes() -> List[Dict[str, str]]:
     """Return modes for the Web UI combobox.
 
-    Includes flat modetest resolutions and detailed >2K EDID/CVT entries with
+    Includes flat modetest resolutions and detailed >2K EDID entries with
     unique values (value suffix encodes the timing source and pixel clock).
     May include the Auto entry depending on upstream grouping logic.
     """
@@ -543,7 +490,7 @@ def _apply_by_index(index_str: str) -> int:
     """Print a Modeline payload for the selected entry when available.
 
     0 selects the preferred EDID mode. Positive indices map to the printed list
-    order: flat resolutions first, then detailed EDID/CVT entries.
+    order: flat resolutions first, then detailed EDID entries.
     Returns a shell-like exit code (0 on success).
     """
     entries = _build_grouped_entries()
@@ -559,7 +506,7 @@ def _apply_by_index(index_str: str) -> int:
     # Flatten selection order: flat resolutions first, then detailed
     filtered: List[Dict[str, object]] = []
     filtered.extend([e for e in entries if e.get("kind") == "mode"])
-    filtered.extend([e for e in entries if e.get("kind") in {"edid", "cvt"}])
+    filtered.extend([e for e in entries if e.get("kind") == "edid"])
     if idx < 1 or idx > len(filtered):
         print("Index out of range", file=sys.stderr)
         return 2
@@ -567,7 +514,7 @@ def _apply_by_index(index_str: str) -> int:
     kind = str(e.get("kind"))
     if kind == "mode":
         return 0
-    # detailed edid/cvt
+    # detailed edid
     print(str(e["payload"]))
     return 0
 
@@ -588,9 +535,9 @@ def main() -> int:
             if e.get("kind") == "mode":
                 print(f"{i} - {e['title']}")
                 i += 1
-        # detailed EDID/CVT entries next
+        # detailed EDID entries next
         for e in entries:
-            if e.get("kind") in {"edid", "cvt"}:
+            if e.get("kind") == "edid":
                 print(f"{i} - {e['title']}")
                 i += 1
         return 0
