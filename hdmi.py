@@ -500,7 +500,10 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
             out.append({"value": str(e["value"]), "title": str(e["title"])})
     else:
         # Expose a single message in case any UI watches available_hdmi_modes
-        msg = "To use the graphical interface, you need to install the wb-hdmi package: apt install wb-hdmi"
+        msg = (
+            "To use the graphical interface, you need to install the "
+            "wb-hdmi or wb-hdmi-xorg package: apt install wb-hdmi"
+        )
         out.append({"value": "auto", "title": msg})
 
     return out

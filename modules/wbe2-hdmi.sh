@@ -4,9 +4,6 @@ source "$DATADIR/modules/utils.sh"
 XORG_CONFIG_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
 XINIT_SERVICE="xinit.service"
 SWAY_SERVICE="sway-kiosk.service"
-WESTON_SERVICE="weston.service"
-LEGACY_KIOSK_SERVICE="wb-kiosk.service"
-WESTON_CONFIG_PATH="/etc/xdg/weston/weston.ini"
 
 _run_systemctl() {
 	systemctl "$@" >/dev/null 2>&1 || true
@@ -24,6 +21,10 @@ _is_installed() {
 
 _use_legacy_xorg() {
 	_is_installed "wb-hdmi-xorg"
+}
+
+_use_sway_runtime() {
+	_is_installed "wb-hdmi"
 }
 
 _config_mode_to_xorg() {
@@ -83,22 +84,21 @@ _generate_xorg_config() {
 }
 
 _cleanup_runtime_artifacts() {
-	rm -f "$WESTON_CONFIG_PATH" "$XORG_CONFIG_PATH"
+	rm -f "$XORG_CONFIG_PATH"
 }
 
 _restart_sway_stack() {
-	_run_systemctl stop "$XINIT_SERVICE" "$WESTON_SERVICE" "$LEGACY_KIOSK_SERVICE"
+	_run_systemctl stop "$XINIT_SERVICE"
 	_run_systemctl_async restart "$SWAY_SERVICE"
 }
 
 _restart_xorg_stack() {
-	_run_systemctl stop "$SWAY_SERVICE" "$WESTON_SERVICE" "$LEGACY_KIOSK_SERVICE"
+	_run_systemctl stop "$SWAY_SERVICE"
 	_run_systemctl_async restart "$XINIT_SERVICE"
 }
 
 hook_module_add() {
 	if _use_legacy_xorg; then
-		rm -f "$WESTON_CONFIG_PATH"
 		_generate_xorg_config
 		return 0
 	fi
@@ -108,22 +108,28 @@ hook_module_add() {
 
 hook_module_init() {
 	if _use_legacy_xorg; then
-		rm -f "$WESTON_CONFIG_PATH"
 		_generate_xorg_config
-		_run_systemctl disable "$SWAY_SERVICE" "$WESTON_SERVICE" "$LEGACY_KIOSK_SERVICE"
+		_run_systemctl disable "$SWAY_SERVICE"
 		_run_systemctl enable "$XINIT_SERVICE"
 		_restart_xorg_stack
 		return 0
 	fi
 
+	if ! _use_sway_runtime; then
+		_run_systemctl stop "$SWAY_SERVICE" "$XINIT_SERVICE"
+		_run_systemctl disable "$SWAY_SERVICE" "$XINIT_SERVICE"
+		_cleanup_runtime_artifacts
+		return 0
+	fi
+
 	_cleanup_runtime_artifacts
-	_run_systemctl disable "$XINIT_SERVICE" "$WESTON_SERVICE" "$LEGACY_KIOSK_SERVICE"
+	_run_systemctl disable "$XINIT_SERVICE"
 	_run_systemctl enable "$SWAY_SERVICE"
 	_restart_sway_stack
 }
 
 hook_module_deinit() {
-	_run_systemctl stop "$SWAY_SERVICE" "$LEGACY_KIOSK_SERVICE" "$WESTON_SERVICE" "$XINIT_SERVICE"
-	_run_systemctl disable "$SWAY_SERVICE" "$LEGACY_KIOSK_SERVICE" "$WESTON_SERVICE" "$XINIT_SERVICE"
+	_run_systemctl stop "$SWAY_SERVICE" "$XINIT_SERVICE"
+	_run_systemctl disable "$SWAY_SERVICE" "$XINIT_SERVICE"
 	_cleanup_runtime_artifacts
 }

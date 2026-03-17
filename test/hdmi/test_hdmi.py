@@ -134,6 +134,7 @@ def test_get_hdmi_modes_not_installed(monkeypatch):
     assert isinstance(out, list) and len(out) == 1
     assert out[0]["value"] == "auto"
     assert "wb-hdmi" in out[0]["title"]
+    assert "wb-hdmi-xorg" in out[0]["title"]
 
 
 def test_get_hdmi_modes_installed(monkeypatch):
