@@ -114,7 +114,47 @@ def _parse_modetest_modes() -> List[Dict[str, object]]:
     return modes
 
 
-def _read_current_resolution() -> str:  # pylint: disable=too-many-branches
+def _modetest_section_name(stripped: str) -> str:
+    """Return current modetest section name or an empty string."""
+    if stripped.startswith("Encoders:"):
+        return "encoders"
+    if stripped.startswith("Connectors:"):
+        return "connectors"
+    if stripped.startswith("CRTCs:"):
+        return "crtcs"
+    return ""
+
+
+def _parse_encoder_line(stripped: str) -> Tuple[str, str]:
+    """Return encoder->CRTC mapping from a modetest line."""
+    parts = stripped.split()
+    if len(parts) >= 2 and parts[0].isdigit():
+        return parts[0], parts[1]
+    return "", ""
+
+
+def _parse_connected_hdmi_encoder(stripped: str) -> str:
+    """Return HDMI encoder id from a connected connector line."""
+    parts = stripped.split()
+    if len(parts) >= 4 and parts[0].isdigit() and parts[1].isdigit():
+        if parts[2] == "connected" and parts[3].startswith("HDMI-A-"):
+            return parts[1]
+    return ""
+
+
+def _parse_crtc_resolution(stripped: str, crtc_id: str) -> Optional[str]:
+    """Return active resolution from a CRTC line for the selected encoder."""
+    parts = stripped.split()
+    if len(parts) < 4 or not crtc_id or parts[0] != crtc_id:
+        return None
+
+    size = parts[3].strip("()")
+    if size and size != "0x0":
+        return size
+    return ""
+
+
+def _read_current_resolution() -> str:
     """Return current active HDMI resolution from modetest CRTC state."""
     txt = _run_modetest_full()
     if not txt:
@@ -128,40 +168,27 @@ def _read_current_resolution() -> str:  # pylint: disable=too-many-branches
         line = raw_line.rstrip()
         stripped = line.strip()
 
-        if stripped.startswith("Encoders:"):
-            section = "encoders"
-            continue
-        if stripped.startswith("Connectors:"):
-            section = "connectors"
-            continue
-        if stripped.startswith("CRTCs:"):
-            section = "crtcs"
+        if new_section := _modetest_section_name(stripped):
+            section = new_section
             continue
         if not stripped:
             continue
 
         if section == "encoders":
-            parts = stripped.split()
-            if len(parts) >= 2 and parts[0].isdigit():
-                encoder_to_crtc[parts[0]] = parts[1]
+            encoder_id, crtc_id = _parse_encoder_line(stripped)
+            if encoder_id:
+                encoder_to_crtc[encoder_id] = crtc_id
             continue
 
         if section == "connectors":
-            parts = stripped.split()
-            if len(parts) >= 4 and parts[0].isdigit() and parts[1].isdigit():
-                if parts[2] == "connected" and parts[3].startswith("HDMI-A-"):
-                    hdmi_encoder = parts[1]
-                    continue
+            hdmi_encoder = _parse_connected_hdmi_encoder(stripped) or hdmi_encoder
             continue
 
         if section == "crtcs" and hdmi_encoder:
             crtc_id = encoder_to_crtc.get(hdmi_encoder, "")
-            parts = stripped.split()
-            if len(parts) >= 4 and crtc_id and parts[0] == crtc_id:
-                size = parts[3].strip("()")
-                if size and size != "0x0":
-                    return size
-                return ""
+            resolution = _parse_crtc_resolution(stripped, crtc_id)
+            if resolution is not None:
+                return resolution
 
     return ""
 
