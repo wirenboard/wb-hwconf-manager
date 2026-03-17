@@ -114,7 +114,7 @@ def _parse_modetest_modes() -> List[Dict[str, object]]:
     return modes
 
 
-def _read_current_resolution() -> str:
+def _read_current_resolution() -> str:  # pylint: disable=too-many-branches
     """Return current active HDMI resolution from modetest CRTC state."""
     txt = _run_modetest_full()
     if not txt:
