@@ -2,13 +2,6 @@ import importlib
 import sys
 from typing import List
 
-XRANDR_SAMPLE = """
-HDMI-1 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 160mm x 90mm
-   3840x2160     60.00*+ 50.00 30.00
-   2560x1440     59.95
-DP-1 disconnected (normal left inverted right x axis y axis)
-""".strip()
-
 
 MODETEST_SAMPLE = """
 Connectors:
@@ -21,48 +14,41 @@ index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot)
 #2 2560x1440 59.95 2560 2728 2792 3560 1440 1481 1488 1500  241500 flags: phsync, pvsync; type: dmt
 """.strip()
 
+MODETEST_WITH_CRTC_SAMPLE = """
+Encoders:
+id	crtc	type	possible crtcs	possible clones
+25	51	TMDS	0x00000001	0x00000001
 
-def test_parse_xrandr_modes_basic(monkeypatch):
-    """Parses xrandr --query output into a resolution->rates mapping."""
+Connectors:
+id	encoder	status		name		size (mm)	modes	encoders
+30	25	connected	HDMI-A-1	160x90		4	25
+modes:
+index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot)
+#0 1920x1080 60.00 1920 2008 2052 2200 1080 1084 1089 1125  148500 flags: phsync, pvsync; type: driver
+#1 1280x720 60.00 1280 1390 1430 1650 720 725 730 750  74250 flags: phsync, pvsync; type: preferred, driver
 
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args[:2] == ["xrandr", "--query"]:
-            return XRANDR_SAMPLE
-        raise FileNotFoundError
+CRTCs:
+id	fb	pos	size
+51	55	(0,0)	(1280x720)
+""".strip()
 
-    monkeypatch.setenv("DISPLAY", ":0.0")
+def test_build_basic_entries_from_modetest(monkeypatch):
+    """Builds flat unique resolutions from modetest data."""
     hdmi = importlib.import_module("hdmi")
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
-
-    out = hdmi._parse_xrandr_modes("HDMI-1")  # pylint: disable=protected-access
-    assert out == {"3840x2160": ["60.00", "50.00", "30.00"], "2560x1440": ["59.95"]}
-
-
-def test_parse_xrandr_modes_fallback_to_modetest(monkeypatch):
-    """Falls back to EDID-derived resolutions when xrandr is unavailable."""
-
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args[:2] == ["xrandr", "--query"]:
-            raise FileNotFoundError
-        return ""
-
-    hdmi = importlib.import_module("hdmi")
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
     monkeypatch.setattr(hdmi, "_run_modetest", lambda: MODETEST_SAMPLE)  # pylint: disable=protected-access
 
-    out = hdmi._parse_xrandr_modes("HDMI-1")  # pylint: disable=protected-access
-    # Fallback returns unique resolutions with empty rate lists
-    assert set(out.keys()) == {"3840x2160", "2560x1440"}
-    for v in out.values():
-        assert isinstance(v, list)
+    modes = hdmi._parse_modetest_modes()  # pylint: disable=protected-access
+    out = hdmi._build_basic_entries(modes)  # pylint: disable=protected-access
+
+    assert [entry["value"] for entry in out] == ["3840x2160", "2560x1440"]
 
 
 def test_main_listing_format(monkeypatch, capsys):
     """Lists simplified CLI output: '0 - auto' and flat entries without headers."""
     entries: List[dict] = [
         {"kind": "auto", "title": "Auto from EDID", "payload": ""},
-        {"kind": "xrandr", "title": "1920x1080", "name": "1920x1080", "payload": ""},
-        {"kind": "xrandr", "title": "3840x2160", "name": "3840x2160", "payload": ""},
+        {"kind": "mode", "title": "1920x1080", "name": "1920x1080", "payload": ""},
+        {"kind": "mode", "title": "3840x2160", "name": "3840x2160", "payload": ""},
         {
             "kind": "edid",
             "title": "3840x2160-60.00 (EDID - 594MHz)",
@@ -94,12 +80,11 @@ def test_main_listing_format(monkeypatch, capsys):
     assert any(("3840x2160-60.00 (EDID" in line) or ("VESA CVT" in line) for line in out)
 
 
-def test_apply_by_index_xrandr(monkeypatch):
-    """Applies an xrandr mode by index via 'xrandr --mode WxH'."""
-    # Build entries: one xrandr and one detailed
+def test_apply_by_index_flat_mode(monkeypatch, capsys):
+    """Flat mode entries are list-only and do not print a Modeline."""
     entries = [
         {"kind": "auto", "title": "Auto from EDID", "payload": ""},
-        {"kind": "xrandr", "title": "1920x1080", "name": "1920x1080", "payload": ""},
+        {"kind": "mode", "title": "1920x1080", "name": "1920x1080", "payload": ""},
         {
             "kind": "edid",
             "title": "1920x1080-60.00 (EDID - 148.50MHz)",
@@ -107,29 +92,19 @@ def test_apply_by_index_xrandr(monkeypatch):
             "payload": '"1920x1080-60.00" 148.50 1920 2008 2052 2200 1080 1084 1089 1125 +hsync +vsync',
         },
     ]
-    calls = []
-
-    def fake_run(args, check=False, stdout=None, stderr=None):  # pylint: disable=unused-argument
-        calls.append(args)
-
     hdmi = importlib.import_module("hdmi")
     monkeypatch.setattr(hdmi, "_build_grouped_entries", lambda: entries)  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi.subprocess, "run", fake_run)
 
     rc = hdmi._apply_by_index("1")  # pylint: disable=protected-access
     assert rc == 0
-    # Should invoke xrandr --mode for the resolution
-    assert any(
-        cmd[:3] == ["xrandr", "--output", "HDMI-1"] and cmd[3:5] == ["--mode", "1920x1080"] for cmd in calls
-    )
+    assert capsys.readouterr().out == ""
 
 
 def test_apply_by_index_detailed(monkeypatch):
-    """Ensures detailed EDID mode presence and applies it by quoted name."""
-    # Build entries: one xrandr and one detailed
+    """Detailed EDID mode prints its Modeline payload."""
     entries = [
         {"kind": "auto", "title": "Auto from EDID", "payload": ""},
-        {"kind": "xrandr", "title": "1920x1080", "name": "1920x1080", "payload": ""},
+        {"kind": "mode", "title": "1920x1080", "name": "1920x1080", "payload": ""},
         {
             "kind": "edid",
             "title": "1920x1080-60.00 (EDID - 148.50MHz)",
@@ -137,29 +112,12 @@ def test_apply_by_index_detailed(monkeypatch):
             "payload": '"1920x1080-60.00" 148.50 1920 2008 2052 2200 1080 1084 1089 1125 +hsync +vsync',
         },
     ]
-
-    added = {"ensure": []}
-    calls = []
-
-    def fake_run(args, check=False, stdout=None, stderr=None):  # pylint: disable=unused-argument
-        calls.append(args)
-
-    def fake_ensure(output, mode_name, payload):
-        added["ensure"].append((output, mode_name, payload))
-
     hdmi = importlib.import_module("hdmi")
     monkeypatch.setattr(hdmi, "_build_grouped_entries", lambda: entries)  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi, "_ensure_mode_present", fake_ensure)
-    monkeypatch.setattr(hdmi.subprocess, "run", fake_run)
 
     rc = hdmi._apply_by_index("2")  # pylint: disable=protected-access
     assert rc == 0
-    # Ensure mode was prepared and xrandr invoked by name
-    assert added["ensure"] and added["ensure"][0][1] == "1920x1080-60.00"
-    assert any(
-        cmd[:3] == ["xrandr", "--output", "HDMI-1"] and cmd[3:5] == ["--mode", "1920x1080-60.00"]
-        for cmd in calls
-    )
+    # Payload is printed to stdout by _apply_by_index
 
 
 def test_get_hdmi_modes_not_installed(monkeypatch):
@@ -188,7 +146,7 @@ def test_get_hdmi_modes_installed(monkeypatch):
 
     entries: List[dict] = [
         {"kind": "auto", "value": "auto", "title": "Auto from EDID"},
-        {"kind": "xrandr", "value": "1920x1080", "title": "1920x1080"},
+        {"kind": "mode", "value": "1920x1080", "title": "1920x1080"},
         {
             "kind": "edid",
             "value": "1920x1080-60.00|EDID:148500",
@@ -208,10 +166,33 @@ def test_get_hdmi_modes_installed(monkeypatch):
     values = [e["value"] for e in out]
     # May include auto now
     assert "auto" in values
-    # Includes xrandr and detailed entries
+    # Includes flat modes and detailed entries
     assert "1920x1080" in values
     assert "1920x1080-60.00|EDID:148500" in values
     assert "1920x1080-60.00|CVT:173000" in values
+
+
+def test_get_hdmi_modes_legacy_package_installed(monkeypatch):
+    """wb-hdmi-xorg should also enable HDMI mode discovery for the UI."""
+    hdmi = importlib.import_module("hdmi")
+
+    def fake_check_output(args, text=False):  # pylint: disable=unused-argument
+        package = args[-1]
+        if package == "wb-hdmi":
+            raise hdmi.subprocess.CalledProcessError(returncode=1, cmd=args)
+        if package == "wb-hdmi-xorg":
+            return "install ok installed\n"
+        raise AssertionError("unexpected package query")
+
+    entries: List[dict] = [
+        {"kind": "auto", "value": "auto", "title": "Auto from EDID"},
+    ]
+
+    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
+    monkeypatch.setattr(hdmi, "_build_grouped_entries", lambda: entries)  # pylint: disable=protected-access
+
+    out = hdmi.get_hdmi_modes()
+    assert out == [{"value": "auto", "title": "Auto from EDID"}]
 
 
 def test_cvt_modeline_parsing(monkeypatch):
@@ -242,62 +223,8 @@ def test_cvt_modeline_no_cvt(monkeypatch):
     assert payload == ""
 
 
-def test_ensure_mode_present_exists(monkeypatch):
-    """Does nothing when the mode already exists in xrandr output."""
-    hdmi = importlib.import_module("hdmi")
-    mode_name = "1920x1080-60.00"
-
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args and args[0] == "xrandr":
-            return f"...\n{mode_name} 148.50*\n"
-        return ""
-
-    calls = []
-
-    def fake_run(args, check=False, stdout=None, stderr=None):  # pylint: disable=unused-argument
-        calls.append(args)
-
-    monkeypatch.setenv("DISPLAY", ":0.0")
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
-    monkeypatch.setattr(hdmi.subprocess, "run", fake_run)
-
-    hdmi._ensure_mode_present(  # pylint: disable=protected-access
-        "HDMI-1",
-        mode_name,
-        '"x" 1 2 3 4 5 6 7 8 +hsync +vsync',
-    )
-    assert not calls  # nothing to add when mode already exists
-
-
-def test_ensure_mode_present_new(monkeypatch):
-    """Creates a new mode and adds it to the output when it does not exist."""
-    hdmi = importlib.import_module("hdmi")
-    mode_name = "1920x1080-60.00"
-    payload = '"1920x1080-60.00" 148.50 1920 2008 2052 2200 1080 1084 1089 1125 +hsync +vsync'
-
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args and args[0] == "xrandr":
-            return ""  # mode not present
-        return ""
-
-    calls = []
-
-    def fake_run(args, check=False, stdout=None, stderr=None):  # pylint: disable=unused-argument
-        calls.append(args)
-
-    monkeypatch.setenv("DISPLAY", ":0.0")
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
-    monkeypatch.setattr(hdmi.subprocess, "run", fake_run)
-
-    hdmi._ensure_mode_present("HDMI-1", mode_name, payload)  # pylint: disable=protected-access
-    # Expect two calls: --newmode and --addmode
-    assert len(calls) == 2
-    assert calls[0][:3] == ["xrandr", "--newmode", mode_name]
-    assert calls[1] == ["xrandr", "--addmode", "HDMI-1", mode_name]
-
-
 def test_apply_by_index_auto(monkeypatch, capsys):
-    """Index 0 triggers xrandr --auto and prints the Auto Modeline payload."""
+    """Index 0 prints the Auto Modeline payload."""
     hdmi = importlib.import_module("hdmi")
     entries = [
         {
@@ -306,25 +233,16 @@ def test_apply_by_index_auto(monkeypatch, capsys):
             "payload": '"1920x1080-60.00" 148.50 1920 2008 2052 2200 1080 1084 1089 1125 +hsync +vsync',
         },
     ]
-
-    calls = []
-
-    def fake_run(args, check=False, stdout=None, stderr=None):  # pylint: disable=unused-argument
-        calls.append(args)
-
-    monkeypatch.setenv("DISPLAY", ":0.0")
     monkeypatch.setattr(hdmi, "_build_grouped_entries", lambda: entries)  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi.subprocess, "run", fake_run)
 
     rc = hdmi._apply_by_index("0")  # pylint: disable=protected-access
     assert rc == 0
     out = capsys.readouterr().out.strip()
     assert out.startswith('"1920x1080-60.00" 148.50')
-    assert any(cmd[:3] == ["xrandr", "--output", "HDMI-1"] and cmd[3] == "--auto" for cmd in calls)
 
 
 def test_build_grouped_entries_aggregates(monkeypatch):
-    """Aggregates Auto, xrandr resolutions, and detailed EDID/CVT entries (>=2.5K width)."""
+    """Aggregates Auto, flat modetest resolutions, and detailed EDID/CVT entries."""
     hdmi = importlib.import_module("hdmi")
 
     # Provide modetest modes: include >=2.5K widths and one below threshold
@@ -379,12 +297,6 @@ def test_build_grouped_entries_aggregates(monkeypatch):
         },
     ]
 
-    # xrandr offers two resolutions
-    monkeypatch.setattr(
-        hdmi,
-        "_parse_xrandr_modes",
-        lambda _o: {"1920x1080": ["60.00"], "3840x2160": ["60.00"]},
-    )  # pylint: disable=protected-access
     monkeypatch.setattr(
         hdmi, "_parse_modetest_modes", lambda: modetest_modes
     )  # pylint: disable=protected-access
@@ -401,10 +313,10 @@ def test_build_grouped_entries_aggregates(monkeypatch):
     assert entries[0]["kind"] == "auto"
     assert entries[0]["name"] == "3840x2160-60.00"
 
-    # Next, xrandr entries should include 3840x2160 and 1920x1080
-    xr = [e for e in entries if e.get("kind") == "xrandr"]
-    xr_values = {e["value"] for e in xr}
-    assert {"3840x2160", "1920x1080"}.issubset(xr_values)
+    # Next, flat mode entries should include all unique modetest resolutions
+    basic = [e for e in entries if e.get("kind") == "mode"]
+    basic_values = {e["value"] for e in basic}
+    assert {"3840x2160", "2560x1440", "1920x1080"}.issubset(basic_values)
 
     # Detailed entries include EDID and CVT for >=2560 widths
     det = [e for e in entries if e.get("kind") in {"edid", "cvt"}]
@@ -419,27 +331,10 @@ def test_build_grouped_entries_aggregates(monkeypatch):
     assert "edid" in kinds_per_name["2560x1440-59.95"] and "cvt" in kinds_per_name["2560x1440-59.95"]
 
 
-def test_parse_xrandr_modes_no_tools(monkeypatch):
-    """Returns an empty mapping when both xrandr and modetest are unavailable."""
-    hdmi = importlib.import_module("hdmi")
-
-    def fake_check_output(args, text=False, stderr=None):  # pylint: disable=unused-argument
-        if args[:2] == ["xrandr", "--query"]:
-            raise FileNotFoundError
-        return ""
-
-    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
-    monkeypatch.setattr(hdmi, "_run_modetest", lambda: "")  # pylint: disable=protected-access
-
-    out = hdmi._parse_xrandr_modes("HDMI-1")  # pylint: disable=protected-access
-    assert out == {}
-
-
 def test_build_grouped_entries_no_tools(monkeypatch):
-    """With no xrandr or modetest, returns only the Auto entry with empty payload."""
+    """With no modetest, returns only the Auto entry with empty payload."""
     hdmi = importlib.import_module("hdmi")
     monkeypatch.setattr(hdmi, "_parse_modetest_modes", lambda: [])  # pylint: disable=protected-access
-    monkeypatch.setattr(hdmi, "_parse_xrandr_modes", lambda _o: {})  # pylint: disable=protected-access
 
     entries = hdmi._build_grouped_entries()  # pylint: disable=protected-access
     assert len(entries) == 1
@@ -453,6 +348,60 @@ def test_build_grouped_entries_no_tools(monkeypatch):
 def test_clean_monitor_field():
     hdmi = importlib.import_module("hdmi")
     assert hdmi._clean_monitor_field("  'Panel 123'  ") == "Panel 123"  # pylint: disable=protected-access
+
+
+def test_find_connected_hdmi_edid(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+
+    monkeypatch.setattr(
+        hdmi.glob,
+        "glob",
+        lambda pattern: [
+            "/sys/class/drm/card0-HDMI-A-1/status",
+            "/sys/class/drm/card1-HDMI-A-1/status",
+        ],
+    )
+
+    def fake_open(path, mode="r", encoding=None):  # pylint: disable=unused-argument
+        class FakeFile:
+            def __init__(self, value):
+                self.value = value
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def read(self):
+                return self.value
+
+        if path.endswith("card0-HDMI-A-1/status"):
+            return FakeFile("disconnected\n")
+        if path.endswith("card1-HDMI-A-1/status"):
+            return FakeFile("connected\n")
+        raise AssertionError(f"unexpected open path: {path}")
+
+    monkeypatch.setattr(hdmi, "open", fake_open, raising=False)
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: path.endswith("card1-HDMI-A-1/edid"))
+
+    find_connected_hdmi_edid = getattr(hdmi, "_find_connected_hdmi_edid")
+
+    assert find_connected_hdmi_edid() == "/sys/class/drm/card1-HDMI-A-1/edid"
+
+
+def test_read_monitor_name_uses_connected_hdmi(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+
+    monkeypatch.setattr(
+        hdmi,
+        "_find_connected_hdmi_edid",
+        lambda: "/sys/class/drm/card1-HDMI-A-1/edid",
+    )  # pylint: disable=protected-access
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: True)
+    monkeypatch.setattr(hdmi.subprocess, "check_output", lambda *a, **k: "Display Product Name: 'Panel'")
+
+    assert hdmi._read_monitor_name() == "Panel"  # pylint: disable=protected-access
 
 
 def test_read_monitor_name_prefers_display_product_name(monkeypatch):
@@ -499,9 +448,10 @@ def test_get_monitor_info(monkeypatch):
     monkeypatch.setattr(
         hdmi, "_read_monitor_name", lambda _p=None: "Demo Panel"
     )  # pylint: disable=protected-access
+    monkeypatch.setattr(hdmi, "_read_current_resolution", lambda: "1920x1080")  # pylint: disable=protected-access
 
     info = hdmi.get_monitor_info()
-    assert info == "Demo Panel (max: 3840x2160)"
+    assert info == "Demo Panel (max: 3840x2160, current: 1920x1080)"
 
 
 def test_get_monitor_info_no_monitor(monkeypatch):
@@ -511,6 +461,13 @@ def test_get_monitor_info_no_monitor(monkeypatch):
 
     info = hdmi.get_monitor_info()
     assert info == "No monitor detected"
+
+
+def test_read_current_resolution(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi, "_run_modetest_full", lambda: MODETEST_WITH_CRTC_SAMPLE)  # pylint: disable=protected-access
+
+    assert hdmi._read_current_resolution() == "1280x720"  # pylint: disable=protected-access
 
 
 def test_read_monitor_name_missing_file(monkeypatch):
