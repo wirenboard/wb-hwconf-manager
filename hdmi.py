@@ -122,39 +122,31 @@ def _read_current_resolution() -> str:
 
     encoder_to_crtc: Dict[str, str] = {}
     hdmi_encoder = ""
-    in_encoders = False
-    in_connectors = False
-    in_crtcs = False
+    section = ""
 
     for raw_line in txt.splitlines():
         line = raw_line.rstrip()
         stripped = line.strip()
 
         if stripped.startswith("Encoders:"):
-            in_encoders = True
-            in_connectors = False
-            in_crtcs = False
+            section = "encoders"
             continue
         if stripped.startswith("Connectors:"):
-            in_encoders = False
-            in_connectors = True
-            in_crtcs = False
+            section = "connectors"
             continue
         if stripped.startswith("CRTCs:"):
-            in_encoders = False
-            in_connectors = False
-            in_crtcs = True
+            section = "crtcs"
             continue
         if not stripped:
             continue
 
-        if in_encoders:
+        if section == "encoders":
             parts = stripped.split()
             if len(parts) >= 2 and parts[0].isdigit():
                 encoder_to_crtc[parts[0]] = parts[1]
             continue
 
-        if in_connectors:
+        if section == "connectors":
             parts = stripped.split()
             if len(parts) >= 4 and parts[0].isdigit() and parts[1].isdigit():
                 if parts[2] == "connected" and parts[3].startswith("HDMI-A-"):
@@ -162,7 +154,7 @@ def _read_current_resolution() -> str:
                     continue
             continue
 
-        if in_crtcs and hdmi_encoder:
+        if section == "crtcs" and hdmi_encoder:
             crtc_id = encoder_to_crtc.get(hdmi_encoder, "")
             parts = stripped.split()
             if len(parts) >= 4 and crtc_id and parts[0] == crtc_id:
