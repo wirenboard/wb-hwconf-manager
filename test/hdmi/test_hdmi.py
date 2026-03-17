@@ -2,7 +2,6 @@ import importlib
 import sys
 from typing import List
 
-
 MODETEST_SAMPLE = """
 Connectors:
 id	encoder	status		name		size (mm)	modes	encoders
