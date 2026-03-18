@@ -456,10 +456,7 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
-    installed = (
-        _is_installed("wb-hdmi")
-        or _is_installed("wb-hdmi-wayland")
-    )
+    installed = _is_installed("wb-hdmi") or _is_installed("wb-hdmi-wayland")
 
     out: List[Dict[str, str]] = []
 
