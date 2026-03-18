@@ -20,11 +20,11 @@ _is_installed() {
 }
 
 _use_legacy_xorg() {
-	_is_installed "wb-hdmi-xorg"
+	_is_installed "wb-hdmi"
 }
 
 _use_sway_runtime() {
-	_is_installed "wb-hdmi"
+	_is_installed "wb-hdmi-wayland"
 }
 
 _config_mode_to_xorg() {

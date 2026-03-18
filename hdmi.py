@@ -456,7 +456,10 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
-    installed = _is_installed("wb-hdmi") or _is_installed("wb-hdmi-xorg")
+    installed = (
+        _is_installed("wb-hdmi")
+        or _is_installed("wb-hdmi-wayland")
+    )
 
     out: List[Dict[str, str]] = []
 
@@ -468,7 +471,7 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
         # Expose a single message in case any UI watches available_hdmi_modes
         msg = (
             "To use the graphical interface, you need to install the "
-            "wb-hdmi or wb-hdmi-xorg package: apt install wb-hdmi"
+            "wb-hdmi or wb-hdmi-wayland package: apt install wb-hdmi"
         )
         out.append({"value": "auto", "title": msg})
 
