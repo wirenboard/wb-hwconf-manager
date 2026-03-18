@@ -1,135 +1,135 @@
 #!/bin/bash
 source "$DATADIR/modules/utils.sh"
 
+XORG_CONFIG_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
+XINIT_SERVICE="xinit.service"
+SWAY_SERVICE="sway-kiosk.service"
+
+_run_systemctl() {
+	systemctl "$@" >/dev/null 2>&1 || true
+}
+
+_run_systemctl_async() {
+	systemctl --no-block "$@" >/dev/null 2>&1 || true
+}
+
+_is_installed() {
+	local package=$1
+
+	dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q "install ok installed"
+}
+
+_use_legacy_xorg() {
+	_is_installed "wb-hdmi"
+}
+
+_use_sway_runtime() {
+	_is_installed "wb-hdmi-wayland"
+}
+
+_config_mode_to_xorg() {
+	local mode=$1
+	local base
+
+	if [[ -z "$mode" || "$mode" == "auto" || "$mode" == "null" ]]; then
+		return 0
+	fi
+
+	base="${mode%%|*}"
+	if [[ "$base" == *-* ]]; then
+		echo "${base%-*}"
+		return 0
+	fi
+
+	echo "$base"
+}
+
+_config_rotate_to_xorg() {
+	case "$1" in
+		90)
+			echo "right"
+			;;
+		180)
+			echo "inverted"
+			;;
+		270)
+			echo "left"
+			;;
+		*)
+			echo "normal"
+			;;
+	esac
+}
+
+_generate_xorg_config() {
+	local mode rotate xorg_mode xrotate
+
+	mode="$(config_module_option ".mode")"
+	rotate="$(config_module_option ".rotate")"
+
+	xorg_mode="$(_config_mode_to_xorg "$mode")"
+	xrotate="$(_config_rotate_to_xorg "$rotate")"
+
+	mkdir -p "$(dirname "$XORG_CONFIG_PATH")"
+
+	{
+		echo 'Section "Monitor"'
+		echo '    Identifier "HDMI-1"'
+		if [[ -n "$xorg_mode" ]]; then
+			echo "    Option \"PreferredMode\" \"$xorg_mode\""
+		fi
+		echo "    Option \"Rotate\" \"$xrotate\""
+		echo 'EndSection'
+	} > "$XORG_CONFIG_PATH"
+}
+
+_cleanup_runtime_artifacts() {
+	rm -f "$XORG_CONFIG_PATH"
+}
+
+_restart_sway_stack() {
+	_run_systemctl stop "$XINIT_SERVICE"
+	_run_systemctl_async restart "$SWAY_SERVICE"
+}
+
+_restart_xorg_stack() {
+	_run_systemctl stop "$SWAY_SERVICE"
+	_run_systemctl_async restart "$XINIT_SERVICE"
+}
+
 hook_module_add() {
-    local XORG_CONFIG_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
-    local URL_CONFIG_PATH="/root/url"
+	if _use_legacy_xorg; then
+		_generate_xorg_config
+		return 0
+	fi
 
-    # Extract module options via jq
-    local mode="$(config_module_option ".mode")"
-    local rotate="$(config_module_option ".rotate")"
-    local url="$(config_module_option ".url")"
-
-    # Parse mode: may be "WxH-Rate|EDID" / "WxH-Rate|CVT" / "WxH-Rate" / "WxH"
-    local res=""
-    local rate=""
-    local variant=""
-    local modeline_name=""
-    local modeline_def=""
-    if [[ -n "$mode" && "$mode" != "auto" ]]; then
-        # Split variant suffix after '|', if present
-        if [[ "$mode" == *"|"* ]]; then
-            variant="${mode##*|}"
-            variant_base="${variant%%:*}"
-            variant_extra="${variant#*:}"
-            [[ "$variant" == "$variant_base" ]] && variant_extra=""
-            mode="${mode%%|*}"
-        fi
-        if [[ "$mode" == *-* ]]; then
-            res="${mode%%-*}"
-            rate="${mode##*-}"
-        else
-            res="$mode"
-        fi
-    fi
-
-    # Get Modeline via hdmi.py (EDID -> built-in CVT) and remember target index
-    if [[ -n "$res" && -n "$rate" ]]; then
-        local w="${res%x*}"
-        local h="${res#*x}"
-        # Find target mode index from hdmi.py list (one mode per line)
-        local idx
-        if [[ "$variant" == "CVT" ]]; then
-            # Match titles starting with "WxH-Rate (VESA CVT..."
-            idx=$( /usr/lib/wb-hwconf-manager/hdmi.py 2>/dev/null | awk -F ' - ' -v base="${w}x${h}-${rate}" 'index($2, base " (VESA CVT")==1 {print $1; exit}' )
-        elif [[ "$variant" == "EDID" ]]; then
-            # Match titles starting with "WxH-Rate (EDID ..."
-            idx=$( /usr/lib/wb-hwconf-manager/hdmi.py 2>/dev/null | awk -F ' - ' -v base="${w}x${h}-${rate}" 'index($2, base " (EDID ")==1 {print $1; exit}' )
-        else
-            # Generic: strip suffix " ( ... )" and match by base name
-            idx=$( /usr/lib/wb-hwconf-manager/hdmi.py 2>/dev/null | awk -F ' - ' -v target="${w}x${h}-${rate}" '{t=$2; sub(/ \(.+\)$/,"",t); if(t==target){print $1; exit}}' )
-        fi
-        # Generate modeline to write into Xorg config
-        if [[ -n "$idx" ]]; then
-            modeline_def=$(/usr/lib/wb-hwconf-manager/hdmi.py "$idx" 2>/dev/null)
-        fi
-
-        # Mode name is the first token (quoted) from modeline_def
-        if [[ -n "$modeline_def" ]]; then
-            modeline_name=$(sed -E 's/^"([^"]+)".*$/\1/' <<< "$modeline_def")
-            # Normalize mode name if needed
-            if [[ "$modeline_name" != "${w}x${h}-${rate}" ]]; then
-                local norm_name="${w}x${h}-${rate}"
-                modeline_def=$(sed -E "s/^\"[^\"]+\"/\"${norm_name}\"/" <<< "$modeline_def")
-                modeline_name="$norm_name"
-            fi
-        fi
-    fi
-
-    # Map rotate degrees to X11 value (normal, left, right, inverted)
-    case "$rotate" in
-        90) xrotate="right" ;;
-        180) xrotate="inverted" ;;
-        270) xrotate="left" ;;
-        *) xrotate="normal" ;;
-    esac
-
-    # Generate xorg.conf.d/10-monitor.conf
-    mkdir -p "$(dirname "$XORG_CONFIG_PATH")"
-    {
-        echo 'Section "Monitor"'
-        echo '    Identifier "HDMI-1"'
-        # If modeline is available — add it and set as preferred
-        if [[ -n "$modeline_def" && -n "$modeline_name" ]]; then
-            echo "    Modeline $modeline_def"
-            echo "    Option \"PreferredMode\" \"$modeline_name\""
-        elif [[ -n "$res" ]]; then
-            # Fallback: at least set desired resolution
-            echo "    Option \"PreferredMode\" \"$res\""
-        fi
-        echo "    Option \"Rotate\" \"$xrotate\""
-        echo 'EndSection'
-    } > "$XORG_CONFIG_PATH"
-
-    if [[ -n "$url" ]]; then
-        echo "$url" > "$URL_CONFIG_PATH"
-    else
-        rm "$URL_CONFIG_PATH"
-    fi
-
-    # Apply xrandr settings or start xinit
-    if pgrep -x xinit > /dev/null; then
-        echo "Xinit is running. Applying xrandr settings..."
-        export DISPLAY=:0.0
-
-        # If index found — apply mode by number (hdmi.py will add it if needed)
-        if [[ -n "$idx" ]]; then
-            /usr/lib/wb-hwconf-manager/hdmi.py "$idx" >/dev/null 2>&1 || true
-        else
-            # Fallback: use xrandr by resolution and rate
-            cmd=(xrandr --output HDMI-1)
-            if [[ -n "$res" ]]; then
-                cmd+=("--mode" "$res")
-                [[ -n "$rate" ]] && cmd+=("--rate" "$rate")
-            fi
-            "${cmd[@]}" || true
-        fi
-
-        # Rotate screen
-        xrandr --output HDMI-1 --rotate "$xrotate" || true
-
-    else
-        systemctl start xinit.service
-    fi
-
+	_cleanup_runtime_artifacts
 }
 
 hook_module_init() {
-	systemctl enable xinit.service
-	systemctl start xinit.service &
+	if _use_legacy_xorg; then
+		_generate_xorg_config
+		_run_systemctl disable "$SWAY_SERVICE"
+		_run_systemctl enable "$XINIT_SERVICE"
+		_restart_xorg_stack
+		return 0
+	fi
+
+	if ! _use_sway_runtime; then
+		_run_systemctl stop "$SWAY_SERVICE" "$XINIT_SERVICE"
+		_run_systemctl disable "$SWAY_SERVICE" "$XINIT_SERVICE"
+		_cleanup_runtime_artifacts
+		return 0
+	fi
+
+	_cleanup_runtime_artifacts
+	_run_systemctl disable "$XINIT_SERVICE"
+	_run_systemctl enable "$SWAY_SERVICE"
+	_restart_sway_stack
 }
 
 hook_module_deinit() {
-	systemctl stop xinit.service &
-	systemctl disable xinit.service
+	_run_systemctl stop "$SWAY_SERVICE" "$XINIT_SERVICE"
+	_run_systemctl disable "$SWAY_SERVICE" "$XINIT_SERVICE"
+	_cleanup_runtime_artifacts
 }
