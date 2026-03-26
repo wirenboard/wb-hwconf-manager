@@ -47,13 +47,6 @@
                         "hidden": true
                     }
                 },
-                "interface": {
-                    "type": "boolean",
-                    "default": false,
-                    "options": {
-                        "hidden": true
-                    }
-                },
                 "options": {
                     "type": "object",
                     "title": " ",
@@ -83,7 +76,6 @@
                 "id",
                 "name",
                 "compatible",
-                "interface",
                 "module",
                 "options"
             ]
