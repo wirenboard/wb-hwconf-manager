@@ -13,7 +13,7 @@
                 "collapsed": true
             }
         },
-        "slot": {
+        "slot_base": {
             "type": "object",
             "headerTemplate": "{{translate self.name}}",
             "id": "slot_item",
@@ -47,36 +47,12 @@
                         "hidden": true
                     }
                 },
-                "module": {
-                    "title": "Module type",
-                    "description": "Type of the module plugged to the slot",
-                    "type": "string",
-                    "watch": {
-                        "all_modules": "modules",
-                        "slot_compatible": "slot_item.compatible"
-                    },
+                "interface": {
+                    "type": "boolean",
+                    "default": false,
                     "options": {
-                        "enum_hidden": []
-                    },
-                    "enumSource": [
-                        {
-                            "source": [
-                                {
-                                    "title": "None",
-                                    "value": ""
-                                }
-                            ],
-                            "title": "{{item.title}}",
-                            "value": "{{item.value}}"
-                        },
-                        {
-                            "source": "all_modules",
-                            "filter": "{{if watched.slot_compatible intersect item.compatible_slots}}1{{endif}}",
-                            "title": "{{item.description}}",
-                            "value": "{{item.id}}"
-                        }
-                    ],
-                    "propertyOrder": 2
+                        "hidden": true
+                    }
                 },
                 "options": {
                     "type": "object",
@@ -107,8 +83,105 @@
                 "id",
                 "name",
                 "compatible",
+                "interface",
                 "module",
                 "options"
+            ]
+        },
+        "slot": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/slot_base"
+                },
+                {
+                    "properties": {
+                        "interface": {
+                            "type": "boolean",
+                            "default": false,
+                            "enum": [
+                                false
+                            ],
+                            "options": {
+                                "hidden": true
+                            }
+                        },
+                        "module": {
+                            "title": "Module type",
+                            "description": "Type of the module plugged to the slot",
+                            "type": "string",
+                            "watch": {
+                                "all_modules": "modules",
+                                "slot_compatible": "slot_item.compatible"
+                            },
+                            "options": {
+                                "enum_hidden": []
+                            },
+                            "enumSource": [
+                                {
+                                    "source": [
+                                        {
+                                            "title": "None",
+                                            "value": ""
+                                        }
+                                    ],
+                                    "title": "{{item.title}}",
+                                    "value": "{{item.value}}"
+                                },
+                                {
+                                    "source": "all_modules",
+                                    "filter": "{{if watched.slot_compatible intersect item.compatible_slots}}1{{endif}}",
+                                    "title": "{{item.description}}",
+                                    "value": "{{item.id}}"
+                                }
+                            ],
+                            "propertyOrder": 2
+                        }
+                    }
+                }
+            ]
+        },
+        "interface": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/slot_base"
+                },
+                {
+                    "properties": {
+                        "interface": {
+                            "type": "boolean",
+                            "default": true,
+                            "enum": [
+                                true
+                            ],
+                            "options": {
+                                "hidden": true
+                            }
+                        },
+                        "module": {
+                            "title": "Interface",
+                            "type": "string",
+                            "watch": {
+                                "all_modules": "modules",
+                                "slot_compatible": "slot_item.compatible"
+                            },
+                            "options": {
+                                "enum_hidden": []
+                            },
+                            "enumSource": [
+                                {
+                                    "source": "all_modules",
+                                    "filter": "{{if watched.slot_compatible intersect item.compatible_slots}}1{{endif}}",
+                                    "title": "{{item.description}}",
+                                    "value": "{{item.id}}"
+                                }
+                            ],
+                            "propertyOrder": 2
+                        }
+                    },
+                    "required": [
+                        "interface"
+                    ]
+                }
             ]
         },
         "module": {
@@ -164,7 +237,16 @@
                 }
             },
             "items": {
-                "$ref": "#/definitions/slot"
+                "headerTemplate": "{{translate self.name}}",
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/slot"
+                    },
+                    {
+                        "$ref": "#/definitions/interface"
+                    }
+                ],
+                "format": "wb-first-oneof"
             },
             "_format": "tabs",
             "propertyOrder": 1
@@ -190,11 +272,12 @@
     "options": {
         "disable_collapse": true
     },
-        "translations": {
-            "ru": {
-                "Hardware Modules Configuration": "Модули расширения и порты",
-                "List of extension slots": "Список слотов расширения",
-                "Module type": "Тип модуля",
+    "translations": {
+        "ru": {
+            "Hardware Modules Configuration": "Модули расширения и порты",
+            "List of extension slots": "Список слотов расширения",
+            "Module type": "Тип модуля",
+            "Interface": "Интерфейс",
             "Type of the module plugged to the slot": "Тип модуля, установленного в слоте",
             "None": "Не установлен",
             "Internal slot 1": "Внутренний слот 1",
@@ -326,7 +409,6 @@
             "Kiosk mode": "Режим киоска",
             "Window mode": "Оконный режим",
             "To use the graphical interface, you need to install the wb-hdmi package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi: apt install wb-hdmi"
-
         }
     }
 }

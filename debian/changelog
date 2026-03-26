@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.71.2) stable; urgency=medium
+
+  * Fix title of rs485-1/rs485-2/w1/w2 slots
+
+ -- Nikolay Korotkiy <nikolay.korotkiy@wirenboard.com>  Thu, 26 Mar 2026 14:05:00 +0400
+
 wb-hwconf-manager (1.71.1) stable; urgency=medium
 
   * wb85x: fix wrong gpio numbers resolving in mod1 & mod2 slots
