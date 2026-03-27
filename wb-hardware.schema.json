@@ -69,14 +69,12 @@
             "required": [
                 "id",
                 "name",
-                "compatible",
-                "module"
+                "compatible"
             ],
             "defaultProperties": [
                 "id",
                 "name",
                 "compatible",
-                "module",
                 "options"
             ]
         },
@@ -128,7 +126,17 @@
                             ],
                             "propertyOrder": 2
                         }
-                    }
+                    },
+                    "required": [
+                        "module"
+                    ],
+                    "defaultProperties": [
+                        "id",
+                        "name",
+                        "compatible",
+                        "module",
+                        "options"
+                    ]
                 }
             ]
         },
@@ -171,7 +179,15 @@
                         }
                     },
                     "required": [
-                        "interface"
+                        "interface",
+                        "module"
+                    ],
+                    "defaultProperties": [
+                        "id",
+                        "name",
+                        "compatible",
+                        "module",
+                        "options"
                     ]
                 }
             ]
