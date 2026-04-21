@@ -43,6 +43,77 @@ def test_build_basic_entries_from_modetest(monkeypatch):
     assert [entry["value"] for entry in out] == ["3840x2160", "2560x1440"]
 
 
+def test_run_modetest_success(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    calls = []
+
+    def fake_check_output(args, text=False):  # pylint: disable=unused-argument
+        calls.append((args, text))
+        return "modetest output"
+
+    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
+
+    assert hdmi._run_modetest() == "modetest output"  # pylint: disable=protected-access
+    assert calls == [(["modetest", "-M", "sun4i-drm", "-c"], True)]
+
+
+def test_run_modetest_failure(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+
+    def fake_check_output(*_args, **_kwargs):
+        raise FileNotFoundError
+
+    monkeypatch.setattr(hdmi.subprocess, "check_output", fake_check_output)
+
+    assert hdmi._run_modetest() == ""  # pylint: disable=protected-access
+
+
+def test_parse_mode_line_rejects_invalid_line():
+    hdmi = importlib.import_module("hdmi")
+    assert hdmi._parse_mode_line("not a mode line") is None  # pylint: disable=protected-access
+
+
+def test_parse_modetest_modes_no_output(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi, "_run_modetest", lambda: "")  # pylint: disable=protected-access
+
+    assert hdmi._parse_modetest_modes() == []  # pylint: disable=protected-access
+
+
+def test_parse_modetest_modes_stops_on_blank_line(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    sample = """
+Connectors:
+id encoder status name size (mm) modes encoders
+30 25 connected HDMI-A-1 160x90 4 25
+modes:
+index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot)
+
+#0 1920x1080 60.00 1920 2008 2052 2200 1080 1084 1089 1125 148500 flags: phsync, pvsync; type: driver
+""".strip(
+        "\n"
+    )
+    monkeypatch.setattr(hdmi, "_run_modetest", lambda: sample)  # pylint: disable=protected-access
+
+    assert hdmi._parse_modetest_modes() == []  # pylint: disable=protected-access
+
+
+def test_parse_modetest_modes_stops_on_non_mode_line(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    sample = """
+Connectors:
+id encoder status name size (mm) modes encoders
+30 25 connected HDMI-A-1 160x90 4 25
+modes:
+index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot)
+properties:
+#0 1920x1080 60.00 1920 2008 2052 2200 1080 1084 1089 1125 148500 flags: phsync, pvsync; type: driver
+""".strip()
+    monkeypatch.setattr(hdmi, "_run_modetest", lambda: sample)  # pylint: disable=protected-access
+
+    assert hdmi._parse_modetest_modes() == []  # pylint: disable=protected-access
+
+
 def test_main_listing_format(monkeypatch, capsys):
     """Lists simplified CLI output: '0 - auto' and flat entries without headers."""
     entries: List[dict] = [
@@ -171,7 +242,7 @@ def test_get_hdmi_modes_wayland_package_installed(monkeypatch):
             raise hdmi.subprocess.CalledProcessError(returncode=1, cmd=args)
         if package == "wb-hdmi-wayland":
             return "install ok installed\n"
-        raise AssertionError("unexpected package query")
+        raise AssertionError("unexpected package query")  # pragma: no cover
 
     entries: List[dict] = [
         {"kind": "auto", "value": "auto", "title": "Auto from EDID"},
@@ -281,6 +352,20 @@ def test_build_grouped_entries_aggregates(monkeypatch):
     assert {e["name"] for e in det} == {"3840x2160-60.00", "2560x1440-59.95"}
 
 
+def test_build_basic_entries_handles_invalid_resolution():
+    hdmi = importlib.import_module("hdmi")
+    entries = hdmi._build_basic_entries(  # pylint: disable=protected-access
+        [{"res": "badxvalue"}, {"res": "1280x720"}]
+    )
+
+    assert [entry["value"] for entry in entries] == ["1280x720", "badxvalue"]
+
+
+def test_build_detailed_entries_skips_invalid_resolution():
+    hdmi = importlib.import_module("hdmi")
+    assert hdmi._build_detailed_entries([{"res": "badxvalue"}]) == []  # pylint: disable=protected-access
+
+
 def test_build_grouped_entries_no_tools(monkeypatch):
     """With no modetest, returns only the Auto entry with empty payload."""
     hdmi = importlib.import_module("hdmi")
@@ -330,7 +415,7 @@ def test_find_connected_hdmi_edid(monkeypatch):
             return FakeFile("disconnected\n")
         if path.endswith("card1-HDMI-A-1/status"):
             return FakeFile("connected\n")
-        raise AssertionError(f"unexpected open path: {path}")
+        raise AssertionError(f"unexpected open path: {path}")  # pragma: no cover
 
     monkeypatch.setattr(hdmi, "open", fake_open, raising=False)
     monkeypatch.setattr(hdmi.os.path, "exists", lambda path: path.endswith("card1-HDMI-A-1/edid"))
@@ -338,6 +423,39 @@ def test_find_connected_hdmi_edid(monkeypatch):
     find_connected_hdmi_edid = getattr(hdmi, "_find_connected_hdmi_edid")
 
     assert find_connected_hdmi_edid() == "/sys/class/drm/card1-HDMI-A-1/edid"
+
+
+def test_find_connected_hdmi_edid_handles_errors_and_missing_edid(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+
+    monkeypatch.setattr(
+        hdmi.glob,
+        "glob",
+        lambda pattern: [
+            "/sys/class/drm/card0-HDMI-A-1/status",
+            "/sys/class/drm/card1-HDMI-A-1/status",
+        ],
+    )
+
+    def fake_open(path, mode="r", encoding=None):  # pylint: disable=unused-argument
+        class FakeFile:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def read(self):
+                return "connected\n"
+
+        if path.endswith("card0-HDMI-A-1/status"):
+            raise OSError
+        return FakeFile()
+
+    monkeypatch.setattr(hdmi, "open", fake_open, raising=False)
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: False)
+
+    assert hdmi._find_connected_hdmi_edid() == ""  # pylint: disable=protected-access
 
 
 def test_read_monitor_name_uses_connected_hdmi(monkeypatch):
@@ -368,6 +486,17 @@ Model: '1234'
 
     name = hdmi._read_monitor_name("/tmp/edid")  # pylint: disable=protected-access
     assert name == "Preferred Name"
+
+
+def test_read_monitor_name_uses_monitor_name(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    edid_output = "Monitor name: 'Legacy Name'"
+
+    monkeypatch.setattr(hdmi.os.path, "exists", lambda path: True)
+    monkeypatch.setattr(hdmi.subprocess, "check_output", lambda *a, **k: edid_output)
+
+    name = hdmi._read_monitor_name("/tmp/edid")  # pylint: disable=protected-access
+    assert name == "Legacy Name"
 
 
 def test_read_monitor_name_fallback_to_vendor(monkeypatch):
@@ -415,6 +544,17 @@ def test_get_monitor_info_no_monitor(monkeypatch):
     assert info == "No monitor detected"
 
 
+def test_get_monitor_info_name_without_details(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi, "_parse_modetest_modes", lambda: [])  # pylint: disable=protected-access
+    monkeypatch.setattr(hdmi, "_read_current_resolution", lambda: "")  # pylint: disable=protected-access
+    monkeypatch.setattr(
+        hdmi, "_read_monitor_name", lambda _p=None: "Panel"
+    )  # pylint: disable=protected-access
+
+    assert hdmi.get_monitor_info() == "Panel"
+
+
 def test_read_current_resolution(monkeypatch):
     hdmi = importlib.import_module("hdmi")
     monkeypatch.setattr(
@@ -422,6 +562,31 @@ def test_read_current_resolution(monkeypatch):
     )  # pylint: disable=protected-access
 
     assert hdmi._read_current_resolution() == "1280x720"  # pylint: disable=protected-access
+
+
+def test_parse_crtc_resolution_handles_disabled_crtc():
+    hdmi = importlib.import_module("hdmi")
+    assert hdmi._parse_crtc_resolution("51 55 (0,0) (0x0)", "51") == ""  # pylint: disable=protected-access
+
+
+def test_read_current_resolution_no_matching_crtc(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    sample = """
+Encoders:
+id crtc type possible crtcs possible clones
+25 51 TMDS 0x00000001 0x00000001
+
+Connectors:
+id encoder status name size (mm) modes encoders
+30 25 connected HDMI-A-1 160x90 4 25
+
+CRTCs:
+id fb pos size
+52 55 (0,0) (1280x720)
+""".strip()
+    monkeypatch.setattr(hdmi, "_run_modetest_full", lambda: sample)  # pylint: disable=protected-access
+
+    assert hdmi._read_current_resolution() == ""  # pylint: disable=protected-access
 
 
 def test_read_monitor_name_missing_file(monkeypatch):
@@ -446,3 +611,39 @@ def test_max_resolution_handles_invalid_entries():
     hdmi = importlib.import_module("hdmi")
     modes = [{"res": "bad"}, {"res": "640xa"}, {}]
     assert hdmi._max_resolution_from_modes(modes) == ""  # pylint: disable=protected-access
+
+
+def test_apply_by_index_invalid_value(monkeypatch, capsys):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(hdmi, "_build_grouped_entries", lambda: [])  # pylint: disable=protected-access
+
+    assert hdmi._apply_by_index("bad") == 2  # pylint: disable=protected-access
+    assert "Invalid index" in capsys.readouterr().err
+
+
+def test_apply_by_index_out_of_range(monkeypatch, capsys):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(
+        hdmi,
+        "_build_grouped_entries",
+        lambda: [{"kind": "auto", "title": "Auto", "payload": ""}],
+    )  # pylint: disable=protected-access
+
+    assert hdmi._apply_by_index("1") == 2  # pylint: disable=protected-access
+    assert "Index out of range" in capsys.readouterr().err
+
+
+def test_main_apply_numeric_arg(monkeypatch):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(sys, "argv", ["hdmi.py", "2"])  # nosec: B104 test adjusts argv
+    monkeypatch.setattr(hdmi, "_apply_by_index", lambda index: 7)  # pylint: disable=protected-access
+
+    assert hdmi.main() == 7
+
+
+def test_main_invalid_usage(monkeypatch, capsys):
+    hdmi = importlib.import_module("hdmi")
+    monkeypatch.setattr(sys, "argv", ["hdmi.py", "bad"])  # nosec: B104 test adjusts argv
+
+    assert hdmi.main() == 2
+    assert "Usage:" in capsys.readouterr().err

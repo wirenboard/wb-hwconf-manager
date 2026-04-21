@@ -300,20 +300,9 @@ def get_monitor_info() -> str:
     return "No monitor detected"
 
 
-def _strip_name_from_modeline_payload(payload: str) -> str:
-    """Remove the leading quoted mode name from a Modeline payload string."""
-    if not payload:
-        return payload
-    parts = payload.split(" ", 1)
-    if len(parts) == 2 and parts[0].startswith('"'):
-        return parts[1]
-    return payload
-
-
 def _build_basic_entries(modes: List[Dict[str, object]]) -> List[Dict[str, object]]:
     """Build unique flat resolution entries from modetest data."""
     entries: List[Dict[str, object]] = []
-    seen = set()
 
     def res_key(res: str) -> Tuple[int, int]:
         try:
@@ -333,9 +322,6 @@ def _build_basic_entries(modes: List[Dict[str, object]]) -> List[Dict[str, objec
     )
 
     for res in unique_modes:
-        if res in seen:
-            continue
-        seen.add(res)
         entries.append(
             {
                 "kind": "mode",
@@ -550,4 +536,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main())  # pragma: no cover
