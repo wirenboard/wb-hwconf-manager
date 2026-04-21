@@ -3,7 +3,8 @@ source "$DATADIR/modules/utils.sh"
 
 XORG_CONFIG_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
 XINIT_SERVICE="xinit.service"
-SWAY_SERVICE="sway-kiosk.service"
+SWAY_PACKAGE="wb-sway-kiosk"
+SWAY_SERVICE="wb-sway-kiosk.service"
 
 _run_systemctl() {
 	systemctl "$@" >/dev/null 2>&1 || true
@@ -24,7 +25,7 @@ _use_legacy_xorg() {
 }
 
 _use_sway_runtime() {
-	_is_installed "wb-hdmi-wayland"
+	_is_installed "$SWAY_PACKAGE"
 }
 
 _config_mode_to_xorg() {

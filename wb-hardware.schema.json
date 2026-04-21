@@ -325,7 +325,7 @@
             "Browser launch mode": "Режим запуска браузера",
             "Kiosk mode": "Режим киоска",
             "Window mode": "Оконный режим",
-            "To use the graphical interface, you need to install the wb-hdmi or wb-hdmi-wayland package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi или wb-hdmi-wayland: apt install wb-hdmi"
+            "To use the graphical interface, you need to install the wb-hdmi or wb-sway-kiosk package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi или wb-sway-kiosk: apt install wb-hdmi"
 
         }
     }

@@ -3,6 +3,7 @@ wb-hwconf-manager (1.71.2) stable; urgency=medium
   * HDMI:
     - switch runtime hooks from Xorg to Wayland
     - detect EDID on the first connected HDMI connector
+    - use wb-sway-kiosk package and service for Wayland runtime
 
  -- Anton Tarasov <anton.tarasov@wirenboard.com>  Mon, 17 Mar 2026 00:00:00 +0000
 

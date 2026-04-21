@@ -199,7 +199,7 @@ def test_get_hdmi_modes_not_installed(monkeypatch):
     assert isinstance(out, list) and len(out) == 1
     assert out[0]["value"] == "auto"
     assert "wb-hdmi" in out[0]["title"]
-    assert "wb-hdmi-wayland" in out[0]["title"]
+    assert "wb-sway-kiosk" in out[0]["title"]
 
 
 def test_get_hdmi_modes_installed(monkeypatch):
@@ -232,15 +232,15 @@ def test_get_hdmi_modes_installed(monkeypatch):
     assert "1920x1080-60.00|EDID:148500" in values
 
 
-def test_get_hdmi_modes_wayland_package_installed(monkeypatch):
-    """wb-hdmi-wayland should enable HDMI mode discovery for the UI."""
+def test_get_hdmi_modes_sway_kiosk_package_installed(monkeypatch):
+    """wb-sway-kiosk should enable HDMI mode discovery for the UI."""
     hdmi = importlib.import_module("hdmi")
 
     def fake_check_output(args, text=False):  # pylint: disable=unused-argument
         package = args[-1]
         if package == "wb-hdmi":
             raise hdmi.subprocess.CalledProcessError(returncode=1, cmd=args)
-        if package == "wb-hdmi-wayland":
+        if package == "wb-sway-kiosk":
             return "install ok installed\n"
         raise AssertionError("unexpected package query")  # pragma: no cover
 
