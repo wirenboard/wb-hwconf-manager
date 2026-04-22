@@ -1,10 +1,15 @@
-wb-hwconf-manager (1.71.2) stable; urgency=medium
+wb-hwconf-manager (1.71.3) stable; urgency=medium
 
-  * Fix title of rs485-1/rs485-2/w1/w2 slots
   * HDMI:
     - switch runtime hooks from Xorg to Wayland
     - detect EDID on the first connected HDMI connector
     - use wb-sway-kiosk package and service for Wayland runtime
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Wed, 22 Apr 2026 00:00:00 +0000
+
+wb-hwconf-manager (1.71.2) stable; urgency=medium
+
+  * Fix title of rs485-1/rs485-2/w1/w2 slots
 
  -- Nikolay Korotkiy <nikolay.korotkiy@wirenboard.com>  Thu, 26 Mar 2026 14:05:00 +0400
 
