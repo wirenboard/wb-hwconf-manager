@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import glob
 import os
 import re
 import subprocess
@@ -13,6 +14,14 @@ def _run_modetest() -> str:
     """
     try:
         return subprocess.check_output(["modetest", "-M", "sun4i-drm", "-c"], text=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return ""
+
+
+def _run_modetest_full() -> str:
+    """Return stdout of full `modetest -M sun4i-drm` or an empty string."""
+    try:
+        return subprocess.check_output(["modetest", "-M", "sun4i-drm"], text=True)
     except (subprocess.CalledProcessError, FileNotFoundError):
         return ""
 
@@ -105,13 +114,111 @@ def _parse_modetest_modes() -> List[Dict[str, object]]:
     return modes
 
 
+def _modetest_section_name(stripped: str) -> str:
+    """Return current modetest section name or an empty string."""
+    if stripped.startswith("Encoders:"):
+        return "encoders"
+    if stripped.startswith("Connectors:"):
+        return "connectors"
+    if stripped.startswith("CRTCs:"):
+        return "crtcs"
+    return ""
+
+
+def _parse_encoder_line(stripped: str) -> Tuple[str, str]:
+    """Return encoder->CRTC mapping from a modetest line."""
+    parts = stripped.split()
+    if len(parts) >= 2 and parts[0].isdigit():
+        return parts[0], parts[1]
+    return "", ""
+
+
+def _parse_connected_hdmi_encoder(stripped: str) -> str:
+    """Return HDMI encoder id from a connected connector line."""
+    parts = stripped.split()
+    if len(parts) >= 4 and parts[0].isdigit() and parts[1].isdigit():
+        if parts[2] == "connected" and parts[3].startswith("HDMI-A-"):
+            return parts[1]
+    return ""
+
+
+def _parse_crtc_resolution(stripped: str, crtc_id: str) -> Optional[str]:
+    """Return active resolution from a CRTC line for the selected encoder."""
+    parts = stripped.split()
+    if len(parts) < 4 or not crtc_id or parts[0] != crtc_id:
+        return None
+
+    size = parts[3].strip("()")
+    if size and size != "0x0":
+        return size
+    return ""
+
+
+def _read_current_resolution() -> str:
+    """Return current active HDMI resolution from modetest CRTC state."""
+    txt = _run_modetest_full()
+    if not txt:
+        return ""
+
+    encoder_to_crtc: Dict[str, str] = {}
+    hdmi_encoder = ""
+    section = ""
+
+    for raw_line in txt.splitlines():
+        line = raw_line.rstrip()
+        stripped = line.strip()
+
+        if new_section := _modetest_section_name(stripped):
+            section = new_section
+            continue
+        if not stripped:
+            continue
+
+        if section == "encoders":
+            encoder_id, crtc_id = _parse_encoder_line(stripped)
+            if encoder_id:
+                encoder_to_crtc[encoder_id] = crtc_id
+            continue
+
+        if section == "connectors":
+            hdmi_encoder = _parse_connected_hdmi_encoder(stripped) or hdmi_encoder
+            continue
+
+        if section == "crtcs" and hdmi_encoder:
+            crtc_id = encoder_to_crtc.get(hdmi_encoder, "")
+            resolution = _parse_crtc_resolution(stripped, crtc_id)
+            if resolution is not None:
+                return resolution
+
+    return ""
+
+
 def _clean_monitor_field(text: str) -> str:
     """Trim whitespace/quotes from EDID-decoded strings."""
     return text.replace("'", "").strip()
 
 
-def _read_monitor_name(edid_path: str = "/sys/class/drm/card0-HDMI-A-1/edid") -> str:
+def _find_connected_hdmi_edid() -> str:
+    """Return EDID path for the first connected HDMI connector."""
+    for status_path in sorted(glob.glob("/sys/class/drm/card*-HDMI-A-*/status")):
+        try:
+            with open(status_path, "r", encoding="utf-8") as status_file:
+                if status_file.read().strip() != "connected":
+                    continue
+        except OSError:
+            continue
+
+        edid_path = os.path.join(os.path.dirname(status_path), "edid")
+        if os.path.exists(edid_path):
+            return edid_path
+
+    return ""
+
+
+def _read_monitor_name(edid_path: Optional[str] = None) -> str:
     """Return monitor name parsed from EDID via edid-decode."""
+    if edid_path is None:
+        edid_path = _find_connected_hdmi_edid()
     if not os.path.exists(edid_path):
         return ""
     try:
@@ -173,146 +280,59 @@ def _max_resolution_from_modes(modes: List[Dict[str, object]]) -> str:
     return best_res
 
 
-def get_monitor_info() -> Dict[str, str]:
+def get_monitor_info() -> str:
     """Return basic info about the connected monitor for display in the UI."""
     modes = _parse_modetest_modes()
     max_res = _max_resolution_from_modes(modes)
+    current_res = _read_current_resolution()
     name = _read_monitor_name()
 
     if name:
-        return f"{name} (max: {max_res})"
+        details = []
+        if max_res:
+            details.append(f"max: {max_res}")
+        if current_res:
+            details.append(f"current: {current_res}")
+        if details:
+            return f"{name} ({', '.join(details)})"
+        return name
 
     return "No monitor detected"
 
 
-def _cvt_modeline(res: str, refresh: str) -> str:
-    """Generate a VESA CVT Modeline for given resolution and refresh via `cvt`.
+def _build_basic_entries(modes: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    """Build unique flat resolution entries from modetest data."""
+    entries: List[Dict[str, object]] = []
 
-    Args:
-        res: Resolution in the form "WxH" (e.g., "3840x2160").
-        refresh: Refresh rate string (e.g., "60.00").
+    def res_key(res: str) -> Tuple[int, int]:
+        try:
+            w, h = map(int, res.split("x"))
+        except (ValueError, TypeError):
+            return (0, 0)
+        return (w, h)
 
-    Returns:
-        Modeline payload without the leading word "Modeline", or an empty string
-        when generation fails or `cvt` is not available.
-    """
-    try:
-        w, h = res.split("x")
-    except ValueError:
-        return ""
-    try:
-        out = subprocess.check_output(["cvt", w, h, refresh], text=True, stderr=subprocess.DEVNULL)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return ""
-    for line in out.splitlines():
-        line = line.strip()
-        if line.startswith("Modeline "):
-            return line[len("Modeline ") :]
-    return ""
+    unique_modes = sorted(
+        {
+            str(mode.get("res", ""))
+            for mode in modes
+            if str(mode.get("res", "")) and "x" in str(mode.get("res", ""))
+        },
+        key=res_key,
+        reverse=True,
+    )
 
+    for res in unique_modes:
+        entries.append(
+            {
+                "kind": "mode",
+                "value": res,
+                "title": res,
+                "name": res,
+                "payload": "",
+            }
+        )
 
-def _strip_name_from_modeline_payload(payload: str) -> str:
-    """Remove the leading quoted mode name from a Modeline payload string."""
-    if not payload:
-        return payload
-    parts = payload.split(" ", 1)
-    if len(parts) == 2 and parts[0].startswith('"'):
-        return parts[1]
-    return payload
-
-
-def _tokenize_rates(tail: str) -> List[str]:
-    """Extract numeric refresh tokens from a xrandr mode tail string.
-
-    Stops when another resolution-like token appears. Strips trailing non-digit
-    characters except dot.
-    """
-    rates: List[str] = []
-    for tok in tail.split():
-        rt = tok.strip()
-        if "x" in rt:
-            break
-        while rt and not (rt[-1].isdigit() or rt[-1] == "."):
-            rt = rt[:-1]
-        if not rt or not rt[0].isdigit():
-            continue
-        rates.append(rt)
-    return rates
-
-
-def _choose_xrandr_block(blocks: Dict[str, Dict[str, List[str]]], output_name: str) -> Dict[str, List[str]]:
-    """Choose a preferred output block.
-
-    Priority: explicit output_name, then any HDMI*, then first by name.
-    """
-    if output_name in blocks:
-        return blocks[output_name]
-    for name, sub in blocks.items():
-        if name.startswith("HDMI"):
-            return sub
-    if blocks:
-        first_name = sorted(blocks.keys())[0]
-        return blocks[first_name]
-    return {}
-
-
-def _parse_xrandr_modes(output_name: str = "HDMI-1") -> Dict[str, List[str]]:
-    """Collect available resolutions and their refresh rates from `xrandr --query`.
-
-    Returns a mapping {"WxH": ["RR", ...]}. Entries added via --newmode are skipped.
-
-    If xrandr is unavailable (no DISPLAY or binary missing), gracefully fall back to
-    resolutions derived from EDID via modetest, returning unique WxH keys with empty
-    rate lists. This preserves the section in CLI and Web UI.
-    """
-
-    def _from_modetest_fallback() -> Dict[str, List[str]]:
-        result: Dict[str, List[str]] = {}
-        for m in _parse_modetest_modes():
-            res = str(m.get("res", ""))
-            if res:
-                result.setdefault(res, [])
-        return result
-
-    os.environ.setdefault("DISPLAY", ":0.0")
-    try:
-        txt = subprocess.check_output(["xrandr", "--query"], text=True, stderr=subprocess.DEVNULL)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return _from_modetest_fallback()
-
-    # Parse only the requested output block. If not found, fall back to first connected.
-    blocks: Dict[str, Dict[str, List[str]]] = {}
-    current: Optional[str] = None
-    for line in txt.splitlines():
-        if not line:
-            continue
-        if not line.startswith(" "):
-            # Header line: "<OUTPUT> connected ..." or "<OUTPUT> disconnected"
-            current = None
-            name = line.split()[0]
-            if " connected" in line:
-                current = name
-                blocks.setdefault(current, {})
-            continue
-        if not current:
-            continue
-        s = line.strip()
-        if not s:
-            continue
-        first = s.split()[0]
-        # Skip modelines and meta
-        if "-" in first or "x" not in first:
-            continue
-        res = first
-        tail = s[len(first) :].strip()
-        rates = _tokenize_rates(tail)
-        if rates:
-            blocks[current].setdefault(res, rates)
-
-    chosen = _choose_xrandr_block(blocks, output_name)
-    if chosen:
-        return chosen
-    return _from_modetest_fallback()
+    return entries
 
 
 def _make_edid_entry(name: str, info: Dict[str, object], e: Dict[str, object]) -> Dict[str, object]:
@@ -334,29 +354,8 @@ def _make_edid_entry(name: str, info: Dict[str, object], e: Dict[str, object]) -
     }
 
 
-def _make_cvt_entry(name: str, info: Dict[str, object], tail: str) -> Dict[str, object]:
-    """Format one CVT entry."""
-    try:
-        cvt_khz = int(round(float(tail.split()[0]) * 1000))
-    except ValueError:
-        cvt_khz = 0
-    w = int(info["w"])
-    h = int(info["h"])
-    rr = float(info["r"])
-    return {
-        "kind": "cvt",
-        "value": f"{name}|CVT:{cvt_khz}",
-        "title": f"{name} (VESA CVT - {tail.split()[0]}MHz)",
-        "payload": f'"{name}" {tail}',
-        "name": name,
-        "w": w,
-        "h": h,
-        "r": rr,
-    }
-
-
 def _build_detailed_entries(modes: List[Dict[str, object]]) -> List[Dict[str, object]]:
-    """Build detailed EDID/CVT entries for modes with width >= 2560."""
+    """Build detailed EDID entries for modes with width >= 2560."""
     grouped: Dict[str, Dict[str, object]] = {}
     for m in modes:
         try:
@@ -380,14 +379,8 @@ def _build_detailed_entries(modes: List[Dict[str, object]]) -> List[Dict[str, ob
     detail: List[Dict[str, object]] = []
     for name, info in grouped.items():
         edids = sorted(info["edids"], key=lambda e: e["pclk_khz"])
-        edid_tails = set()
         for e in edids:
-            entry = _make_edid_entry(name, info, e)
-            detail.append(entry)
-            edid_tails.add(_strip_name_from_modeline_payload(e["payload"]))
-        cvt_tail = _strip_name_from_modeline_payload(_cvt_modeline(info["res"], info["refresh"]))
-        if cvt_tail and cvt_tail not in edid_tails:
-            detail.append(_make_cvt_entry(name, info, cvt_tail))
+            detail.append(_make_edid_entry(name, info, e))
     detail.sort(key=lambda e: (e["w"], e["h"], e["r"]), reverse=True)
     return detail
 
@@ -397,8 +390,8 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
 
     Groups consist of:
       - one Auto entry (preferred EDID)
-      - XRANDR resolutions without rates
-      - detailed EDID/CVT for resolutions >= 2560px width
+      - flat resolutions from modetest
+      - detailed EDID entries for resolutions >= 2560px width
     """
     entries: List[Dict[str, object]] = []
     modes = _parse_modetest_modes()
@@ -426,28 +419,9 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
             }
         )
 
-    # XRANDR entries
-    xr = _parse_xrandr_modes("HDMI-1")
+    entries.extend(_build_basic_entries(modes))
 
-    def res_key(res: str) -> Tuple[int, int]:
-        try:
-            w, h = map(int, res.split("x"))
-        except (ValueError, TypeError):
-            return (0, 0)
-        return (w, h)
-
-    for res in sorted(xr.keys(), key=res_key, reverse=True):
-        entries.append(
-            {
-                "kind": "xrandr",
-                "value": res,
-                "title": res,
-                "name": res,
-                "payload": "",
-            }
-        )
-
-    # Detailed EDID/CVT entries
+    # Detailed EDID entries
     entries.extend(_build_detailed_entries(modes))
 
     return entries
@@ -456,16 +430,19 @@ def _build_grouped_entries() -> List[Dict[str, object]]:
 def get_hdmi_modes() -> List[Dict[str, str]]:
     """Return modes for the Web UI combobox.
 
-    Includes XRANDR resolutions (no rate) and detailed >2K EDID/CVT entries with
+    Includes flat modetest resolutions and detailed >2K EDID entries with
     unique values (value suffix encodes the timing source and pixel clock).
     May include the Auto entry depending on upstream grouping logic.
     """
-    installed = False
-    try:
-        out = subprocess.check_output(["dpkg-query", "-W", "-f=${Status}", "wb-hdmi"], text=True)
-        installed = "install ok installed" in out
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        installed = False
+
+    def _is_installed(package: str) -> bool:
+        try:
+            out = subprocess.check_output(["dpkg-query", "-W", "-f=${Status}", package], text=True)
+            return "install ok installed" in out
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            return False
+
+    installed = _is_installed("wb-hdmi") or _is_installed("wb-sway-kiosk")
 
     out: List[Dict[str, str]] = []
 
@@ -475,7 +452,10 @@ def get_hdmi_modes() -> List[Dict[str, str]]:
             out.append({"value": str(e["value"]), "title": str(e["title"])})
     else:
         # Expose a single message in case any UI watches available_hdmi_modes
-        msg = "To use the graphical interface, you need to install the wb-hdmi package: apt install wb-hdmi"
+        msg = (
+            "To use the graphical interface, you need to install the "
+            "wb-hdmi or wb-sway-kiosk package: apt install wb-hdmi"
+        )
         out.append({"value": "auto", "title": msg})
 
     return out
@@ -492,43 +472,12 @@ def _modeline_from_mode(m: Dict[str, object]) -> str:
     )
 
 
-def _ensure_mode_present(output: str, mode_name: str, modeline_payload: str) -> None:
-    """Ensure a mode is known to xrandr: create with --newmode and add to output.
+def _apply_by_index(index_str: str) -> int:
+    """Print a Modeline payload for the selected entry when available.
 
-    No-op when the mode already exists. Requires X server (uses DISPLAY=:0.0).
-    """
-    os.environ.setdefault("DISPLAY", ":0.0")
-    try:
-        out = subprocess.check_output(["xrandr"], text=True, stderr=subprocess.DEVNULL)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        out = ""
-    if mode_name in out:
-        return
-    parts = modeline_payload.split()
-    if not parts:
-        return
-    name_quoted = parts[0]
-    rest = parts[1:]
-    subprocess.run(
-        ["xrandr", "--newmode", name_quoted.strip('"')] + rest,
-        check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    subprocess.run(
-        ["xrandr", "--addmode", output, mode_name],
-        check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-
-
-def _apply_by_index(index_str: str, output: str = "HDMI-1") -> int:
-    """Apply an entry selected by its printed index.
-
-    0 selects Auto (xrandr --auto). Positive indices map to the printed list
-    order: XRANDR resolutions first, then detailed EDID/CVT. Prints the Modeline
-    for detailed entries. Returns a shell-like exit code (0 on success).
+    0 selects the preferred EDID mode. Positive indices map to the printed list
+    order: flat resolutions first, then detailed EDID entries.
+    Returns a shell-like exit code (0 on success).
     """
     entries = _build_grouped_entries()
     try:
@@ -537,46 +486,22 @@ def _apply_by_index(index_str: str, output: str = "HDMI-1") -> int:
         print("Invalid index", file=sys.stderr)
         return 2
     if idx == 0:
-        os.environ.setdefault("DISPLAY", ":0.0")
-        subprocess.run(
-            ["xrandr", "--output", output, "--auto"],
-            check=False,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
         if entries and entries[0].get("payload"):
             print(str(entries[0]["payload"]))
         return 0
-    # Flatten selection order: xrandr first, then detailed
+    # Flatten selection order: flat resolutions first, then detailed
     filtered: List[Dict[str, object]] = []
-    filtered.extend([e for e in entries if e.get("kind") == "xrandr"])
-    filtered.extend([e for e in entries if e.get("kind") in {"edid", "cvt"}])
+    filtered.extend([e for e in entries if e.get("kind") == "mode"])
+    filtered.extend([e for e in entries if e.get("kind") == "edid"])
     if idx < 1 or idx > len(filtered):
         print("Index out of range", file=sys.stderr)
         return 2
     e = filtered[idx - 1]
     kind = str(e.get("kind"))
-    os.environ.setdefault("DISPLAY", ":0.0")
-    if kind == "xrandr":
-        res = str(e["name"])  # WxH
-        subprocess.run(
-            ["xrandr", "--output", output, "--mode", res],
-            check=False,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
+    if kind == "mode":
         return 0
-    # detailed edid/cvt
-    ml = str(e["payload"])  # full Modeline
-    name = str(e["name"])  # WxH-RR
-    _ensure_mode_present(output, name, ml)
-    print(ml)
-    subprocess.run(
-        ["xrandr", "--output", output, "--mode", name],
-        check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+    # detailed edid
+    print(str(e["payload"]))
     return 0
 
 
@@ -591,14 +516,14 @@ def main() -> int:
         print("0 - auto")
         entries = _build_grouped_entries()
         i = 1
-        # xrandr resolutions first
+        # flat resolutions first
         for e in entries:
-            if e.get("kind") == "xrandr":
+            if e.get("kind") == "mode":
                 print(f"{i} - {e['title']}")
                 i += 1
-        # detailed EDID/CVT entries next
+        # detailed EDID entries next
         for e in entries:
-            if e.get("kind") in {"edid", "cvt"}:
+            if e.get("kind") == "edid":
                 print(f"{i} - {e['title']}")
                 i += 1
         return 0
@@ -611,4 +536,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main())  # pragma: no cover

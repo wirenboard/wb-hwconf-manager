@@ -1,8 +1,9 @@
+import io
 import json
 from pathlib import Path
 
 import config as config_module
-from config import from_confed, make_modules_list, to_confed
+from config import from_confed, make_modules_list, to_combined_config, to_confed
 
 MODULES_DIR = "./test/config/modules"
 OLD_CONFIG_PATH = "./test/config/old_config.conf"
@@ -58,6 +59,96 @@ def test_make_vendor_modules_list():
     with open(VENDOR_CONFED_JSON_PATH, "r", encoding="utf-8") as config_file:
         confed_json = json.load(config_file)
     assert confed_json["modules"] == make_modules_list(MODULES_DIR, VENDOR_CONFIG_PATH)
+
+
+def test_get_compatible_boards_list(monkeypatch, tmp_path):
+    device_tree = tmp_path / "device-tree"
+    device_tree.mkdir()
+    (device_tree / "compatible").write_text("wirenboard,wirenboard-85x\x00other-board\x00", encoding="utf-8")
+
+    monkeypatch.setattr(config_module.os, "readlink", lambda path: str(device_tree))
+
+    assert config_module.get_compatible_boards_list() == [
+        "wirenboard,wirenboard-85x",
+        "other-board",
+        "",
+    ]
+
+
+def test_get_board_config_path(monkeypatch):
+    monkeypatch.setattr(config_module, "get_compatible_boards_list", lambda: ["wirenboard,wirenboard-85x"])
+    assert config_module.get_board_config_path().endswith("/boards/wb85x.conf")
+
+    monkeypatch.setattr(config_module, "get_compatible_boards_list", lambda: ["unknown-board"])
+    assert config_module.get_board_config_path().endswith("/boards/default.conf")
+
+
+def test_extract_config_skips_slots_without_slot_id():
+    combined_config = {"slots": [{"id": "slot-without-id", "module": "wbe2-ao-10v-2", "options": {}}]}
+    board_slots = {
+        "slots": [
+            {
+                "id": "slot-without-id",
+                "compatible": ["wbe2"],
+                "module": "",
+                "options": {},
+            }
+        ]
+    }
+
+    assert not config_module.extract_config(combined_config, board_slots, [])
+
+
+def test_to_combined_config():
+    result = to_combined_config(
+        json.dumps({"mod1": {"module": "wbe2-ao-10v-2", "options": {}}}),
+        BOARD_CONF_PATH,
+        MODULES_DIR,
+        "",
+    )
+
+    slot = next(slot for slot in result["slots"] if slot["id"] == "wb72-mod1")
+    assert slot["module"] == "wbe2-ao-10v-2"
+
+
+def test_main_to_confed(monkeypatch, capsys):
+    monkeypatch.setattr(config_module.sys, "argv", ["config.py", "--to-confed"])
+    monkeypatch.setattr(config_module, "get_board_config_path", lambda: BOARD_CONF_PATH)
+    monkeypatch.setattr(config_module, "to_confed", lambda *args: {"ok": True})
+
+    config_module.main()
+
+    assert json.loads(capsys.readouterr().out) == {"ok": True}
+
+
+def test_main_from_confed(monkeypatch, capsys):
+    monkeypatch.setattr(config_module.sys, "argv", ["config.py", "--from-confed"])
+    monkeypatch.setattr(config_module.sys, "stdin", io.StringIO("{}"))
+    monkeypatch.setattr(config_module, "get_board_config_path", lambda: BOARD_CONF_PATH)
+    monkeypatch.setattr(config_module, "from_confed", lambda *args: {"ok": True})
+
+    config_module.main()
+
+    assert json.loads(capsys.readouterr().out) == {"ok": True}
+
+
+def test_main_to_combined_config(monkeypatch, capsys):
+    monkeypatch.setattr(config_module.sys, "argv", ["config.py", "--to-combined-config"])
+    monkeypatch.setattr(config_module.sys, "stdin", io.StringIO("{}"))
+    monkeypatch.setattr(config_module, "get_board_config_path", lambda: BOARD_CONF_PATH)
+    monkeypatch.setattr(config_module, "to_combined_config", lambda *args: {"ok": True})
+
+    config_module.main()
+
+    assert json.loads(capsys.readouterr().out) == {"ok": True}
+
+
+def test_main_prints_usage(monkeypatch, capsys):
+    monkeypatch.setattr(config_module.sys, "argv", ["config.py"])
+
+    config_module.main()
+
+    assert "usage:" in capsys.readouterr().out
 
 
 def test_to_confed_adds_monitor_info(monkeypatch, tmp_path):
