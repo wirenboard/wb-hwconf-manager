@@ -62,14 +62,32 @@ _config_rotate_to_xorg() {
 	esac
 }
 
+_config_rotate_to_xorg_touch_matrix() {
+	case "$1" in
+		90)
+			echo "0 1 0 -1 0 1 0 0 1"
+			;;
+		180)
+			echo "-1 0 1 0 -1 1 0 0 1"
+			;;
+		270)
+			echo "0 -1 1 1 0 0 0 0 1"
+			;;
+		*)
+			echo "1 0 0 0 1 0 0 0 1"
+			;;
+	esac
+}
+
 _generate_xorg_config() {
-	local mode rotate xorg_mode xrotate
+	local mode rotate xorg_mode xrotate touch_matrix
 
 	mode="$(config_module_option ".mode")"
 	rotate="$(config_module_option ".rotate")"
 
 	xorg_mode="$(_config_mode_to_xorg "$mode")"
 	xrotate="$(_config_rotate_to_xorg "$rotate")"
+	touch_matrix="$(_config_rotate_to_xorg_touch_matrix "$rotate")"
 
 	mkdir -p "$(dirname "$XORG_CONFIG_PATH")"
 
@@ -80,6 +98,13 @@ _generate_xorg_config() {
 			echo "    Option \"PreferredMode\" \"$xorg_mode\""
 		fi
 		echo "    Option \"Rotate\" \"$xrotate\""
+		echo 'EndSection'
+		echo
+		echo 'Section "InputClass"'
+		echo '    Identifier "WB HDMI touchscreen calibration"'
+		echo '    MatchIsTouchscreen "on"'
+		echo '    Driver "libinput"'
+		echo "    Option \"CalibrationMatrix\" \"$touch_matrix\""
 		echo 'EndSection'
 	} > "$XORG_CONFIG_PATH"
 }
