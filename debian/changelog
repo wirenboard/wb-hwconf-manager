@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.71.4) stable; urgency=medium
+
+  * wb7: add WBE2 CAN module to internal slots
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Mon, 27 Apr 2026 11:00:33 +0300
+
 wb-hwconf-manager (1.71.3) stable; urgency=medium
 
   * HDMI:
