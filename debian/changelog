@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.71.5) stable; urgency=medium
+
+  * Fix the behavior of touchscreen rotation for Xorg following image rotation.
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Wed, 22 Apr 2026 13:27:42 +0300
+
 wb-hwconf-manager (1.71.4) stable; urgency=medium
 
   * wb7: add WBE2 CAN module to internal slots
