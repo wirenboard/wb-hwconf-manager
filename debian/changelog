@@ -1,6 +1,6 @@
 wb-hwconf-manager (1.71.3) stable; urgency=medium
 
-  * Fix the behavior of touchscreen rotation following image rotation.
+  * Fix the behavior of touchscreen rotation for Xorg following image rotation.
 
  -- Anton Tarasov <anton.tarasov@wirenboard.com>  Wed, 22 Apr 2026 13:27:42 +0300
 
