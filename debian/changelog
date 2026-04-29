@@ -1,16 +1,27 @@
-wb-hwconf-manager (1.71.3) stable; urgency=medium
+wb-hwconf-manager (1.71.5) stable; urgency=medium
 
   * Fix the behavior of touchscreen rotation for Xorg following image rotation.
 
  -- Anton Tarasov <anton.tarasov@wirenboard.com>  Wed, 22 Apr 2026 13:27:42 +0300
 
-wb-hwconf-manager (1.71.2) stable; urgency=medium
+wb-hwconf-manager (1.71.4) stable; urgency=medium
 
-  * Fix title of rs485-1/rs485-2/w1/w2 slots
+  * wb7: add WBE2 CAN module to internal slots
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Mon, 27 Apr 2026 11:00:33 +0300
+
+wb-hwconf-manager (1.71.3) stable; urgency=medium
+
   * HDMI:
     - switch runtime hooks from Xorg to Wayland
     - detect EDID on the first connected HDMI connector
     - use wb-sway-kiosk package and service for Wayland runtime
+
+ -- Anton Tarasov <anton.tarasov@wirenboard.com>  Wed, 22 Apr 2026 00:00:00 +0000
+
+wb-hwconf-manager (1.71.2) stable; urgency=medium
+
+  * Fix title of rs485-1/rs485-2/w1/w2 slots
 
  -- Nikolay Korotkiy <nikolay.korotkiy@wirenboard.com>  Thu, 26 Mar 2026 14:05:00 +0400
 
