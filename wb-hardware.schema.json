@@ -372,6 +372,7 @@
             "Expose UART Pins (DIY)": "Интерфейс UART (DIY)",
             "WBE3-MICROSD: microSD module": "WBE3-MICROSD: модуль microSD",
             "WBE3-R-GPS: GPS/GLONASS Receiver": "WBE3-R-GPS: приёмник GPS/ГЛОНАСС",
+            "WBE3-R-GPS: GPS/GLONASS Receiver (without PPS signal)": "WBE3-R-GPS: приёмник GPS/ГЛОНАСС (без сигнала PPS)",
             "Auto bring up CAN interface": "Автоматически поднимать интерфейс CAN",
             "Bitrate": "Битрейт",
             "Listen-only mode": "Только прослушивание",
