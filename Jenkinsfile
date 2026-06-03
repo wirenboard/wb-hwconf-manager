@@ -1,5 +1,4 @@
 buildDebArchAll defaultRunLintian: true,
-                defaultDebianRelease: 'trixie',
                 defaultRunPythonChecks: true,
                 defaultAngryPylint: true,
                 defaultRunCoverage: true,
