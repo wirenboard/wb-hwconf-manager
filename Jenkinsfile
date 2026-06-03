@@ -4,4 +4,3 @@ buildDebArchAll defaultRunLintian: true,
                 defaultRunCoverage: true,
                 defaultCoverageMin: "81",
                 defaultDoCoverallsReporting: true
-
