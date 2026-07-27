@@ -26,6 +26,7 @@ Depends: ${shlibs:Depends},
          mqtt-tools (>= 1.1.1),
          wb-rules-system (>= 1.6.8),
          ntpstat,
+         util-linux-extra,
          python3 (>= 3.5)
 Breaks: wb-mqtt-confed (<< 1.0.2), wb-homa-adc (<< 2.5.0), wb-mqtt-homeui (<< 1.6.1), wb-knxd-config (<< 1.0.4~~), wb-mqtt-dac (<< 1.2.0)
 Description: Provides infrastructure for hardware re-configuration via Device Tree overlays
