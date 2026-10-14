@@ -277,10 +277,9 @@ slot_preprocess() {
 
 	cat "$slot" - |
 	sed -r 's/#((\w+-)+cells)/__\1/' |
-	tcc -x assembler-with-cpp \
+	mcpp -a -P -N -I- -W0 \
 		-Ulinux \
-		-nostdinc \
-		-I "$SLOTS" -I "$MODULES" "$@" -E - |
+		-I "$SLOTS" -I "$MODULES" "$@" |
 	perl -ne '
 		next if m/^\s*(# |$)/;
 		s/__COUNTER__/$n++/ge;
