@@ -1,4 +1,3 @@
-#!/bin/bash
 DATADIR="/usr/share/wb-hwconf-manager"
 CONFIG_STATE="/var/lib/wirenboard/hardware.state"
 
