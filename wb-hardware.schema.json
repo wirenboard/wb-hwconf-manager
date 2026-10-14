@@ -417,7 +417,25 @@
             "Browser launch mode": "Режим запуска браузера",
             "Kiosk mode": "Режим киоска",
             "Window mode": "Оконный режим",
-            "To use the graphical interface, you need to install the wb-hdmi or wb-sway-kiosk package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi или wb-sway-kiosk: apt install wb-hdmi"
+            "To use the graphical interface, you need to install the wb-hdmi or wb-sway-kiosk package: apt install wb-hdmi": "Для работы с графическим интерфейсом необходимо установить пакет wb-hdmi или wb-sway-kiosk: apt install wb-hdmi",
+            "PLC-W-EMC-KNX: KNX/EIB TP-UART": "PLC-W-EMC-KNX: KNX/EIB TP-UART",
+            "PLC-W-EMC-RS485: Isolated RS-485 interface module": "PLC-W-EMC-RS485: модуль с изолированным интерфейсом RS-485",
+            "PLC-W-EMD-0300: Digital inputs extension module": "PLC-W-EMD-0300: модуль расширения цифровых входов",
+            "PLC-W-EMD-1400: Digital inputs (dry/wet contact) I/O module": "PLC-W-EMD-1400: модуль ввода/вывода с цифровыми входами типа \"сухой или мокрый контакт\"",
+            "PLC-W-EMD-0800: High Voltage Digital Inputs I/O module": "PLC-W-EMD-0800: модуль ввода/вывода с высоковольтными цифровыми входами",
+            "PLC-W-EMD-0001: Single SPDT relay output extension module": "PLC-W-EMD-0001: модуль расширения с одним SPDT релейным выходом",
+            "PLC-W-EMD-0008: Small Signal SSR I/O Module": "PLC-W-EMD-0008: модуль ввода/вывода с выходами типа \"сухой контакт\"",
+            "PLC-W-EMD-0016R: 16 Channel Relay I/O module": "PLC-W-EMD-0016R: 16-канальный релейный модуль ввода/вывода",
+            "PLC-W-EMD-0004R: 4 Channel Roller Shutter Relay I/O module": "PLC-W-EMD-0004R: 4-канальный релейный модуль ввода/вывода для приводов штор и т.п.",
+            "PLC-W-EMD-0008R: 8 Channel Relay I/O module": "PLC-W-EMD-0008R: 8-канальный релейный модуль ввода/вывода",
+            "PLC-W-EMP-BATTERY": "PLC-W-EMP-BATTERY",
+            "PLC-W-EMP-SUPERCAP": "PLC-W-EMP-SUPERCAP",
+            "PLC-W-EMC-4G: 4G+3G+2G Modem": "PLC-W-EMC-4G: 4G+3G+2G модем",
+            "PLC-W-EMC-RS232: RS-232 interface module": "PLC-W-EMC-RS232: модуль с интерфейсом RS-232",
+            "PLC-W-EMD-0001R: Single NO relay output extension module": "PLC-W-EMD-0001R: модуль расширения с одним NO релейным выходом",
+            "PLC-W-EMD-0002: Dual Small Signal SSR Module": "PLC-W-EMD-0002: двухканальный модуль выходов типа \"сухой контакт\" (оптореле)",
+            "PLC-W-EMD-0100: 1-Wire bus master": "PLC-W-EMD-0100: мастер шины 1-Wire",
+            "PLC-270-EMI-MF000: Magnetic field strength sensor": "PLC-270-EMI-MF000: датчик напряженности магнитного поля"
         }
     }
 }

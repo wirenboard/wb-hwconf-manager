@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.71.6-cb8ea449) stable; urgency=medium
+
+  * Move ONI module names from custom-settings-cb8ea449
+
+ -- Ilya Titov <ilya.titov@wirenboard.com>  Wed, 14 Oct 2026 14:07:13 +0300
+
 wb-hwconf-manager (1.71.6) stable; urgency=medium
 
   * Translate wbe3-r-gps-no-pps description
