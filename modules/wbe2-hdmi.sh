@@ -1,4 +1,3 @@
-#!/bin/bash
 source "$DATADIR/modules/utils.sh"
 
 XORG_CONFIG_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
