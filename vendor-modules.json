@@ -12,6 +12,7 @@
     "wbmz4-battery": "PLC-W-EMP-BATTERY",
     "wbmz4-supercap": "PLC-W-EMP-SUPERCAP",
     "wbc-4g": "PLC-W-EMC-4G: 4G+3G+2G Modem",
+    "wbc-4g-usb": "PLC-W-EMC-4G: 4G+3G+2G Modem",
     "wbe2-i-rs232": "PLC-W-EMC-RS232: RS-232 interface module",
     "wbe2-do-r3a-1": "PLC-W-EMD-0001R: Single NO relay output extension module",
     "wbe2-do-ssr-2": "PLC-W-EMD-0002: Dual Small Signal SSR Module",
