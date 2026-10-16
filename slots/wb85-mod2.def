@@ -13,5 +13,8 @@
 #define SLOT_UART_ALIAS  &wbec_uart_mod2
 
 #include "wbe2.h"
-#include "t507-soc.h"  // should be included after SLOT_ALL_PINS is defined
+// Pins are WBEC GPIO offsets, not SoC bank/pin pairs: GPIO_* numbers
+// can't be resolved by allwinner-soc.h, so don't export them to shell
+#undef SLOT_ALL_PINS
+#include "t507-soc.h"  // should be included after SLOT_ALL_PINS is undefined
 #include "wbec-wbe-gpio.h"
