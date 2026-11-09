@@ -8,7 +8,7 @@
 
 
 /* Helper macros that substitutes actual pins values depending on used slot
- * e.g. if SLOT == wb5-mod1 it will expand to pins regarding to MOD1 connector
+ * e.g. if SLOT == wb6-mod1 it will expand to pins regarding to MOD1 connector
  * Supposed to be used to avoid DTS duplication for modules fitting more than
  * one slot.
  *

@@ -1,3 +1,9 @@
+wb-hwconf-manager (1.72.5) stable; urgency=medium
+
+  * Remove WB5 support
+
+ -- Nikolay Korotkiy <nikolay.korotkiy@wirenboard.com>  Mon, 09 Nov 2026 17:22:02 +0400
+
 wb-hwconf-manager (1.72.4) stable; urgency=medium
 
   * wb85x: fix mcpp errors in mod1 & mod2 slots shell variables

@@ -154,8 +154,8 @@ config_slot_module() {
 
 # Add new slot to the config
 # Args:
-# - slot id (e.g. wb5-mod1)
-# - slot type (e.g. wb5-mod)
+# - slot id (e.g. wb6-mod1)
+# - slot type (e.g. wbe2)
 # - slot description (arbitrary string)
 config_slot_add() {
 	local SLOT=$1
